@@ -1,0 +1,8 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Verification - Sci-Hub</title>
+
+</head><body><div class="container">
+<h1 style="font-size:22px;margin:0 0 16px;">Verification</h1>
+<p>Please complete the check to continue.</p>
+<div class="cf-turnstile" data-sitekey="0x4AAAAAADXMHnrF-Ni1NbSL" data-callback="onVerified" data-error-callback="onVerifyError" data-expired-callback="onVerifyExpired"></div>
+<p id="verify-status">Waiting for verification...</p></div>
+</body></html>

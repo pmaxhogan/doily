@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>Sci-Hub | Nanometre-scale thermometry in a living cell | 10.1038/nature12373</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width"/>
+
+</head>
+<body>
+
+<div id="menu">
+    <table onclick="window.open('https://sci-hub.reatk.com/')">
+        <tr>
+            <td>
+                <div id="logo"></div>
+            </td>
+            <td>
+                <div id="sci">
+                    <nobr>sci-hub</nobr>
+                </div>
+                <div id="motto">to open science</div>
+            </td>
+        </tr>
+    </table>
+
+    <div id="buttons">
+        <ul>
+		<li id="reload"><a target="_blank" href="//www.3098.me/science-hub-mutual-aid-community-registration-and-usage-tutorial/">ask researchers</a></li>
+        <li><a href="#" onclick="location.href='https:\/\/sci.bban.top\/pdf\/10.1038\/nature12373.pdf?download=true'"> save</a></li>
+        </ul>
+
+        <ul style="margin-top: 30px;">
+		<li id="reload"><a target="_blank" href="//gpt.lovetoome.com">Free GPT5.4</a></li>
+		<li id="reload"><a target="_blank" href="//www.defineabc.com">Scholar Search</a></li>
+        </ul>
+    </div>
+
+    <div id="warning"></div>
+
+    <div id="citation" onclick="clip(this)">
+        Kucsko, G.; Maurer, P. C.; Yao, N. Y.; Kubo, M.; Noh, H. J.; Lo, P. K.; Park, H.; Lukin, M. D.  (2013). <i>Nanometre-scale thermometry in a living cell. Nature, 500(7460), 5458.
+        </i> doi:10.1038/nature12373&nbsp;
+    </div>
+
+    <div id="link">
+
+        url to share this paper:<br/>
+        <a id="share">
+            <nobr id="share-text"></nobr>
+        </a>
+    </div>
+
+    <div id="versions"></div>
+
+    <div id="description" onclick="window.open('https://www.3098.me/who-exactly-should-pay-for-academic-research/')">
+        An interview with Sci-Hub Founder Alexandra Elbakyan Who exactly should pay for academic research<br/>
+         <br/>
+        <a target="_blank" href="https://www.3098.me/who-exactly-should-pay-for-academic-research/">Enter </a>
+    </div>
+
+    <div id="social">updates on <a target="_blank" href="https://www.pidantuan.com/">Sci-Hub Community</a></div>
+
+</div>
+
+<div id="article">
+    <iframe src="https://sci.bban.top/pdf/10.1038/nature12373.pdf#view=FitH" id="pdf"></iframe>
+</div>
+
+<div id="mainshadow"><div class="main"><font size="5" class="redps" color="red"></font><img class="mainshadowImg"><div class="mk-side-form"><h4 class="pw-tip"><font color="black" class="pw-tip1"></font><p></p><font color="black"  class="pw-tip2"></font></h4></div></div></div>
+<link rel="stylesheet" href="https://img.sci-hub.shop/tanchuang/sci-hub_shop.css">
+
+</body>
+</html>

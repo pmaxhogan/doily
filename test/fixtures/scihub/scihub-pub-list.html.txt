@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="Sci-Hub.Pub">
+    <meta name="keywords" content="Sci-Hub, Sci-Hub Latest, Sci-Hub alternatives">
+    <meta name="description" content="Sci-Hub.pub provides the latest Sci-Hub available websites and alternatives.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="lang" content="en">
+
+    <link rel="canonical" href="https://www.sci-hub.pub/" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <title>Sci-Hub.Pub - Latest Sci-Hub Available Websites and Alternatives.</title>
+
+    <link rel="stylesheet" href="main.css">
+
+    <!-- Google tag (gtag.js) -->
+
+    <!-- Google Ads -->
+
+  </head>
+  <body>
+
+  <article class="container" id="main">
+
+    <nav class="navbar navbar-expand-lg navbar-ai">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img src="favicon.ico" width="35" height="32" alt="Sci-Hub.Pub"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#howtouse">How to Use</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#alternatives">Sci-Hub Alternatives</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About Sci-Hub</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#news">News</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact</a>
+            </li>
+            </ul>
+        </div>
+      </div>
+    </nav>
+
+<h1>Welcome to Sci-Hub.Pub</h1>
+
+<div>
+
+  <!-- sci-hub-top -->
+  <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-8395998450699052"
+      data-ad-slot="5617097143"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+
+</div>
+
+<h2>Latest Available Links</h2>
+<ul>
+  <li><a href="https://www.sci-hub.ru/" target="_blank" rel="noopener noreferrer">Sci-Hub.ru</a> - Official</li>
+  <li><a href="https://www.sci-hub.st/" target="_blank" rel="noopener noreferrer">Sci-Hub.st</a> - Official</li>
+  <li><a href="https://sci-hub.su/" target="_blank" rel="noopener noreferrer">Sci-Hub.su</a>  - Official</li>
+  <li><a href="https://sci-hub.box/" target="_blank" rel="noopener noreferrer">Sci-hub.box</a> - Official</li>
+  <li><a href="https://sci-hub.red/" target="_blank" rel="noopener noreferrer">Sci-Hub.red</a> - Official</li>
+  <li><a href="https://sci-hub.al/" target="_blank" rel="noopener noreferrer">Sci-Hub.al</a></li>
+  <li><a href="https://sci-hub.mk/" target="_blank" rel="noopener noreferrer">Sci-Hub.mk</a></li>
+  <li><a href="https://sci-hub.ee/" target="_blank" rel="noopener noreferrer">Sci-Hub.ee</a></li>
+</ul>
+
+<h2 id="howtouse">How to Use Sci-Hub</h2>
+<ul>
+  <li>1. Find Your Paper</li>
+  <small>Search for the research paper on <a href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer">Google Scholar</a> or a similar academic database.</small>
+  <li>2. Locate the Identifier</li>
+  <small>Find the paper's DOI (e.g., 10.1002/anie.202301234) or its direct URL. </small>
+  <li>3. Find the Sci-Hub Website</li>
+  <small>Visit any working <a href="/">Sci-Hub mirror</a>.</small>
+  <li>4. Paste & Access</li>
+  <small>Paste the DOI or URL into the search bar on the Sci-Hub site and click "Open" or press Enter.</small>
+  <li>5. Download</li>
+  <small>The full paper (often as a PDF) should load, allowing you to download it. </small>
+</ul>
+
+<h2 id="alternatives">Sci-Hub Alternatives</h2>
+<ul>
+  <li><a href="https://annas-archive.gd/?r=4LpPZnU" target="_blank" rel="noopener noreferrer">Annas Archive</a> - The largest truly open library in human history.</li>
+  <li><a href="https://arxiv.org/" target="_blank" rel="noopener noreferrer">arXiv</a> - e-Print archive</li>
+  <li><a href="https://core.ac.uk/" target="_blank" rel="noopener noreferrer">Core</a> - The worlds largest collection of open access research papers</li>
+  <li><a href="https://doaj.org/" target="_blank" rel="noopener noreferrer">DOAJ</a> - Directory of Open Access Journals</li>
+  <li><a href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer">Google Scholar</a> - Google Scholar</li>
+  <li><a href="https://libgen.bz/" target="_blank" rel="noopener noreferrer">Library Genesis+</a> - Library Genesis+</li>
+  <li><a href="https://library.memoryoftheworld.org/" target="_blank" rel="noopener noreferrer">Memory of the World Library</a> - Memory of the World Library</li>
+  <li><a href="https://oa.mg/" target="_blank" rel="noopener noreferrer">OA.mg</a>- The only truly modern academic research engine</li>
+  <li><a href="https://pmc.ncbi.nlm.nih.gov/" target="_blank" rel="noopener noreferrer">PubMed Central</a> - 11.6 million articles are archived in PMC</li>
+  <li><a href="https://sci-bot.ru/" target="_blank" rel="noopener noreferrer">Sci-Bot</a> - AI-powered research assistant</li>
+  <li><a href="https://sci-net.xyz/" target="_blank" rel="noopener noreferrer">Sci-Net</a> - scientific communication support network</li>
+  <li><a href="https://unpaywall.org/" target="_blank" rel="noopener noreferrer">Unpaywall</a> - An open database of 20 million free scholarly articles</li>
+  <li><a href="https://welib.org/" target="_blank" rel="noopener noreferrer">WeLib</a> - 43 million books, 98 million papers. All free. All yours.</li>
+</ul>
+
+<h2 id="about">About Sci-Hub</h2>
+<p>Sci-Hub is the most controversial project in modern science. <br>
+  The goal of Sci-Hub is to provide free and unrestricted access to all scientific knowledge. <br>
+  <a href="https://www.sci-hub.pub/">Sci-Hub.Pub</a> is not affiliated with the official Sci-Hub project.
+</p>
+
+<h2 id="news">News</h2>
+<ul>
+  <li>2026 Mar. 06 - <a href="https://sci-bot.ru/" target="_blank" rel="noopener noreferrer">Sci-Bot</a> launched</li>
+  <li>2025 Aug. 25 - Sci-Hub has been blocked in India</li>
+</ul>
+
+<h2 id="contact">Contact Me</h2>
+<p><a href="/cdn-cgi/l/email-protection#5724343e7a3f223517253e2432222779393223682422353d3234236a04343e7a1f22357265671e24242232" target="_blank">Send an email</a></p>
+
+<hr>
+<small class="footer"> 2026 Sci-Hub.Pub. For educational purposes only.</small>
+
+</article>
+
+</body>
+</html>
+

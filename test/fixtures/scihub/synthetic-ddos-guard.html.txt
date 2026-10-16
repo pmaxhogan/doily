@@ -1,0 +1,5 @@
+<!DOCTYPE html>
+<!-- SYNTHETIC: shape of a DDoS-Guard interstitial (sci-hub.st / sci-hub.box returned 403 with this vendor). -->
+<html><head><title>DDoS-Guard</title></head>
+<body><div id="ddg-l10n-title">Checking your browser before accessing</div>
+<script src="/.well-known/ddos-guard/check?context=free_splash"></script></body></html>

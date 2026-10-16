@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Nanometre-scale thermometry in a living cell | 10.1038/nature12373_Sci-Hub:2025</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+</head>
+
+<body>
+
+    <div id="roll" onclick="rollup()"></div>
+    <div id="rollback" onclick="rollback()">
+        <img id="rollimg" src="//img.sci-hub.shop/scihubnew/assets/ravenround.gif">
+    </div>
+
+    <div id="minu">
+
+        <a id="header" rel="nofollow" href="https://sci-hub.reatk.com/">
+            <div>
+                <img id="logo" src="//img.sci-hub.shop/scihubnew/assets/ravenround.gif">
+            </div>
+            <div>
+                <span id="sci"><span class="u">sci</span><br>hub</span><br>
+                <span id="motto">to open science</span>
+            </div>
+        </a>
+
+        <div id="buttons">
+		<button onClick="window.open('https://www.3098.me/science-hub-mutual-aid-community-registration-and-usage-tutorial/');">Ask Researchers</button>
+        <button onclick="location.href='https:\/\/sci.bban.top\/pdf\/10.1038\/nature12373.pdf?download=true'" style="margin-left: 0.5vw;">&darr;save</button>
+		<button onclick="window.open('https://gpt.lovetoome.com');" style="margin-top: 5px;">Free GPT6</button>
+		<button onclick="window.open('https://www.defineabc.com');" style="margin-top: 5px;">Scholar Search</button>
+        </div>
+
+        <div id="alipay">
+
+        </div>
+
+        <div id="citation" onclick="clip(this)">Kucsko, G.; Maurer, P. C.; Yao, N. Y.; Kubo, M.; Noh, H. J.; Lo, P. K.; Park, H.; Lukin, M. D. . (2013). <i>Nanometre-scale thermometry in a living cell. Nature, 500(7460), 5458.
+        </i>
+            doi:10.1038/nature12373&nbsp;</div>
+
+        <div id="versions">
+
+        </div>
+        <div id="doi">
+        <a rel="nofollow" target="_blank" rel="nofollow" href="//www.3098.me/who-exactly-should-pay-for-academic-research/">
+        An interview with Sci-Hub Founder Alexandra Elbakyan,Who exactly should pay for academic research</a>
+		</div>
+    </div>
+
+    <div id="article">
+        <embed type="application/pdf"
+            src="https://sci.bban.top/pdf/10.1038/nature12373.pdf"
+            id="pdf">
+        </embed>
+    </div>
+
+</body>
+<div id="mainshadow"><div class="main"><font size="5" class="redps" color="red"></font><img class="mainshadowImg"><div class="mk-side-form"><h4 class="pw-tip"><font color="black" class="pw-tip1"></font><p></p ><font color="black"  class="pw-tip2"></font></h4></div></div></div>
+<link rel="stylesheet" href="https://img.sci-hub.shop/tanchuang/sci-hub_shop.css">
+
+</html>

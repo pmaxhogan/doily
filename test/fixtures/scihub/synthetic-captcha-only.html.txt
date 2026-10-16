@@ -1,0 +1,5 @@
+<!DOCTYPE html>
+<!-- SYNTHETIC: a captcha-only page with no PDF markup. -->
+<html><head><title>Sci-Hub</title></head>
+<body><form method="POST" action="/captcha"><img src="/captcha/image.png">
+<input type="text" name="answer"><input type="submit" value="ok"></form></body></html>

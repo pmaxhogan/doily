@@ -17,7 +17,7 @@
     "dev": "wrangler dev --port 8787",
     "types": "wrangler types --check || wrangler types",
     "pretypecheck": "npm run types",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json --noEmit",
     "prelint": "npm run types",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -46,6 +46,7 @@
   "devDependencies": {
     "@cloudflare/vitest-plugin": "^1.4.3",
     "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.5",
     "@vitest/coverage-v8": "^5.0.5",
     "cross-env": "^10.1.0",
     "eslint": "^10.12.0",

@@ -1,0 +1,10 @@
+{
+  // Test files run in Node (unit, live) or workerd (integration) and read
+  // fixtures with node:fs, so they get the Node types the Worker config
+  // deliberately leaves out.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["test/**/*.ts", "vitest.config.ts", "worker-configuration.d.ts"]
+}

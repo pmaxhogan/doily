@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sci-Hub. Nanometre-scale thermometry in a living cell / Nature, 2013</title>
+        <meta charset = "UTF-8">
+        <meta name = "viewport" content = "width=device-width">
+
+        <meta  name="citation_title" content="Nanometre-scale thermometry in a living cell">
+
+        <meta name="citation_author" content="Kucsko, G.">
+<meta name="citation_author" content="Maurer, P. C.">
+<meta name="citation_author" content="Yao, N. Y.">
+<meta name="citation_author" content="Kubo, M.">
+<meta name="citation_author" content="et., al.">
+
+        <meta  name="citation_publication_date" content="2013">
+        <meta  name="citation_journal_title" content="Nature">
+        <meta name="citation_doi" content="10.1038/nature12373">
+        <meta name="citation_pdf_url" content="/storage/zero/2161/f1fa2076e55135dec9460db8704912d7/kucsko2013.pdf"> <!-- https://sci-hub.ru/storage/ -->
+
+    </head>
+    <body>
+
+<dialog class = "styles">
+    <div class = "close">
+        <button onclick = "wrap('styles')">x</button>
+    </div>
+
+    <div class = "plain">
+        <span translate = "ru:formatting"> </span>
+        <button class = "yes" onclick = "recite('plain')" translate = "ru:off"> </button>
+    </div>
+
+    <div class = "list"><button class = "" onclick = "recite('')"></button>
+<button class = "" onclick = "recite('ACS')">ACS</button>
+<button class = "" onclick = "recite('ACM')">ACM</button>
+<button class = "" onclick = "recite('AIP')">AIP</button>
+<button class = "" onclick = "recite('AMA')">AMA</button>
+<button class = "" onclick = "recite('APA')">APA</button>
+<button class = "" onclick = "recite('APS')">APS</button>
+<button class = "" onclick = "recite('CSE')">CSE</button>
+<button class = "" onclick = "recite('CEP')">CEP</button>
+<button class = "" onclick = "recite('GSA')">GSA</button>
+<button class = "" onclick = "recite('IEEE')">IEEE</button>
+<button class = "" onclick = "recite('MLA')">MLA</button>
+<button class = "" onclick = "recite('Chicago')">Chicago</button>
+</div>
+
+</dialog>
+
+        <script>var captcha = {}; /* trimmed */</script>
+
+        <div class = "pdf">
+            <object type = "application/pdf" data = "/storage/zero/2161/f1fa2076e55135dec9460db8704912d7/kucsko2013.pdf#navpanes=0&view=FitH"></object>
+        </div>
+
+        <div class = "menu" onmouseleave = "nameshow(false)">
+
+            <div class = "logo" onmouseover = "nameshow()">
+                <a href = "/"><img src = "/pictures/ravenround.gif"></a>
+            </div>
+
+            <a class = "name" href = "/">
+                sci<br>hub
+            </a>
+
+            <div class = "panel">
+
+                <div class = "cite yes">
+                   <div class = "title">Nanometre-scale thermometry in a living cell</div>
+                    <div class = "journal-year">
+                        <div class = "journal">Nature,&nbsp;</div>
+                        <div class = "year">2013</div>
+                    </div>
+                </div>
+
+                <div class = "cite no">
+                    {citation}
+                </div>
+
+                <div class = "style no" onclick = "unwrap('styles')">{style}</div>
+
+                <div class = "ref yes">
+                    <a onclick = "unwrap('styles')"></a>
+                </div>
+
+                <a class = "more" target = "_blank" href = "/meta/10.1038/nature12373">...</a>
+
+                <div class = "report" onclick = "unwrap('problem')">!</div>
+
+                <div class = "download"><a href = "/storage/zero/2161/f1fa2076e55135dec9460db8704912d7/kucsko2013.pdf"></a></div>
+
+                <a class = "similar" target = "_blank" href = "/similar/10.1038/nature12373" ></a>
+
+            </div>
+
+            <div class = "panel options no">
+                <div class = "inner">
+                    <div class = "label" translate = "ru:version"> </div>
+                    <div class = "list"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <dialog class = "problem">
+            <div class = "close">
+                <button onclick = "wrap('problem')">x</button>
+            </div>
+
+            <div class = "header" translate = "ru:report">  </div>
+            <div class = "reason">
+
+                <div>
+                    <input type = "radio" id = "wrong" name = "reason" value = "wrong">
+                    <label for = "wrong" translate = "ru:wrong">   </label>
+                </div>
+
+                <div>
+                    <input type = "radio" id = "damaged" name = "reason" value = "damaged">
+                    <label for = "damaged" translate = "ru:damaged">    / </label>
+                </div>
+
+                <div>
+                    <input type = "radio" id = "missing" name = "reason" value = "missing">
+                    <label for = "missing" translate = "ru:missing"> ,   </label>
+                </div>
+
+                <div>
+                    <input type = "radio" id = "preprint" name = "reason" value = "preprint">
+                    <label for = "preprint" translate = "ru:preprint"> ,    </label>
+                </div>
+
+                <div>
+                    <input type = "radio" id = "quality" name = "reason" value = "quality">
+                    <label for = "quality" translate = "ru:quality">      </label>
+                </div>
+
+                <div>
+                    <input type = "radio" id = "other" name = "reason" value = "other">
+                    <label for = "other" translate = "ru:other"> </label>
+                </div>
+
+            </div>
+
+            <div class = "submit">
+                <altcha-widget style="--altcha-border-width:0" challengeurl = "/captcha/challenge" hidelogo hidefooter></altcha-widget>
+                <button onclick = "report()" translate = "ru:send"></button>
+            </div>
+
+            <div class = "status"></div>
+        </dialog>
+
+        <div class = "messages">
+            <div class = "sending" translate = "ru:sending">...</div>
+            <div class = "success" translate = "ru:success"> .</div>
+            <div class = "error" translate = "ru:error">    :(</div>
+            <div class = "robot" translate = "ru:robot">  </div>
+            <div class = "verifying" translate = "ru:verifying">...</div>
+        </div>
+
+    </body>
+</html>
