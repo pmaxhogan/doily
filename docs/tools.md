@@ -267,11 +267,10 @@ Behavior:
   chain can already get the paper.
 - Refuses when the bounty exceeds the configured maximum; it is never raised.
 - Refuses when today's cap of new requests (`SCINET_DAILY_CAP`, default 5, UTC
-  day) is used up. Joining an existing Sci-Net request does not use a slot.
-  Neither does re-posting a DOI this account already requested: Sci-Net
-  answers 200 without a duplicate, and when the request page already shows a
-  solver or a solution the result is `joined_existing: true` and the slot is
-  given back.
+  day) is used up. Joining does not use a slot: a DOI Sci-Net reports as
+  already posted, or one that is already in this account's own library, is
+  joined (`joined_existing: true`) and nothing is posted. Every other post is
+  counted as a spend, even if a solver takes it within seconds (they do).
 - Fails when `SCINET_USER` / `SCINET_PASS` are unset.
 - One request per DOI: a repeat call for a live request returns
   `existing: true`.

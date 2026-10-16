@@ -165,11 +165,19 @@ export class FakeClient implements ScinetClientLike {
   failPost: Error | null = null;
   failStatus: Error | null = null;
   failAccept: Error | null = null;
-  calls = { find: 0, post: 0, status: 0, view: 0, download: 0, accept: 0 };
+  /** DOIs this account already requested, as the library page lists them. */
+  library: { doi: string; status: "solved" | "open" }[] = [];
+  failLibrary: Error | null = null;
+  calls = { find: 0, post: 0, status: 0, view: 0, download: 0, accept: 0, library: 0 };
 
   async findExistingRequest(_doi: string): Promise<string | undefined> {
     this.calls.find += 1;
     return this.existing;
+  }
+  async listOwnRequests(): Promise<Awaited<ReturnType<ScinetClientLike["listOwnRequests"]>>> {
+    this.calls.library += 1;
+    if (this.failLibrary !== null) throw this.failLibrary;
+    return this.library;
   }
   async postRequest(
     doi: string,

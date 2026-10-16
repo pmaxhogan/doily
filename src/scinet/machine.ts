@@ -83,6 +83,7 @@ export interface MachineStorage {
 export type ScinetClientLike = Pick<
   SciNetClient,
   | "findExistingRequest"
+  | "listOwnRequests"
   | "postRequest"
   | "getRequestStatus"
   | "viewSolution"
@@ -168,6 +169,17 @@ export class RequestMachine {
     return state;
   }
 
+  /** True when this account already requested the DOI (any state). A library read failing counts as "no", so a post still happens. */
+  private async inOwnLibrary(client: ScinetClientLike, doi: string): Promise<boolean> {
+    try {
+      const rows = await client.listOwnRequests();
+      const wanted = doi.trim().toLowerCase();
+      return rows.some((row) => row.doi.trim().toLowerCase() === wanted);
+    } catch {
+      return false;
+    }
+  }
+
   private async schedule(): Promise<void> {
     await this.deps.storage.setAlarm(this.deps.now() + POLL_INTERVAL_MS);
   }
@@ -203,21 +215,20 @@ export class RequestMachine {
       if (existingId !== undefined) {
         state.request_id = existingId;
         state.joined = true;
+      } else if (await this.inOwnLibrary(client, doi)) {
+        // Sci-Net does not answer "already posted" for this account's own
+        // earlier request; the library page is the only place it shows.
+        state.request_id = doi;
+        state.joined = true;
       } else {
+        // A fresh post is a spend, full stop. Seen live on 2026-10-16: a
+        // solver can take a new request within seconds, so the request page
+        // read right after posting proves nothing about whether we paid.
         const created = await client.postRequest(doi, bounty);
         state.request_id = created.id;
         state.request_url = created.url;
-        // Sci-Net answers 200 for a DOI this account already requested and
-        // creates no duplicate. A page that already shows a solver or a
-        // solution cannot be seconds old: it was a join, not a new spend.
-        const remote = created.remote;
-        const already =
-          remote !== undefined &&
-          (remote.status === "solved" ||
-            remote.status === "solved_unaccepted" ||
-            remote.taken === true);
-        state.joined = already;
-        posted = !already;
+        state.joined = false;
+        posted = true;
       }
       await this.save(state);
       await this.schedule();

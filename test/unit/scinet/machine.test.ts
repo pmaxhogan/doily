@@ -331,12 +331,12 @@ describe("RequestMachine solved_unaccepted", () => {
 });
 
 describe("RequestMachine.start join detection", () => {
-  it("a post that lands on an already-solved own request is a join, not a spend", async () => {
+  it("a DOI already in the own library is a join: nothing is posted, nothing is spent", async () => {
     const r = machineRig();
-    r.client.postRemote = { status: "solved_unaccepted", fileName: "X.pdf" };
+    r.client.library = [{ doi: PDF_DOI.toUpperCase(), status: "solved" }];
     const res = await r.machine.start(PDF_DOI, 2);
     expect(res).toMatchObject({ ok: true, posted: false, state: { joined: true } });
-    expect(r.client.calls.post).toBe(1);
+    expect(r.client.calls.post).toBe(0);
 
     // It is still ours: the preview offers the accept link, so it is accepted.
     r.client.remote = UNACCEPTED;
@@ -348,17 +348,28 @@ describe("RequestMachine.start join detection", () => {
     });
   });
 
-  it("an already-taken or solved confirm page is a join; a plain open page is a post", async () => {
-    for (const [remote, posted] of [
-      [{ status: "open", reward: 2, taken: true }, false],
-      [{ status: "solved", pdfUrl: SOLVED.pdfUrl }, false],
-      [{ status: "open", reward: 2 }, true],
+  it("a fresh post is a spend even when a solver took it within seconds", async () => {
+    // Seen live 2026-10-16: the request page read right after posting already
+    // showed a solver, and the old heuristic skipped the spend ledger.
+    for (const remote of [
+      { status: "open", reward: 2, taken: true },
+      { status: "solved", pdfUrl: SOLVED.pdfUrl },
+      { status: "open", reward: 2 },
     ] as const) {
       const r = machineRig();
       r.client.postRemote = remote;
       const res = await r.machine.start(PDF_DOI, 2);
-      expect(res).toMatchObject({ ok: true, posted, state: { joined: !posted } });
+      expect(res).toMatchObject({ ok: true, posted: true, state: { joined: false } });
+      expect(r.client.calls.post).toBe(1);
     }
+  });
+
+  it("posts when the library page cannot be read", async () => {
+    const r = machineRig();
+    r.client.failLibrary = new Error("library down");
+    const res = await r.machine.start(PDF_DOI, 2);
+    expect(res).toMatchObject({ ok: true, posted: true });
+    expect(r.client.calls.post).toBe(1);
   });
 
   it("records poll errors and keeps polling", async () => {
