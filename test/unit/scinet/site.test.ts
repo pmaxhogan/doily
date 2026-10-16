@@ -81,6 +81,19 @@ describe("SITE.lookup (POST /search fragment)", () => {
     ).toEqual({ kind: "new" });
     expect(SITE.lookup.parse("<div>maintenance</div>", OPEN_DOI)).toEqual({ kind: "unknown" });
   });
+
+  it("recognizes the card by its visible reward text, whatever the input type", () => {
+    const card =
+      '<div class="paper">2026 Hemoglobin</div>Reward <input type="text" value="1"> tokens' +
+      "<button>request</button><button>cancel</button>";
+    expect(SITE.lookup.parse(card, OPEN_DOI)).toEqual({ kind: "new" });
+  });
+});
+
+describe("htmlToText and comments", () => {
+  it("drops HTML comments, including ones with angle brackets inside", () => {
+    expect(htmlToText("<!-- GET /<doi> already posted on Sci-Net --><p>hi</p>")).toBe("hi");
+  });
 });
 
 describe("SITE.request", () => {

@@ -61,6 +61,7 @@ export function decodeEntities(s: string): string {
 export function htmlToText(html: string): string {
   return decodeEntities(
     html
+      .replace(/<!--[\s\S]*?-->/g, " ")
       .replace(/<script[\s\S]*?<\/script>/gi, " ")
       .replace(/<style[\s\S]*?<\/style>/gi, " ")
       .replace(/<[^>]+>/g, " "),
@@ -187,8 +188,10 @@ export const SITE = {
       const text = htmlToText(html);
       if (/already posted on sci-net/i.test(text)) return { kind: "existing" };
       if (/not found in crossref/i.test(text)) return { kind: "not_found" };
+      // The card ends in "Reward [number input] tokens [request] [cancel]".
       const rewardForm =
-        /\breward\b/i.test(text) && /<input\b[^>]*\btype\s*=\s*["']?number/i.test(html);
+        /\breward\b/i.test(text) &&
+        (/\btokens?\b/i.test(text) || /<input\b[^>]*\btype\s*=\s*["']?number/i.test(html));
       if (rewardForm || text.toLowerCase().includes(doi.toLowerCase())) return { kind: "new" };
       return { kind: "unknown" };
     },
