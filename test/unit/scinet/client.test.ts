@@ -174,11 +174,47 @@ describe("SciNetClient.postRequest", () => {
     const kv = new FakeKV();
     kv.data.set(SESSION_KEY, "sid=stale");
     const { c, seen } = client(
-      [() => redirect("/"), ...LOGIN_OK, () => html(fixture("synthetic-doi-page-existing.html"))],
+      [
+        () => redirect("/"),
+        // Probe with the stale session: really logged out.
+        () => html(fixture("synthetic-login-page.html")),
+        ...LOGIN_OK,
+        () => html(fixture("synthetic-doi-page-existing.html")),
+      ],
       kv,
     );
     expect((await c.postRequest("10.1234/example.5678", 2)).id).toBe("a1B2c3");
     expect(seen.filter((s) => s.method === "POST" && s.url.endsWith("/request"))).toHaveLength(1);
+  });
+
+  it("treats a redirect home with a live session as a successful post", async () => {
+    const kv = new FakeKV();
+    kv.data.set(SESSION_KEY, "sid=ok");
+    const { c, seen } = client(
+      [
+        () => redirect("/"),
+        () => html(fixture("synthetic-home-logged-in.html")),
+        () => html(fixture("synthetic-doi-page-existing.html")),
+      ],
+      kv,
+    );
+    expect((await c.postRequest("10.1234/example.5678", 2)).id).toBe("a1B2c3");
+    expect(seen.filter((s) => s.method === "POST")).toHaveLength(1);
+  });
+
+  it("never re-posts when a live-session redirect leaves no findable id", async () => {
+    const kv = new FakeKV();
+    kv.data.set(SESSION_KEY, "sid=ok");
+    const { c, seen } = client(
+      [
+        () => redirect("/"),
+        () => html(fixture("synthetic-home-logged-in.html")),
+        () => html(fixture("synthetic-doi-page-none.html")),
+      ],
+      kv,
+    );
+    await expect(c.postRequest("10.1234/example.5678", 2)).rejects.toThrow(/not re-posting/);
+    expect(seen.filter((s) => s.method === "POST")).toHaveLength(1);
   });
 
   it("errors carry status and a short text excerpt, never raw HTML", async () => {

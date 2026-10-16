@@ -38,7 +38,10 @@ export class SciNetRequest extends DurableObject<Env> {
   }
 
   async start(doi: string, bounty: number, title?: string): Promise<StartResult> {
-    return this.machine.start(doi, bounty, title);
+    // Outbound fetches open the input gate; without this two concurrent
+    // request_paper calls for one DOI could both pass the "already live" check
+    // and post twice.
+    return this.ctx.blockConcurrencyWhile(() => this.machine.start(doi, bounty, title));
   }
 
   async status(): Promise<RequestState | null> {

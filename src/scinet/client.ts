@@ -174,6 +174,21 @@ export class SciNetClient {
     };
     await this.ensureSession();
     let r = await this.send("POST", SITE.request.path, form);
+    if (r.loggedOut && isRedirect(r.status)) {
+      // A successful POST may also redirect to "/", which looks like a bounce.
+      // Probe with the current session: if it is still alive, the post went
+      // through, so look the request up and never re-post.
+      const probe = await this.send("GET", r.location ?? "/");
+      if (!probe.loggedOut) {
+        // Not parseId(probe.body): the landing page may list other people's requests.
+        const id = await this.findExistingRequest(doi);
+        if (id !== undefined) return { id, url: this.requestUrl(id) };
+        throw new SciNetError(
+          "Sci-Net request may have been posted but no request id was found; not re-posting",
+          r.status,
+        );
+      }
+    }
     if (r.loggedOut) {
       await this.login();
       const existing = await this.findExistingRequest(doi);
