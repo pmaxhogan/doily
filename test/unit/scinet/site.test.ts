@@ -182,6 +182,14 @@ describe("SITE.requestPage (GET /<doi>)", () => {
     });
   });
 
+  it("an embedded storage PDF wins over a lingering view link", () => {
+    const page = `<a href="/view/${OPEN_DOI}">view</a><iframe src="/storage/2026/1/ab/X.pdf">`;
+    expect(SITE.requestPage.parse(page)).toEqual({
+      status: "solved",
+      pdfUrl: "/storage/2026/1/ab/X.pdf",
+    });
+  });
+
   it("reports unknown for a page it cannot read", () => {
     expect(SITE.requestPage.parse("<html><body>maintenance</body></html>")).toEqual({
       status: "unknown",

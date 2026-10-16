@@ -255,14 +255,16 @@ export const SITE = {
      * Checked in this order, because a solved-unaccepted page still shows
      * `Reward: N token` (and a `/reward/<doi>` form to raise it):
      *
-     * 1. SOLVED_UNACCEPTED: a `/view/<doi>` link, or the phrase "The solution
+     * 1. SOLVED: an embedded storage PDF URL (captured as absent on the
+     *    unaccepted page, so it wins even next to a lingering `/view/` link).
+     * 2. SOLVED_UNACCEPTED: a `/view/<doi>` link, or the phrase "The solution
      *    has not been viewed yet".
-     * 2. SOLVED: a storage PDF URL, or the words `requested` and `uploaded`.
-     * 3. SOLVED_UNACCEPTED: an uploaded file name (`name.pdf` as an element's
+     * 3. SOLVED: the words `requested` and `uploaded`.
+     * 4. SOLVED_UNACCEPTED: an uploaded file name (`name.pdf` as an element's
      *    whole text) with no cancel/take link.
-     * 4. OPEN: a `/cancel/<doi>` (ours) or `/take/<doi>` (anyone else's) link,
+     * 5. OPEN: a `/cancel/<doi>` (ours) or `/take/<doi>` (anyone else's) link,
      *    or `Reward: N token`.
-     * 5. UNKNOWN otherwise.
+     * 6. UNKNOWN otherwise.
      *
      * The machine's sanity check guards whatever gets downloaded.
      */
@@ -279,17 +281,15 @@ export const SITE = {
 
       const unaccepted = (): ParsedRequestPage => {
         const out: ParsedRequestPage = { status: "solved_unaccepted" };
-        if (pdfUrl !== undefined) out.pdfUrl = pdfUrl;
         if (fileName !== undefined) out.fileName = fileName;
         if (unviewed) out.unviewed = true;
         if (reward !== undefined) out.reward = reward;
         return out;
       };
 
+      if (pdfUrl !== undefined) return { status: "solved", pdfUrl };
       if (viewLink || unviewed) return unaccepted();
-      if (pdfUrl !== undefined || solvedWords) {
-        return pdfUrl === undefined ? { status: "solved" } : { status: "solved", pdfUrl };
-      }
+      if (solvedWords) return { status: "solved" };
       if (fileName !== undefined && !control) return unaccepted();
       if (control || reward !== undefined) {
         const out: ParsedRequestPage = { status: "open" };

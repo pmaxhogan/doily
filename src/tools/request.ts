@@ -89,10 +89,12 @@ function summary(state: RequestState): Record<string, unknown> {
   if (state.accepted_at !== undefined) out["accepted_at"] = state.accepted_at;
   if (state.last_error !== undefined) out["last_error"] = state.last_error;
   if (state.status === "needs_owner") {
-    out["note"] =
-      "a file was uploaded but failed the sanity check; it was left unverified for the owner " +
-      "and was not accepted on Sci-Net (accept or report it at " +
-      `${SITE.base}${SITE.view.path(state.doi)})`;
+    const notAccepted = state.last_error?.includes("not accepted on Sci-Net") === true;
+    out["note"] = notAccepted
+      ? "a file was uploaded but failed the sanity check; it was left unverified for the owner " +
+        "and was not accepted on Sci-Net (accept or report it at " +
+        `${SITE.base}${SITE.view.path(state.doi)})`
+      : "a file was uploaded but failed the sanity check; it was left unverified for the owner";
   }
   return out;
 }

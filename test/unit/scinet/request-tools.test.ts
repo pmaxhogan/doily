@@ -243,6 +243,20 @@ describe("wait_for_request", () => {
     expect(r.client.calls.accept).toBe(0);
   });
 
+  it("needs_owner on an already-accepted solution does not ask to accept it", async () => {
+    const r = toolRig();
+    await requestPaper.handler(r.deps, { id: PDF_DOI });
+    r.client.remote = SOLVED;
+    r.client.pdf = new TextEncoder().encode("%PDF-1.7\nunrelated\n%%EOF\n");
+    await r.ns.rig(PDF_DOI).machine.alarm();
+    const out = (await waitForRequest.handler(r.deps, {
+      request_id: PDF_DOI,
+      max_wait_seconds: 0,
+    })) as Record<string, unknown>;
+    expect(out["status"]).toBe("needs_owner");
+    expect(String(out["note"])).not.toContain("accept");
+  });
+
   it("errors for a DOI that was never requested", async () => {
     const r = toolRig();
     await expect(
