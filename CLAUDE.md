@@ -63,6 +63,7 @@ interview is `.claude/doily-spec.md`; read it before changing tool behavior.
 - mode: auth.web.extra-password=no
 - mode: deploy.target=workers
 - mode: deps.dependabot-mechanism=native
+- mode: repo.no-protection=required-checks-ruleset-only
 - mode: stack.type=node-ts
 - mode: test.coverage-ratchet=ruleset
 
