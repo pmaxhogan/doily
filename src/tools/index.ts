@@ -1,4 +1,5 @@
 import { getAuthorTool } from "./author.ts";
+import { getFullTextTool, getPdfTool } from "./fulltext.ts";
 import { getJournalTool } from "./journal.ts";
 import { getPaperTool } from "./paper.ts";
 import { requestTools } from "./request.ts";
@@ -17,5 +18,7 @@ export const tools: ToolDef<any>[] = [
   getPaperTool,
   getAuthorTool,
   getJournalTool,
+  getFullTextTool,
+  getPdfTool,
   ...requestTools,
 ];
