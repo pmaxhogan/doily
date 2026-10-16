@@ -6,7 +6,8 @@
  * login is `POST /` with form-urlencoded `user`, `pass`, `action=login`, no
  * CSRF token, server-rendered pages and a cookie session. The only XHR calls
  * are `POST /search` and `POST /request`, both JSON. A request is addressed by
- * its DOI: the request page is `/<doi>`, there is no separate request id.
+ * its DOI: the request page is `/<doi>`, there is no separate request id. A
+ * solution is previewed at `/view/<doi>` and accepted with `/accept/<doi>`.
  *
  * Parsers are plain string/regex functions (no HTMLRewriter) so they run under
  * Node in unit tests as well as in workerd.
@@ -19,7 +20,12 @@
  */
 export const SITE_VERIFIED = true;
 
-export type RemoteStatus = "open" | "solved" | "unknown";
+/**
+ * `solved_unaccepted`: a solver uploaded a file but the requester has not
+ * accepted it yet (the bounty moves on accept). `solved`: accepted, the page
+ * embeds the storage PDF.
+ */
+export type RemoteStatus = "open" | "solved_unaccepted" | "solved" | "unknown";
 
 export interface ParsedRequestPage {
   status: RemoteStatus;
@@ -31,6 +37,18 @@ export interface ParsedRequestPage {
   reward?: number;
   /** True when a solver took the open request ("This member is working ..."). */
   taken?: boolean;
+  /** The uploaded file name a solved-unaccepted page lists, e.g. `Title.pdf`. */
+  fileName?: string;
+  /** True while a solved-unaccepted page says the solution was not viewed yet. */
+  unviewed?: boolean;
+}
+
+/** What the preview page `GET /view/<doi>` offers. */
+export interface ParsedViewPage {
+  /** Site-relative or absolute URL of the uploaded PDF in the preview. */
+  pdfUrl?: string;
+  /** True when the page carries the requester's `/accept/<doi>` link. */
+  canAccept: boolean;
 }
 
 /** What `POST /search` said about a DOI. */
@@ -41,9 +59,6 @@ export interface LibraryRow {
   doi: string;
   status: "solved" | "open";
 }
-
-/** The note `verifyUpload` returns: solved pages carry no verify control. */
-export const VERIFY_NOTE = "no verify control on sci-net; nothing to confirm";
 
 /** Decode the handful of entities that show up in attribute values and text. */
 export function decodeEntities(s: string): string {
@@ -126,6 +141,32 @@ export function storagePdfUrl(html: string): string | undefined {
   return undefined;
 }
 
+/**
+ * The uploaded file name on a solved-unaccepted page: an element whose whole
+ * text is one `name.pdf` token. Text is matched, not attributes, so storage
+ * URLs in `src`/`href` never count.
+ */
+export function uploadedFileName(html: string): string | undefined {
+  const body = html
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ");
+  for (const m of body.matchAll(/>\s*([^<>\s]+\.pdf)\s*</gi)) {
+    const name = decodeEntities(m[1] ?? "");
+    if (!name.includes("/")) return name;
+  }
+  return undefined;
+}
+
+/** True when some anchor points at `/<prefix><doi>`, for `doi` when given. */
+function hasControl(html: string, prefix: string, doi?: string): boolean {
+  const want = doi?.trim().toLowerCase();
+  return hrefs(html).some((h) => {
+    const got = doiOfHref(h, prefix);
+    return got !== undefined && (want === undefined || got === want);
+  });
+}
+
 export const SITE = {
   base: "https://sci-net.xyz",
 
@@ -205,35 +246,88 @@ export const SITE = {
     },
   },
 
-  /** `GET /<doi>`: the request page, open or solved. */
+  /** `GET /<doi>`: the request page, open, solved-unaccepted or solved. */
   requestPage: {
     path(doi: string): string {
       return doiPath(doi);
     },
     /**
-     * OPEN: a `/cancel/<doi>` (ours) or `/take/<doi>` (anyone else's) link, or
-     * `Reward: N token`. SOLVED: the words `requested` and `uploaded` plus the
-     * storage PDF the page embeds. A PDF on a page with no open marker also
-     * counts as solved; the machine's sanity check guards what is downloaded.
+     * Checked in this order, because a solved-unaccepted page still shows
+     * `Reward: N token` (and a `/reward/<doi>` form to raise it):
+     *
+     * 1. SOLVED_UNACCEPTED: a `/view/<doi>` link, or the phrase "The solution
+     *    has not been viewed yet".
+     * 2. SOLVED: a storage PDF URL, or the words `requested` and `uploaded`.
+     * 3. SOLVED_UNACCEPTED: an uploaded file name (`name.pdf` as an element's
+     *    whole text) with no cancel/take link.
+     * 4. OPEN: a `/cancel/<doi>` (ours) or `/take/<doi>` (anyone else's) link,
+     *    or `Reward: N token`.
+     * 5. UNKNOWN otherwise.
+     *
+     * The machine's sanity check guards whatever gets downloaded.
      */
     parse(html: string): ParsedRequestPage {
       const text = htmlToText(html);
       const pdfUrl = storagePdfUrl(html);
       const rewardMatch = /\bReward:\s*(\d+)\s*tokens?\b/i.exec(text);
-      const control = hrefs(html).some(
-        (h) => doiOfHref(h, "cancel/") !== undefined || doiOfHref(h, "take/") !== undefined,
-      );
-      const open = control || rewardMatch !== null;
+      const reward = rewardMatch?.[1] === undefined ? undefined : Number(rewardMatch[1]);
+      const control = hasControl(html, "cancel/") || hasControl(html, "take/");
+      const viewLink = hasControl(html, "view/");
+      const unviewed = /the solution has not been viewed yet/i.test(text);
+      const fileName = uploadedFileName(html);
       const solvedWords = /\brequested\b/i.test(text) && /\buploaded\b/i.test(text);
-      if (pdfUrl !== undefined && (solvedWords || !open)) return { status: "solved", pdfUrl };
-      if (open) {
+
+      const unaccepted = (): ParsedRequestPage => {
+        const out: ParsedRequestPage = { status: "solved_unaccepted" };
+        if (pdfUrl !== undefined) out.pdfUrl = pdfUrl;
+        if (fileName !== undefined) out.fileName = fileName;
+        if (unviewed) out.unviewed = true;
+        if (reward !== undefined) out.reward = reward;
+        return out;
+      };
+
+      if (viewLink || unviewed) return unaccepted();
+      if (pdfUrl !== undefined || solvedWords) {
+        return pdfUrl === undefined ? { status: "solved" } : { status: "solved", pdfUrl };
+      }
+      if (fileName !== undefined && !control) return unaccepted();
+      if (control || reward !== undefined) {
         const out: ParsedRequestPage = { status: "open" };
-        if (rewardMatch?.[1] !== undefined) out.reward = Number(rewardMatch[1]);
+        if (reward !== undefined) out.reward = reward;
         if (/this member is working on solving the request/i.test(text)) out.taken = true;
         return out;
       }
-      if (solvedWords) return { status: "solved" };
       return { status: "unknown" };
+    },
+  },
+
+  /** `GET /view/<doi>`: the solution preview; viewing marks it seen. */
+  view: {
+    path(doi: string): string {
+      return `/view${doiPath(doi)}`;
+    },
+    /**
+     * The preview embeds the PDF as `<iframe src="/storage/<32-hex>/<t>.pdf">`
+     * (older solutions use `/storage/<y>/<n>/<64-hex>/<t>.pdf`; both match),
+     * and the requester gets `<a class="accept" href="/accept/<doi>">`. With
+     * `doi` given, only an accept link for that DOI counts.
+     */
+    parse(html: string, doi?: string): ParsedViewPage {
+      const out: ParsedViewPage = { canAccept: hasControl(html, "accept/", doi) };
+      const pdfUrl = storagePdfUrl(html);
+      if (pdfUrl !== undefined) out.pdfUrl = pdfUrl;
+      return out;
+    },
+  },
+
+  /** `GET /accept/<doi>`: the requester accepts the solution (a plain link). */
+  accept: {
+    path(doi: string): string {
+      return `/accept${doiPath(doi)}`;
+    },
+    /** Success: a non-error status and a page that is not the login form. */
+    ok(status: number, html: string): boolean {
+      return status < 400 && !SITE.isLoginPage(html);
     },
   },
 

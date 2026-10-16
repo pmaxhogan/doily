@@ -10,15 +10,25 @@ import type { TextOf } from "./hooks.ts";
  * It is a plain class over injected storage, alarm, client, bucket and clock so
  * it runs in Node unit tests; request-object.ts is the thin workerd shell.
  *
- *   start --> pending --(solved, %PDF, DOI/title found)--> ready (then verify,
- *                        a no-op on Sci-Net, which has no verify control)
- *                     --(solved, sanity check fails)-----> needs_owner
- *                     --(72h since created_at)-----------> expired
+ *   start --> pending --(solved_unaccepted: view, %PDF, DOI/title found)-->
+ *                        ready + accept_pending --(GET /accept/<doi>)--> ready, verified
+ *                     --(solved: storage PDF on the page, sanity ok)----> ready
+ *                     --(sanity check fails; never accepted)------------> needs_owner
+ *                     --(72h since created_at)--------------------------> expired
  *   start --(lookup/post error)--> failed   (a later start retries)
  *
  * Every alarm re-reads storage and only advances, so repeated or overlapping
- * alarms are safe.
+ * alarms are safe. The PDF is downloaded only while `pending`, and the accept
+ * is sent only while `accept_pending`; once one was sent and not confirmed,
+ * the request page is re-read before anything is sent again.
  */
+
+/** verify_note once the solution was accepted on Sci-Net by us. */
+export const ACCEPTED_NOTE = "accepted on sci-net";
+/** verify_note when the page already showed an accepted solution. */
+export const ALREADY_ACCEPTED_NOTE = "already accepted on sci-net";
+/** verify_note when the preview offered this account no accept link. */
+export const NO_ACCEPT_NOTE = "the sci-net preview offered no accept link; nothing was accepted";
 
 export type RequestStatusName = "pending" | "ready" | "expired" | "failed" | "needs_owner";
 
@@ -27,7 +37,11 @@ export interface RequestState {
   title?: string;
   request_id?: string;
   request_url?: string;
-  /** True when we joined an existing Sci-Net request instead of posting. */
+  /**
+   * True when this run did not create the Sci-Net request: the lookup said it
+   * was already posted, or the post landed on this account's own earlier
+   * request that was already taken or solved. A joined request spends no slot.
+   */
   joined?: boolean;
   status: RequestStatusName;
   created_at: string;
@@ -40,12 +54,17 @@ export interface RequestState {
   uploaded_at?: string;
   ready_at?: string;
   /**
-   * Whether the request is confirmed complete. Sci-Net shows no verify
-   * control, so this is true once the PDF passes the sanity check.
+   * Whether the request is confirmed complete on Sci-Net: the solution was
+   * accepted (by us, or earlier). Unset for someone else's request.
    */
   verified?: boolean;
-  /** What the verify step reported (for Sci-Net: that there is nothing to confirm). */
+  /** How completion was confirmed, e.g. "accepted on sci-net". */
   verify_note?: string;
+  /** The PDF passed the sanity check and is stored; the accept is still to send. */
+  accept_pending?: boolean;
+  /** An accept was sent and not confirmed; re-read the page before re-sending. */
+  accept_tried?: boolean;
+  accepted_at?: string;
 }
 
 export type StartResult =
@@ -61,7 +80,12 @@ export interface MachineStorage {
 
 export type ScinetClientLike = Pick<
   SciNetClient,
-  "findExistingRequest" | "postRequest" | "getRequestStatus" | "downloadPdf" | "verifyUpload"
+  | "findExistingRequest"
+  | "postRequest"
+  | "getRequestStatus"
+  | "viewSolution"
+  | "acceptSolution"
+  | "downloadPdf"
 >;
 
 /** The R2 surface the machine writes to (R2Bucket satisfies it). */
@@ -181,8 +205,17 @@ export class RequestMachine {
         const created = await client.postRequest(doi, bounty);
         state.request_id = created.id;
         state.request_url = created.url;
-        state.joined = false;
-        posted = true;
+        // Sci-Net answers 200 for a DOI this account already requested and
+        // creates no duplicate. A page that already shows a solver or a
+        // solution cannot be seconds old: it was a join, not a new spend.
+        const remote = created.remote;
+        const already =
+          remote !== undefined &&
+          (remote.status === "solved" ||
+            remote.status === "solved_unaccepted" ||
+            remote.taken === true);
+        state.joined = already;
+        posted = !already;
       }
       await this.save(state);
       await this.schedule();
@@ -223,13 +256,13 @@ export class RequestMachine {
   async alarm(): Promise<void> {
     const state = await this.load();
     if (state === undefined) return;
-    // A joined request is someone else's: verifying it is not ours to do.
-    const needsVerify = state.status === "ready" && state.verified !== true && !state.joined;
-    if (state.status !== "pending" && !needsVerify) return;
+    const needsAccept =
+      state.status === "ready" && state.accept_pending === true && state.verified !== true;
+    if (state.status !== "pending" && !needsAccept) return;
 
     if (this.expired(state)) {
       if (state.status === "pending") state.status = "expired";
-      else state.last_error = "verification on Sci-Net was never confirmed";
+      else state.last_error = "the accept on Sci-Net was never confirmed";
       await this.save(state);
       return;
     }
@@ -245,20 +278,11 @@ export class RequestMachine {
           return;
         }
         // collect() mutates state; widen the narrowed type back.
-        if ((state.status as RequestStatusName) !== "ready" || state.joined) return;
+        if ((state.status as RequestStatusName) !== "ready" || state.accept_pending !== true) {
+          return;
+        }
       }
-      const verdict = await client.verifyUpload(state.request_id ?? state.doi);
-      const ok = verdict.ok;
-      state.verified = ok;
-      if (verdict.note !== undefined) state.verify_note = verdict.note;
-      if (ok) {
-        delete state.last_error;
-        await this.save(state);
-      } else {
-        state.last_error = "Sci-Net did not confirm the verification; will retry";
-        await this.save(state);
-        await this.schedule();
-      }
+      await this.accept(client, state);
     } catch (e) {
       state.last_error = message(e);
       await this.save(state);
@@ -267,26 +291,85 @@ export class RequestMachine {
   }
 
   /**
+   * Accept the stored solution on Sci-Net, at most once: `accept_tried` is
+   * saved before the accept is sent, and once set, the request page is
+   * re-read first; an accepted (`solved`) page completes without sending.
+   */
+  private async accept(client: ScinetClientLike, state: RequestState): Promise<void> {
+    const id = state.request_id ?? state.doi;
+    if (state.accept_tried === true) {
+      const page = await client.getRequestStatus(id);
+      if (page.status === "solved") {
+        await this.markAccepted(state);
+        return;
+      }
+      if (page.status !== "solved_unaccepted") {
+        state.last_error = `request page reads ${page.status}; the accept was not re-sent`;
+        await this.save(state);
+        await this.schedule();
+        return;
+      }
+    }
+    state.accept_tried = true;
+    await this.save(state);
+    const res = await client.acceptSolution(id);
+    if (res.ok) {
+      await this.markAccepted(state);
+      return;
+    }
+    state.last_error = "Sci-Net did not confirm the accept; the page is re-checked next time";
+    await this.save(state);
+    await this.schedule();
+  }
+
+  private async markAccepted(state: RequestState): Promise<void> {
+    state.verified = true;
+    state.verify_note = ACCEPTED_NOTE;
+    state.accepted_at = this.iso();
+    delete state.accept_pending;
+    delete state.accept_tried;
+    delete state.last_error;
+    await this.save(state);
+  }
+
+  /**
    * Poll Sci-Net; on fulfilment download, sanity check and store. Returns false
-   * when the request is still open (nothing changed but attempts). Saves the
-   * state itself whenever it advances so a crash before verification never
-   * repeats the download.
+   * when nothing is downloadable yet (nothing changed but attempts). An
+   * unaccepted solution is fetched through its preview, which also says
+   * whether we may accept it. Saves the state itself whenever it advances so a
+   * crash before the accept never repeats the download.
    */
   private async collect(client: ScinetClientLike, state: RequestState): Promise<boolean> {
-    const remote = await client.getRequestStatus(state.request_id ?? "");
-    if (remote.status !== "solved" || remote.pdfUrl === undefined) {
+    const id = state.request_id ?? state.doi;
+    const remote = await client.getRequestStatus(id);
+    let pdfUrl: string | undefined;
+    let canAccept = false;
+    const unaccepted = remote.status === "solved_unaccepted";
+    if (unaccepted || (remote.status === "solved" && remote.pdfUrl === undefined)) {
+      const view = await client.viewSolution(id);
+      pdfUrl = view.pdfUrl;
+      canAccept = view.canAccept;
+      if (pdfUrl === undefined) {
+        state.last_error = "the Sci-Net preview shows no PDF yet; will retry";
+        return false;
+      }
+    } else if (remote.status === "solved") {
+      pdfUrl = remote.pdfUrl;
+    }
+    if (pdfUrl === undefined) {
       delete state.last_error;
       return false;
     }
     if (remote.uploadedAt !== undefined) state.uploaded_at = remote.uploadedAt;
-    const bytes = await client.downloadPdf(remote.pdfUrl);
+    const bytes = await client.downloadPdf(pdfUrl);
     const pdf = { httpMetadata: { contentType: "application/pdf" } };
+    const notAccepted = unaccepted ? "; not accepted on Sci-Net" : "";
 
     if (!isPdf(bytes)) {
       await this.deps.bucket.put(unverifiedPdfKey(state.doi), bytes);
       state.pdf_key = unverifiedPdfKey(state.doi);
       state.status = "needs_owner";
-      state.last_error = "fulfilment is not a PDF (no %PDF magic); left unverified";
+      state.last_error = `fulfilment is not a PDF (no %PDF magic); left unverified${notAccepted}`;
       await this.save(state);
       return true;
     }
@@ -304,8 +387,7 @@ export class RequestMachine {
       await this.deps.bucket.put(unverifiedPdfKey(state.doi), bytes, pdf);
       state.pdf_key = unverifiedPdfKey(state.doi);
       state.status = "needs_owner";
-      state.last_error =
-        "sanity check failed: DOI/title not found in the PDF text; left unverified";
+      state.last_error = `sanity check failed: DOI/title not found in the PDF text; left unverified${notAccepted}`;
       await this.save(state);
       return true;
     }
@@ -321,6 +403,18 @@ export class RequestMachine {
     state.status = "ready";
     state.ready_at = this.iso();
     delete state.last_error;
+    if (canAccept) {
+      // Saved before any accept is sent: a crash here never re-downloads.
+      state.accept_pending = true;
+      state.verified = false;
+    } else if (unaccepted) {
+      state.verify_note = NO_ACCEPT_NOTE;
+      if (state.joined !== true) state.verified = false;
+    } else if (state.joined !== true) {
+      // Accepted earlier (by us or by hand); someone else's stays unset.
+      state.verified = true;
+      state.verify_note = ALREADY_ACCEPTED_NOTE;
+    }
     await this.save(state);
     return true;
   }

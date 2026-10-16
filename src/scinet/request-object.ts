@@ -10,8 +10,8 @@ import type { RequestState, StartResult } from "./machine.ts";
 /**
  * One Durable Object per requested DOI (named by the normalized DOI): posts the
  * Sci-Net request, polls on an alarm every five minutes, downloads the
- * fulfilled PDF to R2, sanity checks it, verifies the upload and expires after
- * 72 hours. All logic is in RequestMachine (machine.ts) so it is unit-testable
+ * fulfilled PDF to R2, sanity checks it, accepts the solution on Sci-Net and
+ * expires after 72 hours. All logic is in RequestMachine (machine.ts) so it is unit-testable
  * in Node; this class only adapts ctx.storage and env to it.
  *
  * The class name and binding are fixed by migration tag v1 in wrangler.jsonc.

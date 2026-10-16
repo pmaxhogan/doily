@@ -217,7 +217,7 @@ describe("small Sci-Net fixes", () => {
     expect(await verifyRequestToken("secret", forged)).toBeNull();
   });
 
-  it("does not verify a joined request (it is someone else's)", async () => {
+  it("never accepts or verifies a joined solved request (someone else.s)", async () => {
     const r = machineRig();
     r.client.existing = "theirs";
     await r.machine.start(PDF_DOI, 2);
@@ -229,10 +229,10 @@ describe("small Sci-Net fixes", () => {
     await r.machine.alarm();
     const s = await r.machine.status();
     expect(s?.status).toBe("ready");
-    expect(r.client.calls.verify).toBe(0);
+    expect(r.client.calls.accept).toBe(0);
     const alarmsBefore = r.storage.alarmsSet;
     await r.machine.alarm();
-    expect(r.client.calls.verify).toBe(0);
+    expect(r.client.calls.accept).toBe(0);
     expect(r.storage.alarmsSet).toBe(alarmsBefore);
   });
 
