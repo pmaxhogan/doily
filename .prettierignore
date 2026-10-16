@@ -5,3 +5,4 @@ coverage/
 worker-configuration.d.ts
 package-lock.json
 .github/rulesets/
+data/*.json
