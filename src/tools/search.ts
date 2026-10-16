@@ -155,9 +155,11 @@ export const searchPapersToolDef: ToolDef<SearchPapersArgs> = {
       .number()
       .int()
       .min(0)
-      .max(1000)
+      .max(199)
       .optional()
-      .describe("Results to skip, for paging (default 0)"),
+      .describe(
+        "Results to skip, for paging (default 0, max 199: each provider contributes at most its top 200 hits)",
+      ),
   },
   annotations: { readOnlyHint: true, openWorldHint: true },
   handler: (deps, args) => searchPapersTool(deps, args),

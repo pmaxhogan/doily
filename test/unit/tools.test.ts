@@ -361,6 +361,8 @@ describe("tool definitions", () => {
     const schema = z.object(tools.find((t) => t.name === "search_papers")?.inputSchema ?? {});
     expect(schema.safeParse({ query: "x", limit: 100 }).success).toBe(true);
     expect(schema.safeParse({ query: "x", limit: 101 }).success).toBe(false);
+    expect(schema.safeParse({ query: "x", offset: 199 }).success).toBe(true);
+    expect(schema.safeParse({ query: "x", offset: 200 }).success).toBe(false);
     expect(schema.safeParse({ query: "x", sources: ["scholar"] }).success).toBe(false);
     expect(schema.safeParse({ query: "" }).success).toBe(false);
   });
