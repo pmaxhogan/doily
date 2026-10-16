@@ -1,9 +1,12 @@
 /**
  * R2 cache for fetched PDFs and extracted text, plus signed download links.
  *
- * Keys: `pdf/<doi>.pdf` and `text/<doi>.md`, DOI lowercased with its `/`
- * kept (R2 keys are flat; the slash only reads like a directory). Objects
- * carry customMetadata `{ source, fetched_at }` and are kept indefinitely.
+ * Keys: `pdf/<doi>.pdf`, `text/<doi>.md` and `jats/<doi>.xml`, DOI
+ * lowercased with its `/` kept (R2 keys are flat; the slash only reads like a
+ * directory). Objects carry customMetadata `{ source, fetched_at }` (text
+ * also `format`: "jats" or "pdf") and are kept indefinitely. The cached
+ * markdown never includes references; get_full_text re-renders from the
+ * cached JATS when the agent asks for them.
  *
  * Download links: R2 presigned URLs need S3 API credentials the Worker does
  * not have, so get_pdf hands out a link to the Worker itself instead:
@@ -36,6 +39,14 @@ export interface CachedText {
   text: string;
   source?: string;
   fetched_at?: string;
+  /** How the text was obtained: "jats" or "pdf". Absent on older objects. */
+  format?: string;
+}
+
+export interface CachedJats {
+  xml: string;
+  source?: string;
+  fetched_at?: string;
 }
 
 export function normalizeDoi(doi: string): string {
@@ -48,6 +59,10 @@ export function pdfKey(doi: string): string {
 
 export function textKey(doi: string): string {
   return `text/${normalizeDoi(doi)}.md`;
+}
+
+export function jatsKey(doi: string): string {
+  return `jats/${normalizeDoi(doi)}.xml`;
 }
 
 function metaOf(obj: R2Object): Partial<CacheMeta> {
@@ -63,6 +78,16 @@ export async function getCachedPdf(bucket: R2Bucket, doi: string): Promise<Cache
   if (!obj) return null;
   const bytes = new Uint8Array(await obj.arrayBuffer());
   return { bytes, size: obj.size, ...metaOf(obj) };
+}
+
+/** Size and metadata of a cached PDF without reading its body, or null. */
+export async function headCachedPdf(
+  bucket: R2Bucket,
+  doi: string,
+): Promise<{ size: number; source?: string; fetched_at?: string } | null> {
+  const obj = await bucket.head(pdfKey(doi));
+  if (!obj) return null;
+  return { size: obj.size, ...metaOf(obj) };
 }
 
 export async function putPdf(
@@ -82,19 +107,43 @@ export async function putPdf(
 export async function getCachedText(bucket: R2Bucket, doi: string): Promise<CachedText | null> {
   const obj = await bucket.get(textKey(doi));
   if (!obj) return null;
-  return { text: await obj.text(), ...metaOf(obj) };
+  const format = obj.customMetadata?.["format"];
+  return { text: await obj.text(), ...metaOf(obj), ...(format !== undefined && { format }) };
 }
 
 export async function putText(
   bucket: R2Bucket,
   doi: string,
   text: string,
-  meta: { source: string },
+  meta: { source: string; format?: string },
   now: Date = new Date(),
 ): Promise<void> {
   const customMetadata: CacheMeta = { source: meta.source, fetched_at: now.toISOString() };
   await bucket.put(textKey(doi), text, {
     httpMetadata: { contentType: "text/markdown; charset=utf-8" },
+    customMetadata: {
+      ...customMetadata,
+      ...(meta.format !== undefined && { format: meta.format }),
+    },
+  });
+}
+
+export async function getCachedJats(bucket: R2Bucket, doi: string): Promise<CachedJats | null> {
+  const obj = await bucket.get(jatsKey(doi));
+  if (!obj) return null;
+  return { xml: await obj.text(), ...metaOf(obj) };
+}
+
+export async function putJats(
+  bucket: R2Bucket,
+  doi: string,
+  xml: string,
+  meta: { source: string },
+  now: Date = new Date(),
+): Promise<void> {
+  const customMetadata: CacheMeta = { source: meta.source, fetched_at: now.toISOString() };
+  await bucket.put(jatsKey(doi), xml, {
+    httpMetadata: { contentType: "application/xml; charset=utf-8" },
     customMetadata: { ...customMetadata },
   });
 }
