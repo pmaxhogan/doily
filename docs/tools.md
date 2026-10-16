@@ -297,8 +297,10 @@ Long-poll a request for up to `max_wait_seconds`.
 While the request is not ready, returns its summary: `request_id`, `doi`,
 `status` (`pending`, `ready`, `expired`, `failed` or `needs_owner`),
 `created_at`, `updated_at`, `attempts`, `bounty`, and when known
-`scinet_request_id`, `joined_existing`, `ready_at`, `uploaded_at`, `verified`,
-`last_error`. `needs_owner` means a file arrived but failed the sanity check and
+`scinet_request_id` (the DOI; Sci-Net addresses requests by DOI),
+`joined_existing`, `ready_at`, `verified`, `verify_note`, `last_error`.
+Sci-Net shows no upload time and no verify control, so `uploaded_at` is not
+set and a request is `verified` once its PDF passes the sanity check. `needs_owner` means a file arrived but failed the sanity check and
 was left unverified for the owner to look at.
 
 When ready, the summary also carries `source: "sci-net"`, `format: "pdf"`,

@@ -12,7 +12,10 @@ import { PDF_DOI, machineRig, pdfBytes } from "./fakes.ts";
 
 import type { RequestState } from "../../../src/scinet/machine.ts";
 
-const SOLVED = { status: "solved" as const, pdfUrl: "https://sci-net.xyz/files/x.pdf" };
+const SOLVED = {
+  status: "solved" as const,
+  pdfUrl: "https://sci-net.xyz/storage/2026/1/ab/Example.pdf",
+};
 
 describe("RequestMachine.start", () => {
   it("posts a new request and schedules the first poll in 5 minutes", async () => {
@@ -22,7 +25,7 @@ describe("RequestMachine.start", () => {
     expect(res.state).toMatchObject({
       doi: PDF_DOI,
       status: "pending",
-      request_id: "req1",
+      request_id: PDF_DOI,
       joined: false,
       bounty: 2,
       attempts: 0,
@@ -91,19 +94,21 @@ describe("RequestMachine.alarm", () => {
     expect(r.storage.alarm).toBe(r.clock.t + POLL_INTERVAL_MS);
   });
 
-  it("on fulfilment stores the PDF and text, marks ready and verifies", async () => {
+  it("on fulfilment stores the PDF and text, marks ready and completes", async () => {
     const r = machineRig(async () => `# Paper\n\ndoi: ${PDF_DOI.toUpperCase()}`);
     await r.machine.start(PDF_DOI, 2);
-    r.client.remote = { ...SOLVED, uploadedAt: "2026-10-16T13:00:00.000Z" };
+    r.client.remote = SOLVED;
     await r.machine.alarm();
     const s = (await r.machine.status()) as RequestState;
     expect(s).toMatchObject({
       status: "ready",
       verified: true,
+      verify_note: "no verify control on sci-net; nothing to confirm",
       pdf_key: `pdf/${PDF_DOI}.pdf`,
       text_key: `text/${PDF_DOI}.md`,
-      uploaded_at: "2026-10-16T13:00:00.000Z",
     });
+    // Sci-Net shows no upload time.
+    expect(s.uploaded_at).toBeUndefined();
     expect(s.last_error).toBeUndefined();
     expect(r.bucket.objects.get(`pdf/${PDF_DOI}.pdf`)?.contentType).toBe("application/pdf");
     expect(r.bucket.objects.get(`text/${PDF_DOI}.md`)?.value).toContain("# Paper");

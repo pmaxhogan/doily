@@ -17,7 +17,10 @@ import { PDF_DOI, toolRig } from "./fakes.ts";
 
 import type { ToolDef } from "../../../src/tools/types.ts";
 
-const SOLVED = { status: "solved" as const, pdfUrl: "https://sci-net.xyz/files/x.pdf" };
+const SOLVED = {
+  status: "solved" as const,
+  pdfUrl: "https://sci-net.xyz/storage/2026/1/ab/Example.pdf",
+};
 
 function parse(tool: ToolDef<never>, args: unknown) {
   return z.object(tool.inputSchema).safeParse(args);
@@ -109,12 +112,11 @@ describe("request_paper", () => {
     expect(r.db.rows.size).toBe(0);
   });
 
-  it("refuses to post while the site flow is unverified unless the owner opts in", async () => {
+  it("posts without the owner opt-in now that the site flow is verified", async () => {
     const r = toolRig({ SCINET_ALLOW_UNVERIFIED: "0" });
-    const err = (await requestPaper.handler(r.deps, { id: PDF_DOI }).catch((e) => e)) as ToolError;
-    expect(err.toJSON()).toMatchObject({ source: "scinet" });
-    expect(String(err.message)).toContain("disabled until the site flow is verified");
-    expect(r.db.rows.size).toBe(0);
+    const out = await requestPaper.handler(r.deps, { id: PDF_DOI });
+    expect(out).toMatchObject({ request_id: PDF_DOI, status: "pending" });
+    expect(r.client.calls.post).toBe(1);
   });
 
   it("refuses when the paper is obtainable", async () => {

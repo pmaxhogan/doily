@@ -1,7 +1,7 @@
 import { ToolError } from "../tools/types.ts";
-import { SITE, htmlToText } from "./site.ts";
+import { SITE, VERIFY_NOTE, htmlToText } from "./site.ts";
 
-import type { RemoteStatus } from "./site.ts";
+import type { LibraryRow, RemoteStatus } from "./site.ts";
 
 /** KV key of the stored Sci-Net cookie jar. */
 export const SESSION_KEY = "scinet:session";
@@ -62,7 +62,18 @@ export interface RequestStatus {
   status: RemoteStatus;
   pdfUrl?: string;
   uploadedAt?: string;
+  reward?: number;
+  taken?: boolean;
 }
+
+/** Outcome of confirming an upload on Sci-Net. */
+export interface VerifyResult {
+  ok: boolean;
+  note?: string;
+}
+
+/** A request body: a urlencoded form or a JSON value. */
+type Body = { form: Record<string, string> } | { json: unknown };
 
 export interface SciNetClientOptions {
   fetch: typeof globalThis.fetch;
@@ -161,15 +172,17 @@ export class SciNetClient {
 
   /** Log in with the configured account and persist the cookie jar. */
   async login(): Promise<string> {
-    const form = new URLSearchParams({
-      [SITE.login.userField]: this.opts.user,
-      [SITE.login.passField]: this.opts.pass,
-      ...SITE.login.extraFields,
-    });
+    const form = {
+      form: {
+        [SITE.login.userField]: this.opts.user,
+        [SITE.login.passField]: this.opts.pass,
+        ...SITE.login.extraFields,
+      },
+    };
     const first = await this.fetchPage(new URL(SITE.login.path, SITE.base), {
       method: "POST",
-      headers: this.headers("", true),
-      body: form.toString(),
+      headers: this.headers("", form),
+      body: new URLSearchParams(form.form).toString(),
     });
     let jar = mergeCookies("", setCookiesOf(first.res));
     if (first.res.status >= 400) {
@@ -188,7 +201,7 @@ export class SciNetClient {
       const target = new URL(location, SITE.base);
       const next = await this.fetchPage(isSiteHost(target) ? target : new URL("/", SITE.base), {
         method: "GET",
-        headers: this.headers(jar, false),
+        headers: this.headers(jar),
       });
       page = next.body;
       status = next.res.status;
@@ -203,58 +216,86 @@ export class SciNetClient {
     return jar;
   }
 
-  /** Request id of an existing Sci-Net request for this DOI, if any. */
+  /**
+   * The id of Sci-Net's existing request for this DOI (the DOI itself), or
+   * undefined when a new request can be posted. `POST /search` answers with an
+   * HTML fragment; a DOI Crossref does not know, or a fragment we cannot read,
+   * is an error so nothing gets posted on a guess.
+   */
   async findExistingRequest(doi: string): Promise<string | undefined> {
-    const r = await this.authed("GET", SITE.existing.path(doi));
-    if (r.status === 404) return undefined;
+    const id = doi.trim().toLowerCase();
+    const r = await this.authed("POST", SITE.lookup.path, { json: SITE.lookup.body(id) });
     this.assertOk(r, "Sci-Net existing-request lookup failed");
-    return SITE.existing.parse(r.body);
+    const found = SITE.lookup.parse(r.body, id);
+    switch (found.kind) {
+      case "existing":
+        return id;
+      case "new":
+        return undefined;
+      case "not_found":
+        throw new SciNetError("DOI not found in Crossref; Sci-Net cannot take it", r.status);
+      default:
+        throw new SciNetError(
+          "Sci-Net lookup returned an unrecognized response; not posting",
+          r.status,
+          r.body,
+        );
+    }
   }
 
   /**
-   * Post a new request. Never replays blindly: if the POST bounced to the
-   * login page we log in, look for the request first, and only then post once
-   * more, so a session expiry cannot double-spend the bounty.
+   * Post a new request, then confirm it on its page. Never replays blindly:
+   * if the POST bounced to the login page we log in, look for the request
+   * first, and only then post once more, so a session expiry cannot
+   * double-spend the bounty. The request id is the DOI.
    */
   async postRequest(doi: string, bounty: number): Promise<{ id: string; url: string }> {
-    const form: Record<string, string> = {
-      [SITE.request.doiField]: doi,
-      [SITE.request.bountyField]: String(bounty),
-      ...SITE.request.extraFields,
-    };
+    const id = doi.trim().toLowerCase();
+    const body: Body = { json: SITE.request.body(id, bounty) };
     await this.ensureSession();
-    let r = await this.send("POST", SITE.request.path, form);
+    let r = await this.send("POST", SITE.request.path, body);
     if (r.loggedOut && isRedirect(r.status)) {
-      // A successful POST may also redirect to "/", which looks like a bounce.
-      // Probe with the current session: if it is still alive, the post went
-      // through, so look the request up and never re-post. An off-site
-      // Location is never probed (it would receive the cookie); "/" is.
+      // A POST that redirects to "/" may still have gone through. Probe with
+      // the current session: if it is still alive, look the request up and
+      // never re-post. An off-site Location is never probed (it would receive
+      // the cookie); "/" is.
       const probe = await this.send("GET", this.onSitePath(r.location));
       if (!probe.loggedOut) {
-        // Not parseId(probe.body): the landing page may list other people's requests.
-        const id = await this.findExistingRequest(doi);
-        if (id !== undefined) return { id, url: this.requestUrl(id) };
+        const existing = await this.findExistingRequest(id);
+        if (existing !== undefined) return { id: existing, url: this.requestUrl(existing) };
         throw new SciNetError(
-          "Sci-Net request may have been posted but no request id was found; not re-posting",
+          "Sci-Net request may have been posted but the lookup does not show it; not re-posting",
           r.status,
         );
       }
     }
     if (r.loggedOut) {
       await this.login();
-      const existing = await this.findExistingRequest(doi);
+      const existing = await this.findExistingRequest(id);
       if (existing !== undefined) return { id: existing, url: this.requestUrl(existing) };
-      r = await this.send("POST", SITE.request.path, form);
+      r = await this.send("POST", SITE.request.path, body);
       if (r.loggedOut) throw new SciNetError("Sci-Net session lost while posting", r.status);
     }
     this.assertOk(r, "Sci-Net request post failed");
-    const id = SITE.request.parseId(r.location, r.body);
-    if (id === undefined) {
-      throw new SciNetError("Sci-Net request posted but no request id found", r.status, r.body);
+    // The response is a re-rendered fragment; the request page is the proof.
+    const page = await this.getRequestStatus(id);
+    if (page.status === "unknown") {
+      throw new SciNetError(
+        "Sci-Net request posted but its page does not show it; not re-posting",
+        r.status,
+      );
     }
     return { id, url: this.requestUrl(id) };
   }
 
+  /** The owner's requests from the library page, newest first. */
+  async listOwnRequests(): Promise<LibraryRow[]> {
+    const r = await this.authed("GET", SITE.library.path);
+    this.assertOk(r, "Sci-Net library page failed");
+    return SITE.library.parse(r.body);
+  }
+
+  /** Status of a request; `id` is the DOI. */
   async getRequestStatus(id: string): Promise<RequestStatus> {
     const r = await this.authed("GET", SITE.requestPage.path(id));
     this.assertOk(r, "Sci-Net request page failed");
@@ -281,7 +322,7 @@ export class SciNetClient {
         const sameSite = isSiteHost(target);
         const res = await this.opts.fetch(target.toString(), {
           method: "GET",
-          headers: this.headers(sameSite ? (this.jar ?? "") : "", false),
+          headers: this.headers(sameSite ? (this.jar ?? "") : ""),
           redirect: "manual",
           signal,
         });
@@ -311,10 +352,13 @@ export class SciNetClient {
     });
   }
 
-  /** Confirm the upload on Sci-Net, which releases the bounty to the uploader. */
-  async verifyUpload(id: string): Promise<boolean> {
-    const r = await this.authed("POST", SITE.verify.path(id), SITE.verify.fields(id));
-    return SITE.verify.parseOk(r.status, r.body);
+  /**
+   * Confirm the upload on Sci-Net. No verify or confirm control was seen on
+   * any solved page (docs/scinet-capture.md), so there is nothing to send:
+   * the request is complete once the PDF passes the machine's sanity check.
+   */
+  verifyUpload(_id: string): Promise<VerifyResult> {
+    return Promise.resolve({ ok: true, note: VERIFY_NOTE });
   }
 
   requestUrl(id: string): string {
@@ -322,16 +366,12 @@ export class SciNetClient {
   }
 
   /** Idempotent request with one re-login on a logged-out response. */
-  private async authed(
-    method: "GET" | "POST",
-    path: string,
-    form?: Record<string, string>,
-  ): Promise<Sent> {
+  private async authed(method: "GET" | "POST", path: string, body?: Body): Promise<Sent> {
     await this.ensureSession();
-    let r = await this.send(method, path, form);
+    let r = await this.send(method, path, body);
     if (r.loggedOut) {
       await this.login();
-      r = await this.send(method, path, form);
+      r = await this.send(method, path, body);
       if (r.loggedOut) throw new SciNetError("Sci-Net session rejected after re-login", r.status);
     }
     return r;
@@ -358,19 +398,17 @@ export class SciNetClient {
     }
   }
 
-  private async send(
-    method: "GET" | "POST",
-    path: string,
-    form?: Record<string, string>,
-  ): Promise<Sent> {
+  private async send(method: "GET" | "POST", path: string, payload?: Body): Promise<Sent> {
     const target = new URL(path, SITE.base);
     // `new URL` accepts absolute URLs; never let one carry the cookie off-site.
     if (!isSiteHost(target)) throw new SciNetError("Sci-Net off-site request refused", 0);
-    const init: RequestInit = {
-      method,
-      headers: this.headers(this.jar ?? "", form !== undefined),
-    };
-    if (form !== undefined) init.body = new URLSearchParams(form).toString();
+    const init: RequestInit = { method, headers: this.headers(this.jar ?? "", payload) };
+    if (payload !== undefined) {
+      init.body =
+        "json" in payload
+          ? JSON.stringify(payload.json)
+          : new URLSearchParams(payload.form).toString();
+    }
     const { res, body } = await this.fetchPage(target, init);
     this.absorb(res);
     const location = res.headers.get("location");
@@ -420,7 +458,7 @@ export class SciNetClient {
     if (r.status >= 400) throw new SciNetError(message, r.status, r.body);
   }
 
-  private headers(cookie: string, form: boolean): Record<string, string> {
+  private headers(cookie: string, body?: Body): Record<string, string> {
     const h: Record<string, string> = {
       "User-Agent": SITE.userAgent,
       Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -428,7 +466,13 @@ export class SciNetClient {
       Referer: `${SITE.base}/`,
     };
     if (cookie !== "") h["Cookie"] = cookie;
-    if (form) h["Content-Type"] = "application/x-www-form-urlencoded";
+    if (body !== undefined && "json" in body) {
+      // What the home page's fetch() sends for /search and /request.
+      h["Content-Type"] = "application/json";
+      h["Origin"] = SITE.base;
+    } else if (body !== undefined) {
+      h["Content-Type"] = "application/x-www-form-urlencoded";
+    }
     return h;
   }
 }

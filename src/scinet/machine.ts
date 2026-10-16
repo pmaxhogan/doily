@@ -10,7 +10,8 @@ import type { TextOf } from "./hooks.ts";
  * It is a plain class over injected storage, alarm, client, bucket and clock so
  * it runs in Node unit tests; request-object.ts is the thin workerd shell.
  *
- *   start --> pending --(solved, %PDF, DOI/title found)--> ready (then verify)
+ *   start --> pending --(solved, %PDF, DOI/title found)--> ready (then verify,
+ *                        a no-op on Sci-Net, which has no verify control)
  *                     --(solved, sanity check fails)-----> needs_owner
  *                     --(72h since created_at)-----------> expired
  *   start --(lookup/post error)--> failed   (a later start retries)
@@ -38,8 +39,13 @@ export interface RequestState {
   text_key?: string;
   uploaded_at?: string;
   ready_at?: string;
-  /** Whether Sci-Net confirmed our verification (bounty released). */
+  /**
+   * Whether the request is confirmed complete. Sci-Net shows no verify
+   * control, so this is true once the PDF passes the sanity check.
+   */
   verified?: boolean;
+  /** What the verify step reported (for Sci-Net: that there is nothing to confirm). */
+  verify_note?: string;
 }
 
 export type StartResult =
@@ -241,8 +247,10 @@ export class RequestMachine {
         // collect() mutates state; widen the narrowed type back.
         if ((state.status as RequestStatusName) !== "ready" || state.joined) return;
       }
-      const ok = await client.verifyUpload(state.request_id ?? "");
+      const verdict = await client.verifyUpload(state.request_id ?? state.doi);
+      const ok = verdict.ok;
       state.verified = ok;
+      if (verdict.note !== undefined) state.verify_note = verdict.note;
       if (ok) {
         delete state.last_error;
         await this.save(state);

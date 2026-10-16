@@ -85,6 +85,7 @@ function summary(state: RequestState): Record<string, unknown> {
   if (state.ready_at !== undefined) out["ready_at"] = state.ready_at;
   if (state.uploaded_at !== undefined) out["uploaded_at"] = state.uploaded_at;
   if (state.verified !== undefined) out["verified"] = state.verified;
+  if (state.verify_note !== undefined) out["verify_note"] = state.verify_note;
   if (state.last_error !== undefined) out["last_error"] = state.last_error;
   if (state.status === "needs_owner") {
     out["note"] =
@@ -141,10 +142,9 @@ export const requestPaper: ToolDef<RequestPaperArgs> = {
       });
     }
 
-    // Every Sci-Net page except login is a guess until the logged-in flow has
-    // been captured (docs/scinet-capture.md). Posting on a guessed form could
-    // spend tokens on nothing, so it stays off until SITE_VERIFIED flips or the
-    // owner opts in explicitly.
+    // Kill switch: if the site changes shape, SITE_VERIFIED goes back to false
+    // and posting stays off (it could spend tokens on nothing) unless the owner
+    // opts in explicitly. The flow was captured in docs/scinet-capture.md.
     if (!SITE_VERIFIED && deps.env.SCINET_ALLOW_UNVERIFIED !== "1") {
       throw new ToolError("Sci-Net posting is disabled until the site flow is verified", {
         source: "scinet",

@@ -93,7 +93,9 @@ describe("SciNetClient deadlines", () => {
         }),
       );
     const { c } = client([stalled], { session: "sid=ok", pdfTimeoutMs: 20 });
-    await expect(c.downloadPdf("/files/x.pdf")).rejects.toThrow(/timed out after 20 ms/);
+    await expect(c.downloadPdf("/storage/2026/1/ab/x.pdf")).rejects.toThrow(
+      /timed out after 20 ms/,
+    );
   });
 });
 
@@ -111,7 +113,7 @@ describe("SciNetClient downloadPdf streaming cap", () => {
         }),
       );
     const { c } = client([endless], { session: "sid=ok" });
-    await expect(c.downloadPdf("/files/huge.pdf")).rejects.toThrow(/over 50 MB/);
+    await expect(c.downloadPdf("/storage/2026/1/ab/huge.pdf")).rejects.toThrow(/over 50 MB/);
     // Stopped right after the cap, not at the end of an endless stream.
     expect(pulled).toBeLessThanOrEqual(MAX_PDF_BYTES + 3 * chunk.byteLength);
   });
@@ -119,7 +121,7 @@ describe("SciNetClient downloadPdf streaming cap", () => {
   it("returns exactly the streamed bytes", async () => {
     const bytes = pdfBytes();
     const { c } = client([() => new Response(bytes)], { session: "sid=ok" });
-    expect(await c.downloadPdf("/files/x.pdf")).toEqual(bytes);
+    expect(await c.downloadPdf("/storage/2026/1/ab/x.pdf")).toEqual(bytes);
   });
 });
 
@@ -156,7 +158,7 @@ describe("SciNetClient never sends the session cookie off-site", () => {
       [() => redirect("https://cdn.example.org/x.pdf"), () => new Response(bytes)],
       { session: "sid=ok" },
     );
-    await c.downloadPdf("/files/x.pdf");
+    await c.downloadPdf("/storage/2026/1/ab/x.pdf");
     expect(seen[0]?.cookie).toBe("sid=ok");
     expect(seen[1]?.cookie).toBeNull();
   });
@@ -219,7 +221,10 @@ describe("small Sci-Net fixes", () => {
     const r = machineRig();
     r.client.existing = "theirs";
     await r.machine.start(PDF_DOI, 2);
-    r.client.remote = { status: "solved", pdfUrl: "https://sci-net.xyz/files/x.pdf" };
+    r.client.remote = {
+      status: "solved",
+      pdfUrl: "https://sci-net.xyz/storage/2026/1/ab/Example.pdf",
+    };
     r.clock.advance(5 * 60 * 1000);
     await r.machine.alarm();
     const s = await r.machine.status();
@@ -239,7 +244,10 @@ describe("small Sci-Net fixes", () => {
     withBom.set([0xef, 0xbb, 0xbf]);
     withBom.set(body, 3);
     r.client.pdf = withBom;
-    r.client.remote = { status: "solved", pdfUrl: "https://sci-net.xyz/files/x.pdf" };
+    r.client.remote = {
+      status: "solved",
+      pdfUrl: "https://sci-net.xyz/storage/2026/1/ab/Example.pdf",
+    };
     r.clock.advance(5 * 60 * 1000);
     await r.machine.alarm();
     expect((await r.machine.status())?.status).toBe("ready");

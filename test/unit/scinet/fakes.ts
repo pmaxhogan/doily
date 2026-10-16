@@ -156,10 +156,11 @@ export class FakeClient implements ScinetClientLike {
     this.calls.find += 1;
     return this.existing;
   }
-  async postRequest(_doi: string, _bounty: number): Promise<{ id: string; url: string }> {
+  async postRequest(doi: string, _bounty: number): Promise<{ id: string; url: string }> {
     this.calls.post += 1;
     if (this.failPost !== null) throw this.failPost;
-    return { id: "req1", url: "https://sci-net.xyz/request/req1" };
+    // Sci-Net addresses a request by its DOI.
+    return { id: doi, url: `https://sci-net.xyz/${doi}` };
   }
   async getRequestStatus(
     _id: string,
@@ -172,9 +173,11 @@ export class FakeClient implements ScinetClientLike {
     this.calls.download += 1;
     return this.pdf;
   }
-  async verifyUpload(_id: string): Promise<boolean> {
+  async verifyUpload(_id: string): Promise<{ ok: boolean; note?: string }> {
     this.calls.verify += 1;
-    return this.verifyResult;
+    return this.verifyResult
+      ? { ok: true, note: "no verify control on sci-net; nothing to confirm" }
+      : { ok: false };
   }
 }
 
@@ -261,8 +264,8 @@ export function toolRig(envOverrides: Partial<Env> = {}): ToolRig {
     SCINET_USER: "user",
     SCINET_PASS: "pass",
     REQUEST_TOKEN_SECRET: "test-secret",
-    // The tool refuses to post until the site flow is captured; tests exercise
-    // the posting path, so they opt in the way an owner would.
+    // The site flow is verified, so this opt-in is not needed; it stays set so
+    // the posting tests keep passing if SITE_VERIFIED is ever flipped back.
     SCINET_ALLOW_UNVERIFIED: "1",
     ...envOverrides,
   } as unknown as Env;
