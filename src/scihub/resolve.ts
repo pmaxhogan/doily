@@ -1,3 +1,4 @@
+import { encodeDoiPath } from "../lib/http.ts";
 import { isChallengePage, isNotFoundPage, isPdf } from "./detect.ts";
 import { HTML_ACCEPT, ScihubFetchError, bodyText, scihubFetch } from "./fetch.ts";
 import { getHealthyMirrors } from "./mirrors.ts";
@@ -63,10 +64,13 @@ export async function resolveScihub(deps: ResolveDeps, doi: string): Promise<Sci
       attempts.push({ mirror, outcome, ...extra, ms: Date.now() - started });
     };
     const origin = `https://${mirror}`;
+    // `#`, `?` and `%` in a DOI would otherwise end or corrupt the path.
+    const pageUrl = `${origin}/${encodeDoiPath(doi)}`;
     let html: string;
     let status: number;
     try {
-      const page = await scihubFetch(deps, `${origin}/${doi}`, {
+      const page = await scihubFetch(deps, pageUrl, {
+        redirectOrigin: origin,
         headers: { Accept: HTML_ACCEPT },
         timeoutMs: PAGE_TIMEOUT_MS,
         maxBytes: PAGE_CAP_BYTES,
@@ -101,7 +105,8 @@ export async function resolveScihub(deps: ResolveDeps, doi: string): Promise<Sci
       lastVia = candidate.via;
       try {
         const res = await scihubFetch(deps, candidate.url, {
-          headers: { Accept: "application/pdf,*/*;q=0.8", Referer: `${origin}/${doi}` },
+          redirectOrigin: origin,
+          headers: { Accept: "application/pdf,*/*;q=0.8", Referer: pageUrl },
           timeoutMs: PDF_TIMEOUT_MS,
           maxBytes: PDF_CAP_BYTES,
         });
