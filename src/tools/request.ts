@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { normalizeDoi } from "../scinet/doi.ts";
 import { scinetHooks } from "../scinet/hooks.ts";
-import { SITE_VERIFIED } from "../scinet/site.ts";
+import { SITE, SITE_VERIFIED } from "../scinet/site.ts";
 import { configuredBounty, release, reserve, usage } from "../scinet/spend.ts";
 import { verifyRequestToken } from "../scinet/token.ts";
 import { ToolError } from "./types.ts";
@@ -86,10 +86,15 @@ function summary(state: RequestState): Record<string, unknown> {
   if (state.uploaded_at !== undefined) out["uploaded_at"] = state.uploaded_at;
   if (state.verified !== undefined) out["verified"] = state.verified;
   if (state.verify_note !== undefined) out["verify_note"] = state.verify_note;
+  if (state.accepted_at !== undefined) out["accepted_at"] = state.accepted_at;
   if (state.last_error !== undefined) out["last_error"] = state.last_error;
   if (state.status === "needs_owner") {
-    out["note"] =
-      "a file was uploaded but failed the sanity check; it was left unverified for the owner";
+    const notAccepted = state.last_error?.includes("not accepted on Sci-Net") === true;
+    out["note"] = notAccepted
+      ? "a file was uploaded but failed the sanity check; it was left unverified for the owner " +
+        "and was not accepted on Sci-Net (accept or report it at " +
+        `${SITE.base}${SITE.view.path(state.doi)})`
+      : "a file was uploaded but failed the sanity check; it was left unverified for the owner";
   }
   return out;
 }

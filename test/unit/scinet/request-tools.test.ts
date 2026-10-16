@@ -154,6 +154,18 @@ describe("request_paper", () => {
     expect([...r.db.rows.values()]).toEqual([{ requests: 0, tokens: 0 }]);
   });
 
+  it("a post that lands on the owner's already-solved request gives the slot back", async () => {
+    const r = toolRig();
+    // Sci-Net answers 200 for a DOI this account already requested.
+    r.client.postRemote = { status: "solved_unaccepted", fileName: "Example.pdf", reward: 2 };
+    expect(await requestPaper.handler(r.deps, { id: PDF_DOI })).toMatchObject({
+      status: "pending",
+      joined_existing: true,
+    });
+    expect(r.client.calls.post).toBe(1);
+    expect([...r.db.rows.values()]).toEqual([{ requests: 0, tokens: 0 }]);
+  });
+
   it("a failed post gives the slot back and reports the upstream status", async () => {
     const r = toolRig();
     const { SciNetError } = await import("../../../src/scinet/client.ts");
@@ -199,6 +211,50 @@ describe("wait_for_request", () => {
     });
     expect(String(out["text"])).toHaveLength(PAGE_CHARS);
     expect(out["total_chars"]).toBe(PAGE_CHARS + 10 + PDF_DOI.length + 5);
+  });
+
+  it("reports an accepted solution with accepted_at and the accept note", async () => {
+    const r = toolRig();
+    await requestPaper.handler(r.deps, { id: PDF_DOI });
+    r.client.remote = { status: "solved_unaccepted" };
+    await r.ns.rig(PDF_DOI).machine.alarm();
+    const out = await waitForRequest.handler(r.deps, { request_id: PDF_DOI, max_wait_seconds: 0 });
+    expect(out).toMatchObject({
+      status: "ready",
+      verified: true,
+      verify_note: "accepted on sci-net",
+      accepted_at: expect.any(String),
+    });
+  });
+
+  it("needs_owner says nothing was accepted and where to decide", async () => {
+    const r = toolRig();
+    await requestPaper.handler(r.deps, { id: PDF_DOI });
+    r.client.remote = { status: "solved_unaccepted" };
+    r.client.pdf = new TextEncoder().encode("%PDF-1.7\nunrelated\n%%EOF\n");
+    await r.ns.rig(PDF_DOI).machine.alarm();
+    const out = (await waitForRequest.handler(r.deps, {
+      request_id: PDF_DOI,
+      max_wait_seconds: 0,
+    })) as Record<string, unknown>;
+    expect(out["status"]).toBe("needs_owner");
+    expect(String(out["note"])).toContain("not accepted on Sci-Net");
+    expect(String(out["note"])).toContain(`https://sci-net.xyz/view/${PDF_DOI}`);
+    expect(r.client.calls.accept).toBe(0);
+  });
+
+  it("needs_owner on an already-accepted solution does not ask to accept it", async () => {
+    const r = toolRig();
+    await requestPaper.handler(r.deps, { id: PDF_DOI });
+    r.client.remote = SOLVED;
+    r.client.pdf = new TextEncoder().encode("%PDF-1.7\nunrelated\n%%EOF\n");
+    await r.ns.rig(PDF_DOI).machine.alarm();
+    const out = (await waitForRequest.handler(r.deps, {
+      request_id: PDF_DOI,
+      max_wait_seconds: 0,
+    })) as Record<string, unknown>;
+    expect(out["status"]).toBe("needs_owner");
+    expect(String(out["note"])).not.toContain("accept");
   });
 
   it("errors for a DOI that was never requested", async () => {

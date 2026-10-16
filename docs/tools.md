@@ -268,6 +268,10 @@ Behavior:
 - Refuses when the bounty exceeds the configured maximum; it is never raised.
 - Refuses when today's cap of new requests (`SCINET_DAILY_CAP`, default 5, UTC
   day) is used up. Joining an existing Sci-Net request does not use a slot.
+  Neither does re-posting a DOI this account already requested: Sci-Net
+  answers 200 without a duplicate, and when the request page already shows a
+  solver or a solution the result is `joined_existing: true` and the slot is
+  given back.
 - Fails when `SCINET_USER` / `SCINET_PASS` are unset.
 - One request per DOI: a repeat call for a live request returns
   `existing: true`.
@@ -298,10 +302,23 @@ While the request is not ready, returns its summary: `request_id`, `doi`,
 `status` (`pending`, `ready`, `expired`, `failed` or `needs_owner`),
 `created_at`, `updated_at`, `attempts`, `bounty`, and when known
 `scinet_request_id` (the DOI; Sci-Net addresses requests by DOI),
-`joined_existing`, `ready_at`, `verified`, `verify_note`, `last_error`.
-Sci-Net shows no upload time and no verify control, so `uploaded_at` is not
-set and a request is `verified` once its PDF passes the sanity check. `needs_owner` means a file arrived but failed the sanity check and
-was left unverified for the owner to look at.
+`joined_existing`, `ready_at`, `verified`, `verify_note`, `accepted_at`,
+`last_error`. Sci-Net shows no upload time, so `uploaded_at` is not set.
+
+A fresh solution must be accepted by the requester, which moves the bounty to
+the solver. The request object previews it (`/view/<doi>`), downloads and
+sanity checks the PDF (`%PDF`, and the DOI or title in the text), stores it,
+and only then accepts it: `verified: true`, `verify_note: "accepted on
+sci-net"`, `accepted_at`. A solution that was already accepted (by hand, or
+earlier) is `verified: true` with `verify_note: "already accepted on sci-net"`.
+If the preview offers no accept link, the PDF is still stored and the request
+is `ready` with `verified: false` and a `verify_note` saying nothing was
+accepted. `verified` stays unset for someone else's request (joined via
+Sci-Net's "already posted").
+
+`needs_owner` means a file arrived but failed the sanity check: it was stored
+under `pdf-unverified/` and NOT accepted on Sci-Net; the `note` links the
+preview page where the owner can accept it or report a problem.
 
 When ready, the summary also carries `source: "sci-net"`, `format: "pdf"`,
 `pdf_resource` (`doily://pdf/<doi>`), `text` (the first 60000 characters),

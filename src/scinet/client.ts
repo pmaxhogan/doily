@@ -1,5 +1,5 @@
 import { ToolError } from "../tools/types.ts";
-import { SITE, VERIFY_NOTE, htmlToText } from "./site.ts";
+import { SITE, htmlToText } from "./site.ts";
 
 import type { LibraryRow, RemoteStatus } from "./site.ts";
 
@@ -60,16 +60,30 @@ export class SciNetError extends ToolError {
 
 export interface RequestStatus {
   status: RemoteStatus;
+  /** Absolute storage PDF URL, when the page shows one (accepted solutions). */
   pdfUrl?: string;
   uploadedAt?: string;
   reward?: number;
   taken?: boolean;
+  /** Uploaded file name on a solved-unaccepted page. */
+  fileName?: string;
+  /** True while a solved-unaccepted page says the solution was not viewed. */
+  unviewed?: boolean;
 }
 
-/** Outcome of confirming an upload on Sci-Net. */
-export interface VerifyResult {
-  ok: boolean;
-  note?: string;
+/** What the solution preview offers: the PDF and whether we may accept it. */
+export interface ViewResult {
+  /** Absolute URL of the uploaded PDF, when the preview embeds one. */
+  pdfUrl?: string;
+  canAccept: boolean;
+}
+
+/** A posted (or re-posted) request and what its page showed right after. */
+export interface PostResult {
+  id: string;
+  url: string;
+  /** The request page read after posting; unset when the post was a lookup hit. */
+  remote?: RequestStatus;
 }
 
 /** A request body: a urlencoded form or a JSON value. */
@@ -249,7 +263,7 @@ export class SciNetClient {
    * first, and only then post once more, so a session expiry cannot
    * double-spend the bounty. The request id is the DOI.
    */
-  async postRequest(doi: string, bounty: number): Promise<{ id: string; url: string }> {
+  async postRequest(doi: string, bounty: number): Promise<PostResult> {
     const id = doi.trim().toLowerCase();
     const body: Body = { json: SITE.request.body(id, bounty) };
     await this.ensureSession();
@@ -278,6 +292,9 @@ export class SciNetClient {
     }
     this.assertOk(r, "Sci-Net request post failed");
     // The response is a re-rendered fragment; the request page is the proof.
+    // For a DOI this account already requested, /search shows the card (not
+    // "already posted") and the POST answers 200 without a duplicate, so the
+    // page may already be taken or solved; the caller reads `remote` for that.
     const page = await this.getRequestStatus(id);
     if (page.status === "unknown") {
       throw new SciNetError(
@@ -285,7 +302,53 @@ export class SciNetClient {
         r.status,
       );
     }
-    return { id, url: this.requestUrl(id) };
+    return { id, url: this.requestUrl(id), remote: page };
+  }
+
+  /**
+   * Open the solution preview `GET /view/<doi>` (this marks the solution as
+   * viewed on Sci-Net). Returns the embedded PDF's absolute URL and whether
+   * the page offers this account the accept link.
+   */
+  async viewSolution(doi: string): Promise<ViewResult> {
+    const id = doi.trim().toLowerCase();
+    const r = await this.authed("GET", SITE.view.path(id));
+    this.assertOk(r, "Sci-Net solution preview failed");
+    const parsed = SITE.view.parse(r.body, id);
+    const out: ViewResult = { canAccept: parsed.canAccept };
+    if (parsed.pdfUrl !== undefined) out.pdfUrl = new URL(parsed.pdfUrl, SITE.base).toString();
+    return out;
+  }
+
+  /**
+   * Accept the solution with `GET /accept/<doi>`, which moves the bounty to
+   * the solver. Never sent twice for one call: a response that looks logged
+   * out is checked against the request page before anything is re-sent, and
+   * the accept is only repeated after a real re-login when the page still
+   * shows the solution as unaccepted.
+   */
+  async acceptSolution(doi: string): Promise<{ ok: boolean }> {
+    const id = doi.trim().toLowerCase();
+    await this.ensureSession();
+    const r = await this.send("GET", SITE.accept.path(id));
+    if (!r.loggedOut) return { ok: SITE.accept.ok(r.status, r.body) };
+
+    // A redirect to "/" may be the site's normal answer. Read the request
+    // page with the current session: if it is readable, it says whether the
+    // accept went through, and nothing is re-sent.
+    const probe = await this.send("GET", SITE.requestPage.path(id));
+    if (!probe.loggedOut) {
+      this.assertOk(probe, "Sci-Net request page failed after accepting");
+      return { ok: SITE.requestPage.parse(probe.body).status === "solved" };
+    }
+    await this.login();
+    const page = await this.getRequestStatus(id);
+    if (page.status === "solved") return { ok: true };
+    if (page.status !== "solved_unaccepted") return { ok: false };
+    const again = await this.send("GET", SITE.accept.path(id));
+    if (again.loggedOut)
+      throw new SciNetError("Sci-Net session lost while accepting", again.status);
+    return { ok: SITE.accept.ok(again.status, again.body) };
   }
 
   /** The owner's requests from the library page, newest first. */
@@ -350,15 +413,6 @@ export class SciNetClient {
       }
       throw new SciNetError("Sci-Net PDF download redirected too many times", 310);
     });
-  }
-
-  /**
-   * Confirm the upload on Sci-Net. No verify or confirm control was seen on
-   * any solved page (docs/scinet-capture.md), so there is nothing to send:
-   * the request is complete once the PDF passes the machine's sanity check.
-   */
-  verifyUpload(_id: string): Promise<VerifyResult> {
-    return Promise.resolve({ ok: true, note: VERIFY_NOTE });
   }
 
   requestUrl(id: string): string {

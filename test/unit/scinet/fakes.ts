@@ -147,20 +147,45 @@ export class FakeClient implements ScinetClientLike {
   existing: string | undefined = undefined;
   remote: Awaited<ReturnType<ScinetClientLike["getRequestStatus"]>> = { status: "open" };
   pdf: Uint8Array = pdfBytes();
-  verifyResult = true;
+  /** What the request page shows right after a post. */
+  postRemote: Awaited<ReturnType<ScinetClientLike["getRequestStatus"]>> = {
+    status: "open",
+    reward: 2,
+  };
+  view: Awaited<ReturnType<ScinetClientLike["viewSolution"]>> = {
+    pdfUrl: "https://sci-net.xyz/storage/0123456789abcdef0123456789abcdef/Example.pdf",
+    canAccept: true,
+  };
+  acceptOk = true;
+  /** When set, a successful accept also flips `remote` to this (the accepted page). */
+  remoteAfterAccept: Awaited<ReturnType<ScinetClientLike["getRequestStatus"]>> | null = null;
   failPost: Error | null = null;
   failStatus: Error | null = null;
-  calls = { find: 0, post: 0, status: 0, download: 0, verify: 0 };
+  failAccept: Error | null = null;
+  calls = { find: 0, post: 0, status: 0, view: 0, download: 0, accept: 0 };
 
   async findExistingRequest(_doi: string): Promise<string | undefined> {
     this.calls.find += 1;
     return this.existing;
   }
-  async postRequest(doi: string, _bounty: number): Promise<{ id: string; url: string }> {
+  async postRequest(
+    doi: string,
+    _bounty: number,
+  ): Promise<Awaited<ReturnType<ScinetClientLike["postRequest"]>>> {
     this.calls.post += 1;
     if (this.failPost !== null) throw this.failPost;
     // Sci-Net addresses a request by its DOI.
-    return { id: doi, url: `https://sci-net.xyz/${doi}` };
+    return { id: doi, url: `https://sci-net.xyz/${doi}`, remote: this.postRemote };
+  }
+  async viewSolution(_doi: string): Promise<Awaited<ReturnType<ScinetClientLike["viewSolution"]>>> {
+    this.calls.view += 1;
+    return this.view;
+  }
+  async acceptSolution(_doi: string): Promise<{ ok: boolean }> {
+    this.calls.accept += 1;
+    if (this.failAccept !== null) throw this.failAccept;
+    if (this.acceptOk && this.remoteAfterAccept !== null) this.remote = this.remoteAfterAccept;
+    return { ok: this.acceptOk };
   }
   async getRequestStatus(
     _id: string,
@@ -172,12 +197,6 @@ export class FakeClient implements ScinetClientLike {
   async downloadPdf(_url: string): Promise<Uint8Array> {
     this.calls.download += 1;
     return this.pdf;
-  }
-  async verifyUpload(_id: string): Promise<{ ok: boolean; note?: string }> {
-    this.calls.verify += 1;
-    return this.verifyResult
-      ? { ok: true, note: "no verify control on sci-net; nothing to confirm" }
-      : { ok: false };
   }
 }
 

@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- CAPTURED 2026-10-16: GET /view/<doi>, the solution preview the requester opens before accepting. Rebuilt from docs/scinet-capture.md; storage hash invented, markup approximated. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sci-Net</title>
+  </head>
+  <body>
+    <header><a href="/">Sci-Net</a> <a href="/logout">logout</a></header>
+    <main>
+      <div class="controls">
+        <form method="POST" action="/10.1080/03630269.2026.2729189">
+          <textarea name="message" placeholder="report problem"></textarea>
+        </form>
+        <a onclick="problem()">!</a>
+        <a class="accept" href="/accept/10.1080/03630269.2026.2729189">accept</a>
+      </div>
+      <div class="paper">
+        <div class="doi">10.1080/03630269.2026.2729189</div>
+        <h1>&lt;title&gt;</h1>
+        <div>2026</div>
+        <div class="abstract">&lt;abstract&gt;</div>
+      </div>
+      <iframe
+        class="viewer"
+        src="/storage/9f8e7d6c5b4a39281706f5e4d3c2b1a0/CRISPR-Based-Mediated-Reactivation-of-Fetal-Hemoglobin-as-a-Therapeutic-Strategy-for-Hemoglobinopathies.pdf"
+      ></iframe>
+    </main>
+  </body>
+</html>

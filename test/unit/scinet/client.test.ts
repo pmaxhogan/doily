@@ -211,13 +211,27 @@ describe("SciNetClient.postRequest", () => {
       [() => html(POSTED_FRAGMENT), () => html(fixture("captured-request-open.html"))],
       loggedIn(),
     );
-    expect(await c.postRequest(DOI.toUpperCase(), 2)).toEqual({ id: DOI, url: PAGE_URL });
+    expect(await c.postRequest(DOI.toUpperCase(), 2)).toEqual({
+      id: DOI,
+      url: PAGE_URL,
+      remote: { status: "open", reward: 2, taken: true },
+    });
     expect(seen[0]?.method).toBe("POST");
     expect(seen[0]?.url).toBe("https://sci-net.xyz/request");
     expect(seen[0]?.contentType).toBe("application/json");
     expect(JSON.parse(seen[0]?.body ?? "")).toEqual({ doi: DOI, reward: 2 });
     expect(seen[1]?.method).toBe("GET");
     expect(seen[1]?.url).toBe(PAGE_URL);
+  });
+
+  it("returns the confirm page so an already-solved own request reads as a join", async () => {
+    // Sci-Net answers 200 for a DOI this account already requested.
+    const { c, seen } = client(
+      [() => html(POSTED_FRAGMENT), () => html(fixture("captured-request-solved-unaccepted.html"))],
+      loggedIn(),
+    );
+    expect((await c.postRequest(DOI, 2)).remote).toMatchObject({ status: "solved_unaccepted" });
+    expect(posts(seen)).toHaveLength(1);
   });
 
   it("never re-posts when the request page does not show the new request", async () => {
@@ -255,7 +269,7 @@ describe("SciNetClient.postRequest", () => {
       ],
       loggedIn("sid=stale"),
     );
-    expect(await c.postRequest(DOI, 2)).toEqual({ id: DOI, url: PAGE_URL });
+    expect(await c.postRequest(DOI, 2)).toMatchObject({ id: DOI, url: PAGE_URL });
     expect(posts(seen)).toHaveLength(2);
     expect(posts(seen)[1]?.cookie).toBe("sid=abc; lang=en");
   });
@@ -310,7 +324,7 @@ describe("SciNetClient.listOwnRequests", () => {
   });
 });
 
-describe("SciNetClient.downloadPdf and verifyUpload", () => {
+describe("SciNetClient.downloadPdf", () => {
   it("downloads the storage PDF with the session cookie (same host)", async () => {
     const bytes = pdfBytes();
     const { c, seen } = client(
@@ -344,13 +358,110 @@ describe("SciNetClient.downloadPdf and verifyUpload", () => {
     );
     await expect(c.downloadPdf("/storage/2026/1/ab/big.pdf")).rejects.toThrow(/over 50 MB/);
   });
+});
 
-  it("verifyUpload is a no-op: Sci-Net has no verify control", async () => {
-    const { c, seen } = client([], loggedIn());
-    expect(await c.verifyUpload(DOI)).toEqual({
-      ok: true,
-      note: "no verify control on sci-net; nothing to confirm",
+const VIEW_URL = `https://sci-net.xyz/view/${DOI}`;
+const ACCEPT_URL = `https://sci-net.xyz/accept/${DOI}`;
+const VIEW_PDF =
+  "https://sci-net.xyz/storage/9f8e7d6c5b4a39281706f5e4d3c2b1a0/CRISPR-Based-Mediated-Reactivation-of-Fetal-Hemoglobin-as-a-Therapeutic-Strategy-for-Hemoglobinopathies.pdf";
+const accepts = (seen: Seen[]) => seen.filter((s) => s.url === ACCEPT_URL);
+
+describe("SciNetClient solved-unaccepted flow", () => {
+  it("getRequestStatus reports solved_unaccepted with no PDF URL", async () => {
+    const { c } = client(
+      [() => html(fixture("captured-request-solved-unaccepted.html"))],
+      loggedIn(),
+    );
+    expect(await c.getRequestStatus(DOI)).toMatchObject({
+      status: "solved_unaccepted",
+      unviewed: true,
     });
-    expect(seen).toHaveLength(0);
+  });
+
+  it("viewSolution reads the preview's PDF (made absolute) and the accept link", async () => {
+    const { c, seen } = client([() => html(fixture("captured-view.html"))], loggedIn());
+    expect(await c.viewSolution(DOI.toUpperCase())).toEqual({ pdfUrl: VIEW_PDF, canAccept: true });
+    expect(seen[0]?.method).toBe("GET");
+    expect(seen[0]?.url).toBe(VIEW_URL);
+    expect(seen[0]?.cookie).toBe("sid=ok");
+  });
+
+  it("viewSolution re-logs in once when the session is stale", async () => {
+    const { c, seen } = client(
+      [() => redirect("/"), ...LOGIN_OK, () => html(fixture("captured-view.html"))],
+      loggedIn("sid=stale"),
+    );
+    expect((await c.viewSolution(DOI)).canAccept).toBe(true);
+    expect(seen[3]?.url).toBe(VIEW_URL);
+  });
+
+  it("acceptSolution sends one GET /accept/<doi> with the cookie", async () => {
+    const { c, seen } = client([() => html(fixture("captured-accept-ok.html"))], loggedIn());
+    expect(await c.acceptSolution(DOI)).toEqual({ ok: true });
+    expect(seen).toHaveLength(1);
+    expect(seen[0]?.method).toBe("GET");
+    expect(seen[0]?.url).toBe(ACCEPT_URL);
+    expect(seen[0]?.cookie).toBe("sid=ok");
+  });
+
+  it("acceptSolution treats a redirect to the request page as success", async () => {
+    const { c, seen } = client([() => redirect(`/${DOI}`)], loggedIn());
+    expect(await c.acceptSolution(DOI)).toEqual({ ok: true });
+    expect(seen).toHaveLength(1);
+  });
+
+  it("acceptSolution reports an error status as not ok", async () => {
+    const { c } = client([() => html("<p>nope</p>", 500)], loggedIn());
+    expect(await c.acceptSolution(DOI)).toEqual({ ok: false });
+  });
+
+  it("a redirect home with a live session is checked on the page, never re-sent", async () => {
+    const { c, seen } = client(
+      [() => redirect("/"), () => html(fixture("captured-accept-ok.html"))],
+      loggedIn(),
+    );
+    expect(await c.acceptSolution(DOI)).toEqual({ ok: true });
+    expect(accepts(seen)).toHaveLength(1);
+    expect(seen[1]?.url).toBe(PAGE_URL);
+  });
+
+  it("a redirect home that left the page unaccepted is not ok and not re-sent", async () => {
+    const { c, seen } = client(
+      [() => redirect("/"), () => html(fixture("captured-request-solved-unaccepted.html"))],
+      loggedIn(),
+    );
+    expect(await c.acceptSolution(DOI)).toEqual({ ok: false });
+    expect(accepts(seen)).toHaveLength(1);
+  });
+
+  it("after a real logout, re-logs in and re-sends only if still unaccepted", async () => {
+    const { c, seen } = client(
+      [
+        () => html(fixture("captured-login-page.html")),
+        // Probe of the request page with the stale session: logged out too.
+        () => html(fixture("captured-login-page.html")),
+        ...LOGIN_OK,
+        () => html(fixture("captured-request-solved-unaccepted.html")),
+        () => redirect(`/${DOI}`),
+      ],
+      loggedIn("sid=stale"),
+    );
+    expect(await c.acceptSolution(DOI)).toEqual({ ok: true });
+    expect(accepts(seen)).toHaveLength(2);
+    expect(accepts(seen)[1]?.cookie).toBe("sid=abc; lang=en");
+  });
+
+  it("after a real logout, does not re-send when the page is already accepted", async () => {
+    const { c, seen } = client(
+      [
+        () => html(fixture("captured-login-page.html")),
+        () => html(fixture("captured-login-page.html")),
+        ...LOGIN_OK,
+        () => html(fixture("captured-accept-ok.html")),
+      ],
+      loggedIn("sid=stale"),
+    );
+    expect(await c.acceptSolution(DOI)).toEqual({ ok: true });
+    expect(accepts(seen)).toHaveLength(1);
   });
 });

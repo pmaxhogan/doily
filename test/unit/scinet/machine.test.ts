@@ -16,6 +16,8 @@ const SOLVED = {
   status: "solved" as const,
   pdfUrl: "https://sci-net.xyz/storage/2026/1/ab/Example.pdf",
 };
+const UNACCEPTED = { status: "solved_unaccepted" as const, fileName: "Example.pdf", reward: 2 };
+const VIEW_PDF = "https://sci-net.xyz/storage/0123456789abcdef0123456789abcdef/Example.pdf";
 
 describe("RequestMachine.start", () => {
   it("posts a new request and schedules the first poll in 5 minutes", async () => {
@@ -103,7 +105,7 @@ describe("RequestMachine.alarm", () => {
     expect(s).toMatchObject({
       status: "ready",
       verified: true,
-      verify_note: "no verify control on sci-net; nothing to confirm",
+      verify_note: "already accepted on sci-net",
       pdf_key: `pdf/${PDF_DOI}.pdf`,
       text_key: `text/${PDF_DOI}.md`,
     });
@@ -112,13 +114,14 @@ describe("RequestMachine.alarm", () => {
     expect(s.last_error).toBeUndefined();
     expect(r.bucket.objects.get(`pdf/${PDF_DOI}.pdf`)?.contentType).toBe("application/pdf");
     expect(r.bucket.objects.get(`text/${PDF_DOI}.md`)?.value).toContain("# Paper");
-    expect(r.client.calls.verify).toBe(1);
+    // An accepted page needs no preview and no accept.
+    expect(r.client.calls).toMatchObject({ view: 0, accept: 0 });
 
     // Repeated alarms after completion are no-ops.
     const alarmsBefore = r.storage.alarmsSet;
     await r.machine.alarm();
     await r.machine.alarm();
-    expect(r.client.calls).toMatchObject({ download: 1, verify: 1 });
+    expect(r.client.calls).toMatchObject({ download: 1, view: 0, accept: 0 });
     expect(r.storage.alarmsSet).toBe(alarmsBefore);
   });
 
@@ -153,7 +156,7 @@ describe("RequestMachine.alarm", () => {
       pdf_key: `pdf-unverified/${PDF_DOI}.pdf`,
     });
     expect(s?.last_error).toMatch(/sanity check failed/);
-    expect(r.client.calls.verify).toBe(0);
+    expect(r.client.calls.accept).toBe(0);
     expect(r.bucket.objects.has(`pdf/${PDF_DOI}.pdf`)).toBe(false);
     expect(r.storage.alarmsSet).toBe(1);
   });
@@ -167,20 +170,195 @@ describe("RequestMachine.alarm", () => {
     const s = await r.machine.status();
     expect(s?.status).toBe("needs_owner");
     expect(s?.last_error).toMatch(/not a PDF/);
-    expect(r.client.calls.verify).toBe(0);
+    expect(r.client.calls.accept).toBe(0);
   });
 
-  it("retries verification on later alarms when Sci-Net does not confirm", async () => {
+  it("a solved page without a storage PDF is fetched through the preview", async () => {
     const r = machineRig();
     await r.machine.start(PDF_DOI, 2);
+    r.client.remote = { status: "solved" };
+    r.client.view = { pdfUrl: VIEW_PDF, canAccept: false };
+    await r.machine.alarm();
+    expect(await r.machine.status()).toMatchObject({
+      status: "ready",
+      verified: true,
+      verify_note: "already accepted on sci-net",
+    });
+    expect(r.client.calls).toMatchObject({ view: 1, download: 1, accept: 0 });
+  });
+});
+
+describe("RequestMachine solved_unaccepted", () => {
+  it("views, downloads, sanity checks, stores, accepts and marks ready", async () => {
+    const r = machineRig(async () => `# Paper\n\ndoi: ${PDF_DOI}`);
+    await r.machine.start(PDF_DOI, 2);
+    r.client.remote = UNACCEPTED;
+    r.client.remoteAfterAccept = SOLVED;
+    r.clock.advance(POLL_INTERVAL_MS);
+    await r.machine.alarm();
+    const s = (await r.machine.status()) as RequestState;
+    expect(s).toMatchObject({
+      status: "ready",
+      verified: true,
+      verify_note: "accepted on sci-net",
+      pdf_key: `pdf/${PDF_DOI}.pdf`,
+      text_key: `text/${PDF_DOI}.md`,
+      accepted_at: new Date(r.clock.t).toISOString(),
+    });
+    expect(s.accept_pending).toBeUndefined();
+    expect(s.accept_tried).toBeUndefined();
+    expect(s.last_error).toBeUndefined();
+    expect(r.client.calls).toMatchObject({ status: 1, view: 1, download: 1, accept: 1 });
+    expect(r.bucket.objects.get(`pdf/${PDF_DOI}.pdf`)?.contentType).toBe("application/pdf");
+  });
+
+  it("is idempotent: alarms after ready never view, download or accept again", async () => {
+    const r = machineRig();
+    await r.machine.start(PDF_DOI, 2);
+    r.client.remote = UNACCEPTED;
+    await r.machine.alarm();
+    expect((await r.machine.status())?.verified).toBe(true);
+    const alarmsBefore = r.storage.alarmsSet;
+    await r.machine.alarm();
+    await r.machine.alarm();
+    expect(r.client.calls).toMatchObject({ status: 1, view: 1, download: 1, accept: 1 });
+    expect(r.storage.alarmsSet).toBe(alarmsBefore);
+  });
+
+  it("a failed sanity check stores under pdf-unverified/ and never accepts", async () => {
+    const r = machineRig(async () => "An entirely different paper about 10.9999/other");
+    await r.machine.start(PDF_DOI, 2);
+    r.client.remote = UNACCEPTED;
+    r.client.pdf = pdfBytes("no identifiers here");
+    await r.machine.alarm();
+    const s = await r.machine.status();
+    expect(s).toMatchObject({ status: "needs_owner", pdf_key: `pdf-unverified/${PDF_DOI}.pdf` });
+    expect(s?.last_error).toMatch(/sanity check failed.*not accepted on Sci-Net/);
+    expect(s?.verified).toBeUndefined();
+    expect(r.bucket.objects.has(`pdf/${PDF_DOI}.pdf`)).toBe(false);
+    expect(r.client.calls).toMatchObject({ view: 1, download: 1, accept: 0 });
+    await r.machine.alarm();
+    expect(r.client.calls).toMatchObject({ view: 1, download: 1, accept: 0 });
+  });
+
+  it("keeps polling when the preview has no PDF yet", async () => {
+    const r = machineRig();
+    await r.machine.start(PDF_DOI, 2);
+    r.client.remote = UNACCEPTED;
+    r.client.view = { canAccept: true };
+    await r.machine.alarm();
+    expect(await r.machine.status()).toMatchObject({
+      status: "pending",
+      last_error: "the Sci-Net preview shows no PDF yet; will retry",
+    });
+    expect(r.client.calls).toMatchObject({ download: 0, accept: 0 });
+    expect(r.storage.alarm).toBe(r.clock.t + POLL_INTERVAL_MS);
+  });
+
+  it("without an accept link it stores the PDF but accepts nothing", async () => {
+    const r = machineRig();
+    await r.machine.start(PDF_DOI, 2);
+    r.client.remote = UNACCEPTED;
+    r.client.view = { pdfUrl: VIEW_PDF, canAccept: false };
+    await r.machine.alarm();
+    expect(await r.machine.status()).toMatchObject({
+      status: "ready",
+      verified: false,
+      verify_note: "the sci-net preview offered no accept link; nothing was accepted",
+    });
+    await r.machine.alarm();
+    expect(r.client.calls).toMatchObject({ download: 1, accept: 0 });
+  });
+
+  it("an unconfirmed accept is re-checked on the page, then re-sent once", async () => {
+    const r = machineRig();
+    await r.machine.start(PDF_DOI, 2);
+    r.client.remote = UNACCEPTED;
+    r.client.acceptOk = false;
+    await r.machine.alarm();
+    expect(await r.machine.status()).toMatchObject({
+      status: "ready",
+      verified: false,
+      accept_pending: true,
+      accept_tried: true,
+    });
+    expect(r.storage.alarm).toBe(r.clock.t + POLL_INTERVAL_MS);
+
+    r.client.acceptOk = true;
+    await r.machine.alarm();
+    expect(await r.machine.status()).toMatchObject({ verified: true });
+    // One poll before download, one page re-check before the second accept.
+    expect(r.client.calls).toMatchObject({ status: 2, view: 1, download: 1, accept: 2 });
+  });
+
+  it("a retry finds the page already accepted and sends nothing", async () => {
+    const r = machineRig();
+    await r.machine.start(PDF_DOI, 2);
+    r.client.remote = UNACCEPTED;
+    r.client.failAccept = new Error("network down");
+    await r.machine.alarm();
+    expect(await r.machine.status()).toMatchObject({
+      status: "ready",
+      accept_tried: true,
+      last_error: "network down",
+    });
+    r.client.failAccept = null;
     r.client.remote = SOLVED;
-    r.client.verifyResult = false;
     await r.machine.alarm();
-    expect(await r.machine.status()).toMatchObject({ status: "ready", verified: false });
-    r.client.verifyResult = true;
+    expect(await r.machine.status()).toMatchObject({
+      verified: true,
+      verify_note: "accepted on sci-net",
+    });
+    expect(r.client.calls).toMatchObject({ download: 1, accept: 1 });
+  });
+
+  it("stops retrying the accept after 72 hours", async () => {
+    const r = machineRig();
+    await r.machine.start(PDF_DOI, 2);
+    r.client.remote = UNACCEPTED;
+    r.client.acceptOk = false;
     await r.machine.alarm();
-    expect(await r.machine.status()).toMatchObject({ status: "ready", verified: true });
-    expect(r.client.calls).toMatchObject({ download: 1, verify: 2 });
+    r.clock.advance(EXPIRY_MS);
+    const before = r.storage.alarmsSet;
+    await r.machine.alarm();
+    expect(await r.machine.status()).toMatchObject({
+      status: "ready",
+      last_error: "the accept on Sci-Net was never confirmed",
+    });
+    expect(r.storage.alarmsSet).toBe(before);
+    expect(r.client.calls.accept).toBe(1);
+  });
+});
+
+describe("RequestMachine.start join detection", () => {
+  it("a post that lands on an already-solved own request is a join, not a spend", async () => {
+    const r = machineRig();
+    r.client.postRemote = { status: "solved_unaccepted", fileName: "X.pdf" };
+    const res = await r.machine.start(PDF_DOI, 2);
+    expect(res).toMatchObject({ ok: true, posted: false, state: { joined: true } });
+    expect(r.client.calls.post).toBe(1);
+
+    // It is still ours: the preview offers the accept link, so it is accepted.
+    r.client.remote = UNACCEPTED;
+    await r.machine.alarm();
+    expect(await r.machine.status()).toMatchObject({
+      status: "ready",
+      joined: true,
+      verify_note: "accepted on sci-net",
+    });
+  });
+
+  it("an already-taken or solved confirm page is a join; a plain open page is a post", async () => {
+    for (const [remote, posted] of [
+      [{ status: "open", reward: 2, taken: true }, false],
+      [{ status: "solved", pdfUrl: SOLVED.pdfUrl }, false],
+      [{ status: "open", reward: 2 }, true],
+    ] as const) {
+      const r = machineRig();
+      r.client.postRemote = remote;
+      const res = await r.machine.start(PDF_DOI, 2);
+      expect(res).toMatchObject({ ok: true, posted, state: { joined: !posted } });
+    }
   });
 
   it("records poll errors and keeps polling", async () => {

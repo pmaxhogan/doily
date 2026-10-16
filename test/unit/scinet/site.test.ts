@@ -14,6 +14,8 @@ import { fixture } from "./fakes.ts";
 const OPEN_DOI = "10.1080/03630269.2026.2729189";
 const SOLVED_PDF =
   "https://sci-net.xyz/storage/2026/7/0f1e2d3c4b5a69788796a5b4c3d2e1f00f1e2d3c4b5a69788796a5b4c3d2e1f0/Title-With-Dashes.pdf";
+const VIEW_PDF =
+  "/storage/9f8e7d6c5b4a39281706f5e4d3c2b1a0/CRISPR-Based-Mediated-Reactivation-of-Fetal-Hemoglobin-as-a-Therapeutic-Strategy-for-Hemoglobinopathies.pdf";
 
 describe("SITE (captured flow)", () => {
   it("is marked verified", () => {
@@ -137,10 +139,95 @@ describe("SITE.requestPage (GET /<doi>)", () => {
     expect(SITE.requestPage.parse(page)).toEqual({ status: "solved" });
   });
 
+  it("parses a solved-but-unaccepted request (view link, file name, not viewed)", () => {
+    expect(SITE.requestPage.parse(fixture("captured-request-solved-unaccepted.html"))).toEqual({
+      status: "solved_unaccepted",
+      fileName:
+        "CRISPR-Based-Mediated-Reactivation-of-Fetal-Hemoglobin-as-a-Therapeutic-Strategy-for-Hemoglobinopathies.pdf",
+      unviewed: true,
+      reward: 2,
+    });
+  });
+
+  it("stays solved_unaccepted once viewed, and on any single unaccepted marker", () => {
+    const viewed = fixture("captured-request-solved-unaccepted.html").replace(
+      "The solution has not been viewed yet",
+      "",
+    );
+    expect(SITE.requestPage.parse(viewed)).toMatchObject({ status: "solved_unaccepted" });
+    expect(SITE.requestPage.parse(`<a href="/view/${OPEN_DOI}">view</a>`)).toMatchObject({
+      status: "solved_unaccepted",
+    });
+    expect(
+      SITE.requestPage.parse("<p>Reward: 2 token</p><p>The solution has not been viewed yet</p>"),
+    ).toMatchObject({ status: "solved_unaccepted" });
+    expect(SITE.requestPage.parse("<p>Reward: 2 token</p><span>Some-Paper.pdf</span>")).toEqual({
+      status: "solved_unaccepted",
+      fileName: "Some-Paper.pdf",
+      reward: 2,
+    });
+  });
+
+  it("does not read the /reward/ form or a cancel link next to a .pdf name as solved", () => {
+    const open = `<p>Reward: 2 token</p><form method="POST" action="/reward/${OPEN_DOI}"></form>`;
+    expect(SITE.requestPage.parse(open)).toEqual({ status: "open", reward: 2 });
+    const cancel = `<a href="/cancel/${OPEN_DOI}">cancel</a><span>notes.pdf</span>`;
+    expect(SITE.requestPage.parse(cancel)).toEqual({ status: "open" });
+  });
+
+  it("reads the accepted page (assumed shape) as solved with the 32-hex storage PDF", () => {
+    expect(SITE.requestPage.parse(fixture("captured-accept-ok.html"))).toEqual({
+      status: "solved",
+      pdfUrl: VIEW_PDF,
+    });
+  });
+
+  it("an embedded storage PDF wins over a lingering view link", () => {
+    const page = `<a href="/view/${OPEN_DOI}">view</a><iframe src="/storage/2026/1/ab/X.pdf">`;
+    expect(SITE.requestPage.parse(page)).toEqual({
+      status: "solved",
+      pdfUrl: "/storage/2026/1/ab/X.pdf",
+    });
+  });
+
   it("reports unknown for a page it cannot read", () => {
     expect(SITE.requestPage.parse("<html><body>maintenance</body></html>")).toEqual({
       status: "unknown",
     });
+  });
+});
+
+describe("SITE.view and SITE.accept", () => {
+  it("builds percent-encoded /view/ and /accept/ paths", () => {
+    expect(SITE.view.path(OPEN_DOI)).toBe(`/view/${OPEN_DOI}`);
+    expect(SITE.accept.path(OPEN_DOI)).toBe(`/accept/${OPEN_DOI}`);
+    expect(SITE.view.path("10.1002/(sici)1097<x>")).toBe("/view/10.1002/(sici)1097%3Cx%3E");
+    expect(SITE.accept.path("10.1002/a#b")).toBe("/accept/10.1002/a%23b");
+  });
+
+  it("reads the preview's iframe PDF and its accept link", () => {
+    expect(SITE.view.parse(fixture("captured-view.html"), OPEN_DOI)).toEqual({
+      pdfUrl: VIEW_PDF,
+      canAccept: true,
+    });
+  });
+
+  it("only counts an accept link for the requested DOI", () => {
+    expect(SITE.view.parse(fixture("captured-view.html"), "10.1/other")).toEqual({
+      pdfUrl: VIEW_PDF,
+      canAccept: false,
+    });
+    expect(SITE.view.parse('<embed src="/storage/2026/1/ab/X.pdf">')).toEqual({
+      pdfUrl: "/storage/2026/1/ab/X.pdf",
+      canAccept: false,
+    });
+  });
+
+  it("treats a non-error, non-login accept response as success", () => {
+    expect(SITE.accept.ok(200, fixture("captured-accept-ok.html"))).toBe(true);
+    expect(SITE.accept.ok(302, "")).toBe(true);
+    expect(SITE.accept.ok(200, fixture("captured-login-page.html"))).toBe(false);
+    expect(SITE.accept.ok(404, "<p>not found</p>")).toBe(false);
   });
 });
 
