@@ -1,0 +1,59 @@
+{
+  "name": "doily",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MCP server for unpaywalled access to research papers (biomed first), on Cloudflare Workers",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pmaxhogan/doily.git"
+  },
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "dev": "wrangler dev --port 8787",
+    "types": "wrangler types --check || wrangler types",
+    "pretypecheck": "npm run types",
+    "typecheck": "tsc --noEmit",
+    "prelint": "npm run types",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check:ascii": "node scripts/check-ascii.mjs",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:coverage": "vitest run --coverage --coverage.reporter=text --coverage.reporter=json-summary --coverage.reporter=cobertura",
+    "test:live": "cross-env LIVE=1 vitest run --project live",
+    "check": "npm run lint && npm run typecheck && npm run format:check && npm run check:ascii && npm run test && npm run build",
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "migrate:local": "wrangler d1 migrations apply doily --local",
+    "migrate:remote": "wrangler d1 migrations apply doily --remote",
+    "deploy": "npm run migrate:remote && wrangler deploy"
+  },
+  "dependencies": {
+    "@cloudflare/workers-oauth-provider": "1.2.3",
+    "@modelcontextprotocol/server": "2.3.1",
+    "agents": "0.28.1",
+    "hono": "^4.13.13",
+    "jose": "^6.2.12",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.4.3",
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^5.0.5",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.12.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^5.0.5",
+    "wrangler": "^4.151.0"
+  }
+}

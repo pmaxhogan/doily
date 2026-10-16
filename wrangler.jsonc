@@ -1,0 +1,45 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "doily",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "account_id": "9c20c14daa20466a2d761a47162f719a",
+  // Only the custom domain, which sits behind Cloudflare Access. A workers.dev
+  // hostname would be a second, unprotected front door.
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "doily.maxhogan.dev", "custom_domain": true }],
+  "observability": { "enabled": true },
+  // PDF parsing (unpdf) is CPU-bound; the Paid plan allows up to 5 minutes.
+  "limits": { "cpu_ms": 300000 },
+  "vars": {
+    "DEV_MODE": "false",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "doily",
+      "database_id": "761c1e1d-eacc-4d2e-ad9f-979228ff2921",
+      "migrations_dir": "migrations",
+    },
+  ],
+  "r2_buckets": [{ "binding": "PDFS", "bucket_name": "doily-pdfs" }],
+  "kv_namespaces": [
+    { "binding": "DOILY_KV", "id": "15f6f165b8e14b8a83c313e019aec5b8" },
+    // @cloudflare/workers-oauth-provider requires the binding to be named
+    // exactly OAUTH_KV; it is not configurable. The namespace title is
+    // doily_OAUTH_KV so it is distinguishable in the dashboard.
+    { "binding": "OAUTH_KV", "id": "5921f12c35dd4f5cb24aee73a5173337" },
+  ],
+  "ai": { "binding": "AI" },
+  "durable_objects": {
+    "bindings": [{ "name": "SCINET_REQUEST", "class_name": "SciNetRequest" }],
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["SciNetRequest"] }],
+  "triggers": {
+    // Yearly reminder that data/sjr.json and data/predatory.json need a manual
+    // refresh (scripts/refresh-snapshots.md). It only logs.
+    "crons": ["0 6 1 1 *"],
+  },
+}

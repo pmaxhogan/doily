@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    // ES2023 only, no DOM: every runtime global the Worker has (Request,
+    // KVNamespace, R2Bucket, DurableObject, ...) comes from the generated
+    // worker-configuration.d.ts, which is the authoritative shape of workerd.
+    "lib": ["ES2023"],
+    "types": [],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "resolveJsonModule": true
+  },
+  // worker-configuration.d.ts is generated (and gitignored) by `wrangler types`
+  // at the head of typecheck and lint; it is not under src/ so it is listed.
+  "include": ["src/**/*.ts", "test/**/*.ts", "scripts/**/*.ts", "worker-configuration.d.ts"]
+}
