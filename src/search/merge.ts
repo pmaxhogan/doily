@@ -197,7 +197,27 @@ function dateKey(p: MergedPaper): string {
   return p.publication_date ?? (p.year !== undefined ? String(p.year) : "");
 }
 
-export function sortMerged(papers: MergedPaper[], sort: SearchSort): MergedPaper[] {
+export interface SortOptions {
+  /**
+   * Papers returned by this provider rank ahead of the rest, each group in
+   * the requested order. Used for PubMed-syntax queries: PubMed applies the
+   * field tags precisely, while the other providers only see the stripped
+   * words and, under a citation sort, can push huge off-topic papers to the
+   * top.
+   */
+  preferSource?: ProviderName;
+}
+
+export function sortMerged(
+  papers: MergedPaper[],
+  sort: SearchSort,
+  opts: SortOptions = {},
+): MergedPaper[] {
+  if (opts.preferSource) {
+    const preferred = papers.filter((p) => p.sources.includes(opts.preferSource as ProviderName));
+    const rest = papers.filter((p) => !p.sources.includes(opts.preferSource as ProviderName));
+    return [...sortMerged(preferred, sort), ...sortMerged(rest, sort)];
+  }
   const out = [...papers];
   if (sort === "date") {
     out.sort((a, b) => dateKey(b).localeCompare(dateKey(a)) || a.best_rank - b.best_rank);
@@ -342,6 +362,8 @@ export async function searchPapers(
     }
   });
 
-  const merged = sortMerged(dedupMerge(all), sort);
+  const merged = sortMerged(dedupMerge(all), sort, {
+    ...(q.hasPubMedTags ? { preferSource: "pubmed" as ProviderName } : {}),
+  });
   return { results: merged.slice(offset, offset + limit), merged_total: merged.length, providers };
 }

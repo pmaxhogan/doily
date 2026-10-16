@@ -100,6 +100,19 @@ describe("dedupMerge", () => {
     expect(sortMerged(merged, "date").map((m) => m.doi)).toEqual(["b", "a", "c"]);
     expect(sortMerged(merged, "citations").map((m) => m.doi)).toEqual(["c", "a", "b"]);
   });
+
+  it("ranks the preferred provider's hits first, each group in the requested order", () => {
+    const merged = dedupMerge([
+      rec({ source: "europepmc", doi: "big", rank: 0, citation_count: 4000 }),
+      rec({ source: "pubmed", doi: "p1", rank: 0, citation_count: 30 }),
+      rec({ source: "pubmed", doi: "p2", rank: 1, citation_count: 90 }),
+      rec({ source: "openalex", doi: "o", rank: 0, citation_count: 500 }),
+    ]);
+    const byCites = sortMerged(merged, "citations", { preferSource: "pubmed" });
+    expect(byCites.map((m) => m.doi)).toEqual(["p2", "p1", "big", "o"]);
+    // Without a preferred source the off-topic giant wins on citations.
+    expect(sortMerged(merged, "citations").map((m) => m.doi)).toEqual(["big", "o", "p2", "p1"]);
+  });
 });
 
 function searchRoutes() {
@@ -140,8 +153,18 @@ describe("searchPapers", () => {
     expect(out.providers.semanticscholar?.endpoint).toBe("bulk");
     const epmc = new URL(f.calls.find((c) => c.url.includes("europepmc"))?.url as string);
     expect(epmc.searchParams.get("query")).toBe("(malaria AND crispr) AND PUB_YEAR:[2020 TO 3000]");
-    const counts = out.results.map((r) => r.citation_count ?? -1);
-    expect([...counts].sort((a, b) => b - a)).toEqual(counts);
+    // PubMed applied the field tags, so its hits lead; within each group the
+    // citation order holds.
+    const fromPubmed = out.results.map((r) => r.sources.includes("pubmed"));
+    const firstOther = fromPubmed.indexOf(false);
+    expect(firstOther === -1 || !fromPubmed.slice(firstOther).includes(true)).toBe(true);
+    const descending = (xs: number[]): boolean => xs.every((x, i) => i === 0 || xs[i - 1]! >= x);
+    const counts = (pick: boolean): number[] =>
+      out.results
+        .filter((r) => r.sources.includes("pubmed") === pick)
+        .map((r) => r.citation_count ?? -1);
+    expect(descending(counts(true))).toBe(true);
+    expect(descending(counts(false))).toBe(true);
   });
 
   it("honors an explicit source list and records failures", async () => {
