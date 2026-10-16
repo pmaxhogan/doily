@@ -1,4 +1,4 @@
-import { fetchJson, qs, type HttpResult } from "../lib/http.ts";
+import { encodeDoiPath, fetchJson, qs, type HttpResult } from "../lib/http.ts";
 import { cleanText, invertAbstract, normalizeIssn, uniq } from "../lib/text.ts";
 import { ToolError } from "../tools/types.ts";
 
@@ -64,13 +64,15 @@ export async function addSpend(
 ): Promise<number> {
   const key = `openalex:spend:${utcDay(deps.now())}`;
   const budget = dailyBudgetUsd(deps.env);
-  let spend = (await getSpend(deps)) + (Number.isFinite(cost) ? cost : 0);
+  const before = await getSpend(deps);
+  let spend = before + (Number.isFinite(cost) ? cost : 0);
   if (remainingUsd !== undefined && Number.isFinite(remainingUsd)) {
     spend = Math.max(spend, budget - remainingUsd);
   }
   memorySpend.set(key, spend);
   const kv = kvOf(deps);
-  if (kv && cost > 0) {
+  // Persist any raise, including one derived only from the remaining header.
+  if (kv && spend > before) {
     try {
       await kv.put(key, String(spend), { expirationTtl: 2 * 86400 });
     } catch {
@@ -356,7 +358,7 @@ export async function getOpenAlexWork(
 ): Promise<OaWork | null> {
   let path: string | undefined;
   if (ids.openalex) path = `/works/${encodeURIComponent(ids.openalex)}`;
-  else if (ids.doi) path = `/works/https://doi.org/${ids.doi}`;
+  else if (ids.doi) path = `/works/https://doi.org/${encodeDoiPath(ids.doi)}`;
   else if (ids.pmid) path = `/works/pmid:${encodeURIComponent(ids.pmid)}`;
   else if (ids.pmcid) path = `/works/pmcid:${encodeURIComponent(ids.pmcid)}`;
   if (!path) return null;

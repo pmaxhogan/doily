@@ -10,8 +10,9 @@ import { normalizeIssn, normalizeTitle } from "./text.ts";
  *     "generated": "2026-10-16",          // ISO date of the export
  *     "year": 2025,                        // optional: SJR edition year
  *     "entries": {
- *       "0028-0836": {                     // key: ISSN as NNNN-NNNX (every ISSN of
- *         "title": "Nature",               //   the journal gets its own key)
+ *       "00280836": {                      // key: ISSN without the hyphen, NNNNNNNX
+ *         "title": "Nature",               //   (every ISSN of the journal gets its own
+ *                                          //   key; lookups also accept NNNN-NNNX keys)
  *         "sjr": 18.509,                   // SJR indicator
  *         "quartile": "Q1",                // best quartile across categories
  *         "h_index": 1331,                 // optional
