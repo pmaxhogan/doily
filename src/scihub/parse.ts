@@ -1,3 +1,5 @@
+import { encodeDoiPath } from "../lib/http.ts";
+
 /**
  * PDF link extraction from Sci-Hub article pages, by regex (no DOM parser in
  * the Worker and no new dependencies). Covers both page families observed in
@@ -31,7 +33,7 @@ export const BBAN_ORIGIN = "https://sci.bban.top";
 
 /** The third-party network's direct PDF location for a DOI. */
 export function bbanPdfUrl(doi: string): string {
-  return `${BBAN_ORIGIN}/pdf/${encodeURI(doi)}.pdf`;
+  return `${BBAN_ORIGIN}/pdf/${encodeDoiPath(doi)}.pdf`;
 }
 
 /** Value of one attribute in a tag's source, tolerating `name = "v"`, single quotes and bare values. */
