@@ -1,6 +1,7 @@
 import { getAuthorTool } from "./author.ts";
 import { getJournalTool } from "./journal.ts";
 import { getPaperTool } from "./paper.ts";
+import { requestTools } from "./request.ts";
 import { searchPapersToolDef } from "./search.ts";
 
 import type { ToolDef } from "./types.ts";
@@ -16,4 +17,5 @@ export const tools: ToolDef<any>[] = [
   getPaperTool,
   getAuthorTool,
   getJournalTool,
+  ...requestTools,
 ];
