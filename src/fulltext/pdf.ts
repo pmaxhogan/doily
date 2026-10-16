@@ -98,10 +98,19 @@ export async function pdfToText(bytes: Uint8Array, deps: PdfDeps = {}): Promise<
   }
 }
 
+/**
+ * The bytes as a BlobPart. The Blob constructor copies its parts anyway, so
+ * an ArrayBuffer-backed view is passed as is; only a view over a
+ * SharedArrayBuffer (which BlobPart does not accept) is copied first.
+ */
+function blobPart(bytes: Uint8Array): Uint8Array<ArrayBuffer> {
+  return bytes.buffer instanceof ArrayBuffer
+    ? (bytes as Uint8Array<ArrayBuffer>)
+    : new Uint8Array(bytes);
+}
+
 async function aiToMarkdown(ai: Ai, bytes: Uint8Array): Promise<string> {
-  // Copy into a fresh ArrayBuffer-backed view: BlobPart wants
-  // Uint8Array<ArrayBuffer>, and the caller's buffer may be shared.
-  const blob = new Blob([new Uint8Array(bytes)], { type: "application/pdf" });
+  const blob = new Blob([blobPart(bytes)], { type: "application/pdf" });
   const res = await ai.toMarkdown({ name: "doc.pdf", blob });
   if (res.format === "error") throw new Error(res.error);
   const text = res.data
@@ -115,14 +124,17 @@ async function aiToMarkdown(ai: Ai, bytes: Uint8Array): Promise<string> {
 async function extractPages(bytes: Uint8Array, timeoutMs: number): Promise<RawPages> {
   const deadline = Date.now() + timeoutMs;
   const work = (async (): Promise<RawPages> => {
-    // PDF.js may transfer (detach) the buffer it is given; keep the caller's
-    // bytes intact for the AI fallback and for caching.
+    // PDF.js transfers (detaches) the buffer it is given, so it gets a copy
+    // and the caller's bytes stay intact for caching. This is the only copy:
+    // it is released when the document is destroyed below, normally before
+    // any AI fallback builds its Blob, so two PDFs' worth are live, not three.
     const pdf = await getDocumentProxy(bytes.slice());
     try {
       const count = Math.min(pdf.numPages, MAX_PDF_PAGES);
       const pages: string[] = [];
       for (let i = 1; i <= count; i++) {
-        if (Date.now() > deadline) throw new Error(`timed out after ${timeoutMs} ms at page ${i}`);
+        // `>=`: with timeoutMs 0 the deadline is already reached at page 1.
+        if (Date.now() >= deadline) throw new Error(`timed out after ${timeoutMs} ms at page ${i}`);
         const page = await pdf.getPage(i);
         const content = await page.getTextContent();
         pages.push(itemsToText(content.items as TextItemLike[]));

@@ -119,7 +119,7 @@ export const SITE = {
     /** Page that shows whether a DOI already has a request. */
     path(doi: string): string {
       // TODO(capture): the "already requested" lookup. Guess: the DOI page.
-      return `/${doi}`;
+      return `/${doi.split("/").map(encodeURIComponent).join("/")}`;
     },
     /** Request id of an existing request for the DOI, if the page shows one. */
     parse(html: string): string | undefined {

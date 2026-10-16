@@ -1,7 +1,7 @@
 import { ToolError } from "../tools/types.ts";
 
 /**
- * Stateless request tokens: `<base64url(doi)>.<base64url(HMAC-SHA256(doi))>`.
+ * Stateless request tokens: `<base64url(doi)>.<base64url(HMAC-SHA256("request\n" + doi))>`.
  * get_full_text hands one out on total failure so request_paper can be called
  * later without get_full_text creating any state. The DOI is embedded so
  * verification can return it; the MAC stops an agent from forging tokens for
@@ -40,10 +40,23 @@ async function hmacKey(secret: string | undefined): Promise<CryptoKey> {
   );
 }
 
+/**
+ * What the MAC covers: a fixed purpose prefix plus the DOI, so a request
+ * token can never be confused with a download token (`download\n...`) even
+ * if a DOI contained a newline.
+ */
+function macInput(doi: Uint8Array): Uint8Array<ArrayBuffer> {
+  const prefix = enc.encode("request\n");
+  const out = new Uint8Array(prefix.length + doi.length);
+  out.set(prefix);
+  out.set(doi, prefix.length);
+  return out;
+}
+
 export async function makeRequestToken(secret: string | undefined, doi: string): Promise<string> {
   const key = await hmacKey(secret);
   const data = enc.encode(doi);
-  const mac = new Uint8Array(await crypto.subtle.sign("HMAC", key, data));
+  const mac = new Uint8Array(await crypto.subtle.sign("HMAC", key, macInput(data)));
   return `${b64urlEncode(data)}.${b64urlEncode(mac)}`;
 }
 
@@ -59,6 +72,6 @@ export async function verifyRequestToken(
   const mac = b64urlDecode(parts[1] ?? "");
   if (data === null || mac === null || data.byteLength === 0) return null;
   // crypto.subtle.verify compares in constant time.
-  const ok = await crypto.subtle.verify("HMAC", key, mac, data);
+  const ok = await crypto.subtle.verify("HMAC", key, mac, macInput(data));
   return ok ? dec.decode(data) : null;
 }

@@ -30,9 +30,9 @@ function intEnv(value: string | undefined, fallback: number): number {
   return Number.isInteger(n) && n >= 0 ? n : fallback;
 }
 
-/** The configured bounty (SCINET_BOUNTY, default 2). */
+/** The configured bounty (SCINET_BOUNTY, default 2; never below 1). */
 export function configuredBounty(deps: Pick<ToolDeps, "env">): number {
-  return intEnv(deps.env.SCINET_BOUNTY, DEFAULT_BOUNTY);
+  return Math.max(1, intEnv(deps.env.SCINET_BOUNTY, DEFAULT_BOUNTY));
 }
 
 /** The configured daily cap of new requests (SCINET_DAILY_CAP, default 5). */

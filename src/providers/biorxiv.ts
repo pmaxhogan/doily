@@ -1,4 +1,4 @@
-import { fetchJsonRequired } from "../lib/http.ts";
+import { encodeDoiPath, fetchJsonRequired } from "../lib/http.ts";
 
 import type { ProviderDeps } from "./types.ts";
 
@@ -79,7 +79,7 @@ export function parseBiorxivDetails(
     versions,
     latest,
     published_doi: published?.toLowerCase(),
-    pdf_url: `https://${host}/content/${doi}v${latest.version}.full.pdf`,
+    pdf_url: `https://${host}/content/${encodeDoiPath(doi)}v${latest.version}.full.pdf`,
   };
 }
 
@@ -93,7 +93,7 @@ export async function getPreprintDetails(
   for (const s of servers) {
     const { data } = await fetchJsonRequired<{ collection?: RawItem[] }>(deps, {
       source: "biorxiv",
-      url: `${BASE}/${s}/${doi}`,
+      url: `${BASE}/${s}/${encodeDoiPath(doi)}`,
       bucket: "biorxiv",
     });
     const parsed = parseBiorxivDetails(data, s);

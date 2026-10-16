@@ -1,4 +1,5 @@
 import type { ToolDeps } from "../tools/types.ts";
+import { isAllowedPdfHost } from "./parse.ts";
 import { buildProxyRequest, proxyConfig, upstreamStatus } from "./proxy.ts";
 
 /**
@@ -14,6 +15,9 @@ export const BROWSER_USER_AGENT =
 export const HTML_ACCEPT = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 
 export type FetchFailureKind = "timeout" | "error";
+
+/** Redirect hops followed in direct mode before giving up. */
+export const MAX_REDIRECTS = 5;
 
 /** Thrown when no upstream status could be obtained at all. */
 export class ScihubFetchError extends Error {
@@ -38,6 +42,11 @@ export interface ScihubFetchOptions {
    * then keep the connection open; the page is still usable.
    */
   partialOnTimeout?: boolean;
+  /**
+   * Origin every redirect target is vetted against with `isAllowedPdfHost`
+   * (direct mode). Defaults to the request URL's own origin.
+   */
+  redirectOrigin?: string;
 }
 
 export interface ScihubFetchResult {
@@ -70,15 +79,11 @@ export async function scihubFetch(
         const req = buildProxyRequest(proxy, { url, method: "GET", headers });
         res = await deps.fetch(req.url, { ...req.init, signal: controller.signal });
       } else {
-        res = await deps.fetch(url, {
-          method: "GET",
-          headers,
-          redirect: "follow",
-          signal: controller.signal,
-        });
+        res = await fetchDirect(deps, url, headers, opts, controller.signal);
       }
     } catch (err) {
       if (timedOut) throw new ScihubFetchError("timeout", `timeout after ${opts.timeoutMs}ms`);
+      if (err instanceof ScihubFetchError) throw err;
       throw new ScihubFetchError("error", errorName(err));
     }
 
@@ -114,6 +119,40 @@ export async function scihubFetch(
     };
   } finally {
     clearTimeout(timer);
+  }
+}
+
+/**
+ * Direct GET with redirects followed by hand: every `Location` must be http(s)
+ * and pass `isAllowedPdfHost` against the mirror, so a mirror cannot bounce
+ * the Worker to an arbitrary host. At most MAX_REDIRECTS hops.
+ */
+async function fetchDirect(
+  deps: Pick<ToolDeps, "fetch">,
+  url: string,
+  headers: Record<string, string>,
+  opts: ScihubFetchOptions,
+  signal: AbortSignal,
+): Promise<Response> {
+  const allowedOrigin = opts.redirectOrigin ?? new URL(url).origin;
+  let target = url;
+  for (let hop = 0; ; hop++) {
+    const res = await deps.fetch(target, { method: "GET", headers, redirect: "manual", signal });
+    const location = res.headers.get("location");
+    if (res.status < 300 || res.status >= 400 || location === null) return res;
+    await cancelBody(res);
+    if (hop >= MAX_REDIRECTS) throw new ScihubFetchError("error", "too many redirects");
+    let next: URL;
+    try {
+      next = new URL(location, target);
+    } catch {
+      throw new ScihubFetchError("error", "invalid redirect");
+    }
+    const httpish = next.protocol === "https:" || next.protocol === "http:";
+    if (!httpish || !isAllowedPdfHost(next.hostname, allowedOrigin)) {
+      throw new ScihubFetchError("error", "redirect to a host off the allowlist refused");
+    }
+    target = next.toString();
   }
 }
 

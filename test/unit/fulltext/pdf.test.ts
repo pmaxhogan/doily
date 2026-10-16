@@ -66,6 +66,14 @@ describe("pdfToText with unpdf", () => {
     expect(r.text).toBe("The experiment worked. A well-known result.");
   });
 
+  it("leaves the caller's bytes intact for caching (PDF.js detaches what it is given)", async () => {
+    const bytes = makePdf([["Some text to extract."]]);
+    const before = bytes.byteLength;
+    await pdfToText(bytes, {});
+    expect(bytes.byteLength).toBe(before);
+    expect(bytes[0]).toBe(0x25);
+  });
+
   it("caps work: rejects PDFs over 50 MB before parsing", async () => {
     const big = new Uint8Array(MAX_PDF_BYTES + 1);
     await expect(pdfToText(big, {})).rejects.toThrow(PdfError);

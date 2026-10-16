@@ -10,7 +10,12 @@
  * Only reachable through `/mcp`, so it is behind the same auth as every tool.
  */
 
-import { ResourceNotFoundError, ResourceTemplate } from "@modelcontextprotocol/server";
+import {
+  ProtocolError,
+  ProtocolErrorCode,
+  ResourceNotFoundError,
+  ResourceTemplate,
+} from "@modelcontextprotocol/server";
 
 import type { ToolDeps } from "../tools/types.ts";
 import type { McpServer, ReadResourceResult } from "@modelcontextprotocol/server";
@@ -42,16 +47,26 @@ export function doiFromVariable(raw: string | string[] | undefined): string | nu
 }
 
 /**
- * base64 of a byte array without spreading it into one call: a multi-megabyte
- * PDF passed to `String.fromCharCode(...bytes)` overflows the argument limit.
+ * Largest PDF served inline. A resource read holds the bytes, their base64
+ * (4/3 of the size) and the SDK's JSON-serialized result (another 4/3), so
+ * 16 MiB peaks near 70 MB, well inside the 128 MB isolate limit; a 50 MB PDF
+ * would not fit. Bigger files go through get_pdf's download link.
+ */
+export const MAX_INLINE_PDF_BYTES = 16 * 1024 * 1024;
+
+/**
+ * base64 of a byte array, encoded in 3-byte-aligned chunks joined once at the
+ * end. Never builds the whole binary string (which would be another full
+ * copy plus rope flattening), and never spreads more than one chunk into
+ * `String.fromCharCode`, which would overflow the argument limit.
  */
 export function toBase64(bytes: Uint8Array): string {
-  const CHUNK = 0x8000;
-  let binary = "";
+  const CHUNK = 3 * 0x2000;
+  const parts: string[] = [];
   for (let start = 0; start < bytes.length; start += CHUNK) {
-    binary += String.fromCharCode(...bytes.subarray(start, start + CHUNK));
+    parts.push(btoa(String.fromCharCode(...bytes.subarray(start, start + CHUNK))));
   }
-  return btoa(binary);
+  return parts.join("");
 }
 
 /**
@@ -67,6 +82,16 @@ export async function readPdf(
   for (const key of keys) {
     const object = await deps.env.PDFS.get(key);
     if (!object) continue;
+    if (object.size > MAX_INLINE_PDF_BYTES) {
+      await object.body.cancel().catch(() => undefined);
+      throw new ProtocolError(
+        ProtocolErrorCode.InvalidParams,
+        `The cached PDF for ${doi} is ${object.size} bytes, over the ${MAX_INLINE_PDF_BYTES}-byte ` +
+          "inline limit; use the download link from get_pdf instead.",
+        { uri },
+      );
+    }
+    // A view over R2's buffer, not a copy.
     const bytes = new Uint8Array(await object.arrayBuffer());
     return { contents: [{ uri, mimeType: PDF_MIME, blob: toBase64(bytes) }] };
   }
