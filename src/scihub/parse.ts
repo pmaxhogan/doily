@@ -67,8 +67,28 @@ export function normalizeCandidate(raw: string, mirrorOrigin: string): string | 
     return null;
   }
   if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+  if (!isAllowedPdfHost(url.hostname, mirrorOrigin)) return null;
   url.hash = "";
   return url.toString();
+}
+
+/**
+ * A page can only send the resolver to the mirror it came from (or a
+ * subdomain of it), another official mirror, or the third-party network's PDF
+ * host. Anything else (an ad, a tracker, an internal address injected into a
+ * page) is dropped so the Worker never fetches an attacker-chosen URL.
+ */
+export function isAllowedPdfHost(hostname: string, mirrorOrigin: string): boolean {
+  const host = hostname.toLowerCase().replace(/\.$/, "");
+  let mirrorHost: string;
+  try {
+    mirrorHost = new URL(mirrorOrigin).hostname.toLowerCase().replace(/^www\./, "");
+  } catch {
+    return false;
+  }
+  if (host === mirrorHost || host.endsWith(`.${mirrorHost}`)) return true;
+  if (host === new URL(BBAN_ORIGIN).hostname) return true;
+  return OFFICIAL_MIRRORS.has(host.replace(/^www\./, ""));
 }
 
 /** Raw (unresolved) candidates in priority order, without the bban fallback. */

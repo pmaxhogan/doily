@@ -1,7 +1,13 @@
 import { z } from "zod";
 
 import { normalizeDoi } from "../ids.ts";
-import { lookupPredatory, lookupSjr, sjrGenerated, type ListedOn } from "../lib/snapshots.ts";
+import {
+  loadSjr,
+  lookupPredatory,
+  lookupSjr,
+  sjrGenerated,
+  type ListedOn,
+} from "../lib/snapshots.ts";
 import { normalizeIssn, uniq } from "../lib/text.ts";
 import { getCrossrefWork } from "../providers/crossref.ts";
 import {
@@ -41,7 +47,13 @@ export interface JournalBlock {
   open_access: { is_oa?: boolean; is_in_doaj?: boolean; apc_usd?: number | null };
   is_core?: boolean;
   listed_in?: string[];
-  sjr: { sjr?: number; quartile?: string; h_index?: number; year?: number; issn: string } | null;
+  sjr: {
+    sjr?: number;
+    quartile?: string | null;
+    h_index?: number;
+    year?: number;
+    issn: string;
+  } | null;
   predatory: { listed_on: ListedOn[]; note: string };
   sources: { stats: string | null; sjr: string; predatory: string };
 }
@@ -72,8 +84,9 @@ export async function buildJournalBlock(
   ]);
   const name = source?.display_name ?? hint.name;
   const publisher = source?.host_organization_name ?? hint.publisher;
-  const sjr = lookupSjr(issns);
-  const generated = sjrGenerated();
+  const snapshot = await loadSjr(deps.env.PDFS);
+  const sjr = lookupSjr(issns, snapshot);
+  const generated = sjrGenerated(snapshot);
   return {
     name,
     openalex_id: stripOpenAlexUrl(source?.id),

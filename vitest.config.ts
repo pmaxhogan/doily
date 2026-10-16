@@ -9,7 +9,11 @@ import { FIXED_TEST_SECRETS, RANDOM_SECRET_NAMES } from "./test/integration/test
 // Read once here, in Node, and handed to the integration runtime as a binding:
 // workerd has no filesystem to read migrations from. test/integration/setup.ts
 // applies them, so a migration that breaks also breaks the suite.
-const migrations = await readD1Migrations(fileURLToPath(new URL("migrations", import.meta.url)));
+// `.href` because tsconfig.test.json loads Node types next to the Worker
+// types, and their two `URL` classes are not assignable to each other.
+const migrations = await readD1Migrations(
+  fileURLToPath(new URL("migrations", import.meta.url).href),
+);
 
 /**
  * A dummy for every secret and var in `src/env.ts`, bound into the integration

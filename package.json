@@ -33,7 +33,8 @@
     "build": "wrangler deploy --dry-run --outdir dist",
     "migrate:local": "wrangler d1 migrations apply doily --local",
     "migrate:remote": "wrangler d1 migrations apply doily --remote",
-    "deploy": "npm run migrate:remote && wrangler deploy"
+    "snapshots:upload": "wrangler r2 object put doily-pdfs/data/sjr.json --file data/sjr.json --content-type application/json --remote",
+    "deploy": "npm run migrate:remote && npm run snapshots:upload && wrangler deploy"
   },
   "dependencies": {
     "@cloudflare/workers-oauth-provider": "1.2.3",

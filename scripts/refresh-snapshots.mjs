@@ -104,6 +104,7 @@ export function toAscii(s) {
     else if (ch in SPECIAL) out += SPECIAL[ch];
     // combining marks and anything unknown are dropped
   }
+  // eslint-disable-next-line no-control-regex -- stripping control characters is the point
   return out.replace(/[\u0000-\u001f\u007f]/g, " ");
 }
 
@@ -363,6 +364,7 @@ async function buildPredatory() {
 // ---------- main ----------
 
 function assertAscii(name, s) {
+  // eslint-disable-next-line no-control-regex -- the ASCII range is the check itself
   const i = s.search(/[^\x00-\x7f]/);
   if (i >= 0) throw new Error(`${name}: non-ASCII at offset ${i}`);
 }

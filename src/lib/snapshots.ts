@@ -1,5 +1,4 @@
 import predatoryData from "../../data/predatory.json";
-import sjrData from "../../data/sjr.json";
 import { normalizeIssn, normalizeTitle } from "./text.ts";
 
 /**
@@ -36,7 +35,7 @@ import { normalizeIssn, normalizeTitle } from "./text.ts";
 export interface SjrEntry {
   title?: string;
   sjr?: number;
-  quartile?: string;
+  quartile?: string | null;
   h_index?: number;
   year?: number;
 }
@@ -49,7 +48,7 @@ export interface SjrSnapshot {
 
 export interface PredatoryEntry {
   name: string;
-  issn?: string;
+  issn?: string | null;
   source: string;
   url?: string;
   scraped?: string;
@@ -70,22 +69,55 @@ export interface ListedOn {
   scraped?: string;
 }
 
-const sjr = sjrData as SjrSnapshot;
-const predatory = predatoryData as PredatorySnapshot;
+const predatory = predatoryData as unknown as PredatorySnapshot;
 
-export function sjrGenerated(snapshot: SjrSnapshot = sjr): string | undefined {
+/**
+ * Where the SJR snapshot lives at runtime. It is 6 MB of JSON, too big to
+ * bundle into the Worker (workerd refuses to start the module), so
+ * `npm run deploy` uploads data/sjr.json to R2 and the Worker reads it once
+ * per isolate.
+ */
+export const SJR_R2_KEY = "data/sjr.json";
+
+export const EMPTY_SJR: SjrSnapshot = { generated: "", entries: {} };
+
+let sjrCache: SjrSnapshot | null = null;
+
+/** For tests: forget the isolate-level cache. */
+export function clearSjrCache(): void {
+  sjrCache = null;
+}
+
+/**
+ * The SJR snapshot from R2, cached per isolate. A missing object yields the
+ * empty snapshot (uncached, so an upload is picked up on the next call) and
+ * get_journal reports no SJR data rather than failing.
+ */
+export async function loadSjr(bucket: R2Bucket | undefined): Promise<SjrSnapshot> {
+  if (sjrCache) return sjrCache;
+  if (!bucket) return EMPTY_SJR;
+  const object = await bucket.get(SJR_R2_KEY);
+  if (!object) return EMPTY_SJR;
+  const parsed = (await object.json()) as SjrSnapshot;
+  if (!parsed || typeof parsed !== "object" || !parsed.entries) return EMPTY_SJR;
+  sjrCache = parsed;
+  return parsed;
+}
+
+export function sjrGenerated(snapshot: SjrSnapshot): string | undefined {
   return snapshot.generated || undefined;
 }
 
 /** SJR entry for the first ISSN that has one, with the snapshot year. */
 export function lookupSjr(
   issns: (string | undefined)[],
-  snapshot: SjrSnapshot = sjr,
+  snapshot: SjrSnapshot,
 ): (SjrEntry & { issn: string; snapshot: string }) | null {
   for (const raw of issns) {
     const issn = normalizeIssn(raw);
     if (!issn) continue;
-    const entry = snapshot.entries[issn];
+    // data/sjr.json keys ISSNs without the hyphen (NNNNNNNX); accept both.
+    const entry = snapshot.entries[issn] ?? snapshot.entries[issn.replace("-", "")];
     if (entry) {
       return { ...entry, year: entry.year ?? snapshot.year, issn, snapshot: snapshot.generated };
     }
