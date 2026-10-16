@@ -1,0 +1,23 @@
+{
+  "status": "ok",
+  "response-date": "2026-10-16 02:06:00",
+  "request": {
+    "warnings": [],
+    "format": "json",
+    "ids": ["33301246"],
+    "email": "pmaxhogan@gmail.com",
+    "tool": "doily",
+    "echo": "ids=33301246&format=json&tool=doily&email=pmaxhogan%40gmail.com",
+    "versions": "no",
+    "showaiid": "no",
+    "idtype": "pmid"
+  },
+  "records": [
+    {
+      "doi": "10.1056/NEJMoa2034577",
+      "pmcid": "PMC7745181",
+      "pmid": 33301246,
+      "requested-id": "33301246"
+    }
+  ]
+}

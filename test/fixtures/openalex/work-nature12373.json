@@ -1,0 +1,354 @@
+{
+  "id": "https://openalex.org/W2159974629",
+  "doi": "https://doi.org/10.1038/nature12373",
+  "title": "Nanometre-scale thermometry in a living cell",
+  "display_name": "Nanometre-scale thermometry in a living cell",
+  "publication_year": 2013,
+  "publication_date": "2013-07-30",
+  "ids": {
+    "openalex": "https://openalex.org/W2159974629",
+    "doi": "https://doi.org/10.1038/nature12373",
+    "mag": "2159974629",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/23903748"
+  },
+  "language": "en",
+  "type": "article",
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://www.nature.com/articles/nature12373.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "cited_by_count": 1950,
+  "biblio": {
+    "volume": "500",
+    "issue": "7460",
+    "first_page": "54",
+    "last_page": "58"
+  },
+  "is_retracted": false,
+  "abstract_inverted_index": null,
+  "primary_location": {
+    "id": "doi:10.1038/nature12373",
+    "doi": "https://doi.org/10.1038/nature12373",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1038/nature12373",
+    "pdf_url": "https://www.nature.com/articles/nature12373.pdf",
+    "license": null,
+    "version": "publishedVersion",
+    "source": {
+      "id": "https://openalex.org/S137773608",
+      "display_name": "Nature",
+      "issn_l": "0028-0836",
+      "issn": ["0028-0836", "1476-4687"],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization_name": "Nature Portfolio",
+      "type": "journal"
+    }
+  },
+  "best_oa_location": {
+    "id": "doi:10.1038/nature12373",
+    "doi": "https://doi.org/10.1038/nature12373",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1038/nature12373",
+    "pdf_url": "https://www.nature.com/articles/nature12373.pdf",
+    "license": null,
+    "version": "publishedVersion",
+    "source": {
+      "id": "https://openalex.org/S137773608",
+      "display_name": "Nature",
+      "issn_l": "0028-0836",
+      "issn": ["0028-0836", "1476-4687"],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization_name": "Nature Portfolio",
+      "type": "journal"
+    }
+  },
+  "locations": [
+    {
+      "id": "doi:10.1038/nature12373",
+      "doi": "https://doi.org/10.1038/nature12373",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1038/nature12373",
+      "pdf_url": "https://www.nature.com/articles/nature12373.pdf",
+      "license": null,
+      "version": "publishedVersion",
+      "source": {
+        "id": "https://openalex.org/S137773608",
+        "display_name": "Nature",
+        "issn_l": "0028-0836",
+        "issn": ["0028-0836", "1476-4687"],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization_name": "Nature Portfolio",
+        "type": "journal"
+      }
+    },
+    {
+      "id": "pmid:23903748",
+      "doi": null,
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/23903748",
+      "pdf_url": null,
+      "license": null,
+      "version": "publishedVersion",
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization_name": "National Institutes of Health",
+        "type": "repository"
+      }
+    }
+  ],
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5033043101",
+        "display_name": "Georg Kucsko",
+        "orcid": "https://orcid.org/0000-0002-4189-3154"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US"
+        }
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "G. Kucsko",
+      "raw_affiliation_strings": [
+        "Department of Physics, Harvard University, Cambridge, Massachusetts 02138, USA",
+        "Department of Physics, Harvard University, Cambridge, 02138, Massachusetts, USA"
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5102792711",
+        "display_name": "Peter C. Maurer",
+        "orcid": "https://orcid.org/0000-0001-9033-5135"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US"
+        }
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "P. C. Maurer",
+      "raw_affiliation_strings": [
+        "Department of Physics, Harvard University, Cambridge, 02138, Massachusetts, USA"
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5012033205",
+        "display_name": "Norman Y. Yao",
+        "orcid": "https://orcid.org/0000-0003-0194-7266"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US"
+        }
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "N. Y. Yao",
+      "raw_affiliation_strings": [
+        "Department of Physics, Harvard University, Cambridge, 02138, Massachusetts, USA"
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": null,
+        "display_name": "M. Kubo",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US"
+        }
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "M. Kubo",
+      "raw_affiliation_strings": [
+        "Department of Chemistry and Chemical Biology, Harvard University, Cambridge, 02138, Massachusetts, USA"
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": null,
+        "display_name": "H. J. Noh",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I107606265",
+          "display_name": "Broad Institute",
+          "ror": "https://ror.org/05a0ya142",
+          "country_code": "US"
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US"
+        }
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "H. J. Noh",
+      "raw_affiliation_strings": [
+        "Broad Institute of MIT and Harvard University, 7 Cambridge Center, Cambridge, 02142, Massachusetts, USA"
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5009465540",
+        "display_name": "Pik Kwan Lo",
+        "orcid": "https://orcid.org/0000-0001-5255-1718"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I168719708",
+          "display_name": "City University of Hong Kong",
+          "ror": "https://ror.org/03q8dnn23",
+          "country_code": "HK"
+        }
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "P. K. Lo",
+      "raw_affiliation_strings": [
+        "Department of Biology and Chemistry, City University of Hong Kong, Tat Chee Avenue, Kowloon, Hong Kong SAR, China,"
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5086778667",
+        "display_name": "Hongkun Park",
+        "orcid": "https://orcid.org/0000-0001-9576-8829"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I107606265",
+          "display_name": "Broad Institute",
+          "ror": "https://ror.org/05a0ya142",
+          "country_code": "US"
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US"
+        }
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "H. Park",
+      "raw_affiliation_strings": [
+        "Broad Institute of MIT and Harvard University, 7 Cambridge Center, Cambridge, 02142, Massachusetts, USA",
+        "Department of Chemistry and Chemical Biology, Harvard University, Cambridge, 02138, Massachusetts, USA",
+        "Department of Physics, Harvard University, Cambridge, 02138, Massachusetts, USA"
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5066245772",
+        "display_name": "Mikhail D. Lukin",
+        "orcid": "https://orcid.org/0000-0002-8658-1007"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US"
+        }
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "M. D. Lukin",
+      "raw_affiliation_strings": [
+        "Department of Physics, Harvard University, Cambridge, 02138, Massachusetts, USA"
+      ]
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D002470",
+      "descriptor_name": "Cell Survival",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002470",
+      "descriptor_name": "Cell Survival",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002470",
+      "descriptor_name": "Cell Survival",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003116",
+      "descriptor_name": "Color",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003116",
+      "descriptor_name": "Color",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003116",
+      "descriptor_name": "Color",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "topics": [
+    {
+      "id": "https://openalex.org/T10478",
+      "display_name": "Diamond and Carbon-based Materials Research",
+      "score": 0.9984999895095825
+    },
+    {
+      "id": "https://openalex.org/T10540",
+      "display_name": "Advanced Fluorescence Microscopy Techniques",
+      "score": 0.00039999998989515007
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "status": "ok",
+  "message-type": "work",
+  "message": {
+    "DOI": "10.1016/s0140-6736(97)11096-0",
+    "title": [
+      "RETRACTED: Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children"
+    ],
+    "subtitle": [],
+    "container-title": ["The Lancet"],
+    "short-container-title": ["The Lancet"],
+    "ISSN": ["0140-6736"],
+    "issn-type": [
+      {
+        "value": "0140-6736",
+        "type": "print"
+      }
+    ],
+    "publisher": "Elsevier BV",
+    "type": "journal-article",
+    "published": {
+      "date-parts": [[1998, 2]]
+    },
+    "published-print": {
+      "date-parts": [[1998, 2]]
+    },
+    "issued": {
+      "date-parts": [[1998, 2]]
+    },
+    "author": [
+      {
+        "given": "AJ",
+        "family": "Wakefield",
+        "affiliation": [],
+        "sequence": "first"
+      },
+      {
+        "given": "SH",
+        "family": "Murch",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "A",
+        "family": "Anthony",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "J",
+        "family": "Linnell",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "DM",
+        "family": "Casson",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "M",
+        "family": "Malik",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "M",
+        "family": "Berelowitz",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "AP",
+        "family": "Dhillon",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "MA",
+        "family": "Thomson",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "P",
+        "family": "Harvey",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "A",
+        "family": "Valentine",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "SE",
+        "family": "Davies",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "JA",
+        "family": "Walker-Smith",
+        "affiliation": [],
+        "sequence": "additional"
+      }
+    ],
+    "license": [
+      {
+        "start": {
+          "date-parts": [[1998, 2, 1]],
+          "date-time": "1998-02-01T00:00:00Z",
+          "timestamp": 886291200000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+      }
+    ],
+    "link": [
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S0140673697110960?httpAccept=text/xml",
+        "content-type": "text/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S0140673697110960?httpAccept=text/plain",
+        "content-type": "text/plain",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      }
+    ],
+    "is-referenced-by-count": 2041,
+    "updated-by": [
+      {
+        "DOI": "10.1016/s0140-6736(04)15715-2",
+        "type": "correction",
+        "label": "Correction",
+        "source": "retraction-watch",
+        "updated": {
+          "date-parts": [[2004, 3, 6]],
+          "date-time": "2004-03-06T00:00:00Z",
+          "timestamp": 1078531200000
+        },
+        "record-id": "17269"
+      },
+      {
+        "DOI": "10.1016/s0140-6736(10)60175-4",
+        "type": "retraction",
+        "label": "Retraction",
+        "source": "retraction-watch",
+        "updated": {
+          "date-parts": [[2010, 2, 6]],
+          "date-time": "2010-02-06T00:00:00Z",
+          "timestamp": 1265414400000
+        },
+        "record-id": "4036"
+      }
+    ],
+    "subject": [],
+    "volume": "351",
+    "issue": "9103",
+    "page": "637-641",
+    "URL": "https://doi.org/10.1016/s0140-6736(97)11096-0"
+  }
+}

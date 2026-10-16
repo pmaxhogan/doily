@@ -1,3 +1,8 @@
+import { getAuthorTool } from "./author.ts";
+import { getJournalTool } from "./journal.ts";
+import { getPaperTool } from "./paper.ts";
+import { searchPapersToolDef } from "./search.ts";
+
 import type { ToolDef } from "./types.ts";
 
 /**
@@ -6,4 +11,9 @@ import type { ToolDef } from "./types.ts";
  * registers them all. Keep this file free of logic.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- heterogeneous arg types; the server only needs the shared shape
-export const tools: ToolDef<any>[] = [];
+export const tools: ToolDef<any>[] = [
+  searchPapersToolDef,
+  getPaperTool,
+  getAuthorTool,
+  getJournalTool,
+];

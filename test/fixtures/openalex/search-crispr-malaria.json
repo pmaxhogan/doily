@@ -1,0 +1,861 @@
+{
+  "meta": {
+    "count": 11760,
+    "db_response_time_ms": 22,
+    "page": 1,
+    "per_page": 5,
+    "cost_usd": 0.001
+  },
+  "results": [
+    {
+      "id": "https://openalex.org/W2738331366",
+      "doi": "https://doi.org/10.25250/thescbr.brk053",
+      "title": "Driving down malaria",
+      "display_name": "Driving down malaria",
+      "publication_year": 2017,
+      "publication_date": "2017-07-18",
+      "ids": {
+        "openalex": "https://openalex.org/W2738331366",
+        "doi": "https://doi.org/10.25250/thescbr.brk053",
+        "mag": "2738331366"
+      },
+      "language": "en",
+      "type": "article",
+      "open_access": {
+        "is_oa": true,
+        "oa_status": "hybrid",
+        "oa_url": "https://doi.org/10.25250/thescbr.brk053",
+        "any_repository_has_fulltext": false
+      },
+      "cited_by_count": 0,
+      "biblio": {
+        "volume": "3",
+        "issue": "3",
+        "first_page": null,
+        "last_page": null
+      },
+      "is_retracted": false,
+      "abstract_inverted_index": {
+        "Mosquitoes": [0],
+        "are": [1],
+        "the": [2, 26],
+        "worlds\u2019": [3],
+        "deadliest": [4],
+        "animal": [5],
+        "due": [6],
+        "to": [7, 28],
+        "their": [8],
+        "role": [9],
+        "in": [10],
+        "spreading": [11],
+        "Malaria.": [12],
+        "The": [13],
+        "revolutionary": [14],
+        "molecular": [15],
+        "technique": [16],
+        "known": [17],
+        "as": [18],
+        "CRISPR": [19],
+        "may": [20],
+        "help": [21],
+        "containing": [22],
+        "mosquitoes": [23],
+        "populations,": [24],
+        "preventing": [25],
+        "disease": [27],
+        "spread.": [29],
+        "-": [30],
+        "submission": [31],
+        "by": [32],
+        "Andrew": [33],
+        "Hammond,": [34],
+        "Xenia": [35],
+        "Karlsson,": [36],
+        "Ziyin": [37],
+        "Wang": [38]
+      },
+      "primary_location": {
+        "id": "doi:10.25250/thescbr.brk053",
+        "doi": "https://doi.org/10.25250/thescbr.brk053",
+        "is_oa": true,
+        "landing_page_url": "https://doi.org/10.25250/thescbr.brk053",
+        "pdf_url": null,
+        "license": "cc-by-sa",
+        "version": "publishedVersion",
+        "source": {
+          "id": "https://openalex.org/S4210228382",
+          "display_name": "TheScienceBreaker",
+          "issn_l": "2571-9262",
+          "issn": ["2571-9262"],
+          "is_oa": false,
+          "is_in_doaj": false,
+          "is_core": false,
+          "host_organization_name": null,
+          "type": "journal"
+        }
+      },
+      "best_oa_location": {
+        "id": "doi:10.25250/thescbr.brk053",
+        "doi": "https://doi.org/10.25250/thescbr.brk053",
+        "is_oa": true,
+        "landing_page_url": "https://doi.org/10.25250/thescbr.brk053",
+        "pdf_url": null,
+        "license": "cc-by-sa",
+        "version": "publishedVersion",
+        "source": {
+          "id": "https://openalex.org/S4210228382",
+          "display_name": "TheScienceBreaker",
+          "issn_l": "2571-9262",
+          "issn": ["2571-9262"],
+          "is_oa": false,
+          "is_in_doaj": false,
+          "is_core": false,
+          "host_organization_name": null,
+          "type": "journal"
+        }
+      },
+      "locations": [
+        {
+          "id": "doi:10.25250/thescbr.brk053",
+          "doi": "https://doi.org/10.25250/thescbr.brk053",
+          "is_oa": true,
+          "landing_page_url": "https://doi.org/10.25250/thescbr.brk053",
+          "pdf_url": null,
+          "license": "cc-by-sa",
+          "version": "publishedVersion",
+          "source": {
+            "id": "https://openalex.org/S4210228382",
+            "display_name": "TheScienceBreaker",
+            "issn_l": "2571-9262",
+            "issn": ["2571-9262"],
+            "is_oa": false,
+            "is_in_doaj": false,
+            "is_core": false,
+            "host_organization_name": null,
+            "type": "journal"
+          }
+        }
+      ],
+      "authorships": [
+        {
+          "author_position": "first",
+          "author": {
+            "id": "https://openalex.org/A5028754379",
+            "display_name": "Andrew Hammond",
+            "orcid": "https://orcid.org/0000-0002-1757-5009"
+          },
+          "institutions": [],
+          "is_corresponding": false,
+          "raw_author_name": "Andrew Hammond",
+          "raw_affiliation_strings": []
+        },
+        {
+          "author_position": "middle",
+          "author": {
+            "id": "https://openalex.org/A5026344766",
+            "display_name": "Xenia Karlsson",
+            "orcid": "https://orcid.org/0000-0001-5026-0693"
+          },
+          "institutions": [],
+          "is_corresponding": false,
+          "raw_author_name": "Xenia Karlsson",
+          "raw_affiliation_strings": []
+        },
+        {
+          "author_position": "last",
+          "author": {
+            "id": "https://openalex.org/A5100601366",
+            "display_name": "Ziying Wang",
+            "orcid": "https://orcid.org/0000-0003-2915-1120"
+          },
+          "institutions": [],
+          "is_corresponding": false,
+          "raw_author_name": "Ziying Wang",
+          "raw_affiliation_strings": []
+        }
+      ],
+      "mesh": [],
+      "topics": [
+        {
+          "id": "https://openalex.org/T10091",
+          "display_name": "Malaria Research and Control",
+          "score": 0.4392000138759613
+        },
+        {
+          "id": "https://openalex.org/T10878",
+          "display_name": "CRISPR and Genetic Engineering",
+          "score": 0.41280001401901245
+        }
+      ]
+    },
+    {
+      "id": "https://openalex.org/W7203728924",
+      "doi": null,
+      "title": "Malaria: The World's Longest Epidemic",
+      "display_name": "Malaria: The World's Longest Epidemic",
+      "publication_year": 2026,
+      "publication_date": "2026-08-17",
+      "ids": {
+        "openalex": "https://openalex.org/W7203728924"
+      },
+      "language": "en",
+      "type": "dissertation",
+      "open_access": {
+        "is_oa": false,
+        "oa_status": "closed",
+        "oa_url": null,
+        "any_repository_has_fulltext": false
+      },
+      "cited_by_count": 0,
+      "biblio": {
+        "volume": null,
+        "issue": null,
+        "first_page": null,
+        "last_page": null
+      },
+      "is_retracted": false,
+      "abstract_inverted_index": {
+        "This": [0],
+        "formal": [1],
+        "paper": [2, 53],
+        "covers": [3],
+        "the": [4, 19, 45, 52],
+        "history": [5],
+        "of": [6, 48],
+        "malaria": [7],
+        "and": [8, 33],
+        "how": [9],
+        "it": [10],
+        "continues": [11],
+        "to": [12, 43],
+        "remain": [13],
+        "elusive": [14],
+        "for": [15],
+        "so": [16],
+        "long": [17],
+        "since": [18],
+        "cause": [20],
+        "was": [21],
+        "first": [22],
+        "identified": [23],
+        "in": [24],
+        "1880.": [25],
+        "included": [26],
+        "are": [27, 36],
+        "two": [28],
+        "preventative": [29],
+        "measures": [30],
+        "(mosquito": [31],
+        "nets": [32],
+        "vaccines)": [34],
+        "that": [35],
+        "currently": [37],
+        "enacted": [38],
+        "compounded": [39],
+        "with": [40],
+        "scholarly": [41],
+        "data": [42],
+        "evaluate": [44],
+        "overall": [46],
+        "effectiveness": [47],
+        "each": [49],
+        "procedure.": [50],
+        "Finally,": [51],
+        "will": [54],
+        "cover": [55],
+        "three": [56],
+        "advanced": [57],
+        "biocontrol": [58],
+        "methods": [59]
+      },
+      "primary_location": {
+        "id": "pmh:oai:soar.suny.edu:20.500.12648/84695",
+        "doi": null,
+        "is_oa": false,
+        "landing_page_url": "https://hdl.handle.net/20.500.12648/84695",
+        "pdf_url": null,
+        "license": null,
+        "version": "submittedVersion",
+        "source": {
+          "id": "https://openalex.org/S4306400078",
+          "display_name": "SUNY Digital Repository Support (State University of New York System)",
+          "issn_l": null,
+          "issn": null,
+          "is_oa": false,
+          "is_in_doaj": false,
+          "is_core": false,
+          "host_organization_name": "University at Buffalo, State University of New York",
+          "type": "repository"
+        }
+      },
+      "best_oa_location": null,
+      "locations": [
+        {
+          "id": "pmh:oai:soar.suny.edu:20.500.12648/84695",
+          "doi": null,
+          "is_oa": false,
+          "landing_page_url": "https://hdl.handle.net/20.500.12648/84695",
+          "pdf_url": null,
+          "license": null,
+          "version": "submittedVersion",
+          "source": {
+            "id": "https://openalex.org/S4306400078",
+            "display_name": "SUNY Digital Repository Support (State University of New York System)",
+            "issn_l": null,
+            "issn": null,
+            "is_oa": false,
+            "is_in_doaj": false,
+            "is_core": false,
+            "host_organization_name": "University at Buffalo, State University of New York",
+            "type": "repository"
+          }
+        }
+      ],
+      "authorships": [
+        {
+          "author_position": "first",
+          "author": {
+            "id": "https://openalex.org/A5147402592",
+            "display_name": "Timothy Kwark",
+            "orcid": null
+          },
+          "institutions": [],
+          "is_corresponding": true,
+          "raw_author_name": "Kwark, Timothy",
+          "raw_affiliation_strings": []
+        }
+      ],
+      "mesh": [],
+      "topics": [
+        {
+          "id": "https://openalex.org/T10091",
+          "display_name": "Malaria Research and Control",
+          "score": 0.9961000084877014
+        },
+        {
+          "id": "https://openalex.org/T10166",
+          "display_name": "Mosquito-borne diseases and control",
+          "score": 0.0013000000035390258
+        }
+      ]
+    },
+    {
+      "id": "https://openalex.org/W4312993860",
+      "doi": "https://doi.org/10.1007/978-3-662-65956-4_28",
+      "title": "\u00bbGen-Antrieb\u00ab gegen Malaria?",
+      "display_name": "\u00bbGen-Antrieb\u00ab gegen Malaria?",
+      "publication_year": 2022,
+      "publication_date": "2022-01-01",
+      "ids": {
+        "openalex": "https://openalex.org/W4312993860",
+        "doi": "https://doi.org/10.1007/978-3-662-65956-4_28"
+      },
+      "language": "de",
+      "type": "book-chapter",
+      "open_access": {
+        "is_oa": false,
+        "oa_status": "closed",
+        "oa_url": null,
+        "any_repository_has_fulltext": false
+      },
+      "cited_by_count": 0,
+      "biblio": {
+        "volume": null,
+        "issue": null,
+        "first_page": "111",
+        "last_page": "113"
+      },
+      "is_retracted": false,
+      "abstract_inverted_index": null,
+      "primary_location": {
+        "id": "doi:10.1007/978-3-662-65956-4_28",
+        "doi": "https://doi.org/10.1007/978-3-662-65956-4_28",
+        "is_oa": false,
+        "landing_page_url": "https://doi.org/10.1007/978-3-662-65956-4_28",
+        "pdf_url": null,
+        "license": null,
+        "version": "publishedVersion",
+        "source": {
+          "id": "https://openalex.org/S4306463937",
+          "display_name": "Springer eBooks",
+          "issn_l": null,
+          "issn": null,
+          "is_oa": false,
+          "is_in_doaj": false,
+          "is_core": false,
+          "host_organization_name": "Springer Nature",
+          "type": "ebook platform"
+        }
+      },
+      "best_oa_location": null,
+      "locations": [
+        {
+          "id": "doi:10.1007/978-3-662-65956-4_28",
+          "doi": "https://doi.org/10.1007/978-3-662-65956-4_28",
+          "is_oa": false,
+          "landing_page_url": "https://doi.org/10.1007/978-3-662-65956-4_28",
+          "pdf_url": null,
+          "license": null,
+          "version": "publishedVersion",
+          "source": {
+            "id": "https://openalex.org/S4306463937",
+            "display_name": "Springer eBooks",
+            "issn_l": null,
+            "issn": null,
+            "is_oa": false,
+            "is_in_doaj": false,
+            "is_core": false,
+            "host_organization_name": "Springer Nature",
+            "type": "ebook platform"
+          }
+        }
+      ],
+      "authorships": [
+        {
+          "author_position": "first",
+          "author": {
+            "id": "https://openalex.org/A5022289847",
+            "display_name": "Reinhard Renneberg",
+            "orcid": null
+          },
+          "institutions": [
+            {
+              "id": "https://openalex.org/I200769079",
+              "display_name": "Hong Kong University of Science and Technology",
+              "ror": "https://ror.org/00q4vv597",
+              "country_code": "HK"
+            }
+          ],
+          "is_corresponding": true,
+          "raw_author_name": "Reinhard Renneberg",
+          "raw_affiliation_strings": [
+            "Hong Kong University of Science and Technology, Hong Kong, Volksrepublik China"
+          ]
+        },
+        {
+          "author_position": "last",
+          "author": {
+            "id": "https://openalex.org/A5104100346",
+            "display_name": "Iris Rapoport",
+            "orcid": null
+          },
+          "institutions": [
+            {
+              "id": "https://openalex.org/I136199984",
+              "display_name": "Harvard University",
+              "ror": "https://ror.org/03vek6s52",
+              "country_code": "US"
+            }
+          ],
+          "is_corresponding": false,
+          "raw_author_name": "Iris Rapoport",
+          "raw_affiliation_strings": ["Harvard Universit\u00e4t, Boston, MA, USA"]
+        }
+      ],
+      "mesh": [],
+      "topics": [
+        {
+          "id": "https://openalex.org/T10878",
+          "display_name": "CRISPR and Genetic Engineering",
+          "score": 0.44429999589920044
+        },
+        {
+          "id": "https://openalex.org/T10091",
+          "display_name": "Malaria Research and Control",
+          "score": 0.4018999934196472
+        }
+      ]
+    },
+    {
+      "id": "https://openalex.org/W2782139516",
+      "doi": null,
+      "title": "Curbing Malaria: A New Hope through Clustered Regularly Interspaced Short Palindromic Repeats (CRISPR) Technology.",
+      "display_name": "Curbing Malaria: A New Hope through Clustered Regularly Interspaced Short Palindromic Repeats (CRISPR) Technology.",
+      "publication_year": 2017,
+      "publication_date": "2017-12-01",
+      "ids": {
+        "openalex": "https://openalex.org/W2782139516",
+        "mag": "2782139516",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/29367930"
+      },
+      "language": "en",
+      "type": "article",
+      "open_access": {
+        "is_oa": true,
+        "oa_status": "green",
+        "oa_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/5775160",
+        "any_repository_has_fulltext": true
+      },
+      "cited_by_count": 0,
+      "biblio": {
+        "volume": "11",
+        "issue": "4",
+        "first_page": "539",
+        "last_page": "540"
+      },
+      "is_retracted": false,
+      "abstract_inverted_index": {
+        "-": [0]
+      },
+      "primary_location": {
+        "id": "pmid:29367930",
+        "doi": null,
+        "is_oa": false,
+        "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/29367930",
+        "pdf_url": null,
+        "license": null,
+        "version": "publishedVersion",
+        "source": {
+          "id": "https://openalex.org/S4306525036",
+          "display_name": "PubMed",
+          "issn_l": null,
+          "issn": null,
+          "is_oa": false,
+          "is_in_doaj": false,
+          "is_core": false,
+          "host_organization_name": "National Institutes of Health",
+          "type": "repository"
+        }
+      },
+      "best_oa_location": {
+        "id": "pmh:oai:europepmc.org:4687257",
+        "doi": null,
+        "is_oa": true,
+        "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/5775160",
+        "pdf_url": null,
+        "license": "cc-by",
+        "version": "submittedVersion",
+        "source": {
+          "id": "https://openalex.org/S4306400806",
+          "display_name": "Europe PMC (PubMed Central)",
+          "issn_l": null,
+          "issn": null,
+          "is_oa": false,
+          "is_in_doaj": false,
+          "is_core": false,
+          "host_organization_name": "European Bioinformatics Institute",
+          "type": "repository"
+        }
+      },
+      "locations": [
+        {
+          "id": "pmid:29367930",
+          "doi": null,
+          "is_oa": false,
+          "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/29367930",
+          "pdf_url": null,
+          "license": null,
+          "version": "publishedVersion",
+          "source": {
+            "id": "https://openalex.org/S4306525036",
+            "display_name": "PubMed",
+            "issn_l": null,
+            "issn": null,
+            "is_oa": false,
+            "is_in_doaj": false,
+            "is_core": false,
+            "host_organization_name": "National Institutes of Health",
+            "type": "repository"
+          }
+        },
+        {
+          "id": "pmh:oai:europepmc.org:4687257",
+          "doi": null,
+          "is_oa": true,
+          "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/5775160",
+          "pdf_url": null,
+          "license": "cc-by",
+          "version": "submittedVersion",
+          "source": {
+            "id": "https://openalex.org/S4306400806",
+            "display_name": "Europe PMC (PubMed Central)",
+            "issn_l": null,
+            "issn": null,
+            "is_oa": false,
+            "is_in_doaj": false,
+            "is_core": false,
+            "host_organization_name": "European Bioinformatics Institute",
+            "type": "repository"
+          }
+        }
+      ],
+      "authorships": [
+        {
+          "author_position": "first",
+          "author": {
+            "id": "https://openalex.org/A5034628634",
+            "display_name": "Manjit Panigrahi",
+            "orcid": "https://orcid.org/0000-0002-8578-2325"
+          },
+          "institutions": [
+            {
+              "id": "https://openalex.org/I185790649",
+              "display_name": "Indian Veterinary Research Institute",
+              "ror": "https://ror.org/02jcfzc36",
+              "country_code": "IN"
+            }
+          ],
+          "is_corresponding": false,
+          "raw_author_name": "Manjit Panigrahi",
+          "raw_affiliation_strings": [
+            "Animal Genetics Division, Indian Veterinary Research Institute, Izatnagar, Bareilly, Uttar Pradesh, India"
+          ]
+        },
+        {
+          "author_position": "last",
+          "author": {
+            "id": "https://openalex.org/A5031358682",
+            "display_name": "Ansuman Panigrahi",
+            "orcid": "https://orcid.org/0000-0001-5900-854X"
+          },
+          "institutions": [
+            {
+              "id": "https://openalex.org/I67357951",
+              "display_name": "KIIT University",
+              "ror": "https://ror.org/00k8zt527",
+              "country_code": "IN"
+            }
+          ],
+          "is_corresponding": false,
+          "raw_author_name": "Ansuman Panigrahi",
+          "raw_affiliation_strings": [
+            "Department of Community Medicine, Kalinga Institute of Medical Sciences, KIIT University, Bhubaneswar, India"
+          ]
+        }
+      ],
+      "mesh": [],
+      "topics": [
+        {
+          "id": "https://openalex.org/T10878",
+          "display_name": "CRISPR and Genetic Engineering",
+          "score": 0.57669997215271
+        },
+        {
+          "id": "https://openalex.org/T10091",
+          "display_name": "Malaria Research and Control",
+          "score": 0.4058000147342682
+        }
+      ]
+    },
+    {
+      "id": "https://openalex.org/W7169809921",
+      "doi": "https://doi.org/10.2174/0122127968470283260630195114",
+      "title": "Phytochemical Insights and Gene-Based Strategies: The Emerging Role of Curcumin in Malaria Therapy",
+      "display_name": "Phytochemical Insights and Gene-Based Strategies: The Emerging Role of Curcumin in Malaria Therapy",
+      "publication_year": 2026,
+      "publication_date": "2026-07-16",
+      "ids": {
+        "openalex": "https://openalex.org/W7169809921",
+        "doi": "https://doi.org/10.2174/0122127968470283260630195114"
+      },
+      "language": "en",
+      "type": "article",
+      "open_access": {
+        "is_oa": false,
+        "oa_status": "closed",
+        "oa_url": null,
+        "any_repository_has_fulltext": false
+      },
+      "cited_by_count": 0,
+      "biblio": {
+        "volume": "20",
+        "issue": null,
+        "first_page": null,
+        "last_page": null
+      },
+      "is_retracted": false,
+      "abstract_inverted_index": {
+        "Malaria": [0],
+        "is": [1, 10],
+        "a": [2, 37, 55],
+        "significant": [3],
+        "health": [4],
+        "problem": [5],
+        "in": [6, 44],
+        "the": [7, 13, 23, 32],
+        "world,": [8],
+        "which": [9],
+        "aggravated": [11],
+        "by": [12],
+        "high": [14],
+        "rate": [15],
+        "of": [16, 18, 26, 35, 50, 58],
+        "development": [17],
+        "drug-resistant": [19],
+        "Plasmodium": [20],
+        "strains": [21],
+        "and": [22],
+        "low": [24],
+        "efficacy": [25],
+        "traditional": [27],
+        "treatments.": [28],
+        "This": [29],
+        "review": [30],
+        "examines": [31],
+        "new": [33],
+        "role": [34],
+        "curcumin,": [36],
+        "bioactive": [38],
+        "polyphenol": [39],
+        "derived": [40],
+        "from": [41],
+        "Curcuma": [42],
+        "longa,": [43],
+        "combination": [45],
+        "with": [46],
+        "gene-based": [47],
+        "therapeutic": [48],
+        "methods": [49],
+        "managing": [51],
+        "malaria.": [52],
+        "Curcumin": [53],
+        "demonstrates": [54],
+        "multi-target": [56],
+        "mechanism": [57],
+        "action": [59]
+      },
+      "primary_location": {
+        "id": "doi:10.2174/0122127968470283260630195114",
+        "doi": "https://doi.org/10.2174/0122127968470283260630195114",
+        "is_oa": false,
+        "landing_page_url": "https://doi.org/10.2174/0122127968470283260630195114",
+        "pdf_url": null,
+        "license": null,
+        "version": "publishedVersion",
+        "source": {
+          "id": "https://openalex.org/S178760346",
+          "display_name": "Current Chemical Biology",
+          "issn_l": "1872-3136",
+          "issn": ["1872-3136", "2212-7968"],
+          "is_oa": false,
+          "is_in_doaj": false,
+          "is_core": true,
+          "host_organization_name": "Bentham Science Publishers",
+          "type": "journal"
+        }
+      },
+      "best_oa_location": null,
+      "locations": [
+        {
+          "id": "doi:10.2174/0122127968470283260630195114",
+          "doi": "https://doi.org/10.2174/0122127968470283260630195114",
+          "is_oa": false,
+          "landing_page_url": "https://doi.org/10.2174/0122127968470283260630195114",
+          "pdf_url": null,
+          "license": null,
+          "version": "publishedVersion",
+          "source": {
+            "id": "https://openalex.org/S178760346",
+            "display_name": "Current Chemical Biology",
+            "issn_l": "1872-3136",
+            "issn": ["1872-3136", "2212-7968"],
+            "is_oa": false,
+            "is_in_doaj": false,
+            "is_core": true,
+            "host_organization_name": "Bentham Science Publishers",
+            "type": "journal"
+          }
+        }
+      ],
+      "authorships": [
+        {
+          "author_position": "first",
+          "author": {
+            "id": "https://openalex.org/A5128623103",
+            "display_name": "Shivani Kumari",
+            "orcid": null
+          },
+          "institutions": [
+            {
+              "id": "https://openalex.org/I3129196102",
+              "display_name": "Desh Bhagat University",
+              "ror": "https://ror.org/007n0ss86",
+              "country_code": "IN"
+            }
+          ],
+          "is_corresponding": false,
+          "raw_author_name": "Shivani Kumari",
+          "raw_affiliation_strings": [
+            "School of Pharmacy, Desh Bhagat University, Mandi Gobindgarh, Punjab, India"
+          ]
+        },
+        {
+          "author_position": "middle",
+          "author": {
+            "id": "https://openalex.org/A5132984736",
+            "display_name": "Tawqeer Shafi",
+            "orcid": "https://orcid.org/0009-0005-8773-3745"
+          },
+          "institutions": [
+            {
+              "id": "https://openalex.org/I3129196102",
+              "display_name": "Desh Bhagat University",
+              "ror": "https://ror.org/007n0ss86",
+              "country_code": "IN"
+            }
+          ],
+          "is_corresponding": false,
+          "raw_author_name": "Tawqeer Shafi",
+          "raw_affiliation_strings": [
+            "School of Pharmacy, Desh Bhagat University, Mandi Gobindgarh, Punjab, India"
+          ]
+        },
+        {
+          "author_position": "middle",
+          "author": {
+            "id": "https://openalex.org/A5073556771",
+            "display_name": "Shivani Malik",
+            "orcid": "https://orcid.org/0000-0002-7738-268X"
+          },
+          "institutions": [
+            {
+              "id": "https://openalex.org/I3129196102",
+              "display_name": "Desh Bhagat University",
+              "ror": "https://ror.org/007n0ss86",
+              "country_code": "IN"
+            }
+          ],
+          "is_corresponding": false,
+          "raw_author_name": "Shafkat Hussain Malik",
+          "raw_affiliation_strings": [
+            "School of Pharmacy, Desh Bhagat University, Mandi Gobindgarh, Punjab, India"
+          ]
+        },
+        {
+          "author_position": "middle",
+          "author": {
+            "id": "https://openalex.org/A5133203426",
+            "display_name": "Md Moidul Islam",
+            "orcid": "https://orcid.org/0009-0000-3856-7596"
+          },
+          "institutions": [
+            {
+              "id": "https://openalex.org/I3129196102",
+              "display_name": "Desh Bhagat University",
+              "ror": "https://ror.org/007n0ss86",
+              "country_code": "IN"
+            }
+          ],
+          "is_corresponding": true,
+          "raw_author_name": "Md Moidul Islam",
+          "raw_affiliation_strings": [
+            "School of Pharmacy, Desh Bhagat University, Mandi Gobindgarh, Punjab, India"
+          ]
+        }
+      ],
+      "mesh": [],
+      "topics": [
+        {
+          "id": "https://openalex.org/T11319",
+          "display_name": "Curcumin's Biomedical Applications",
+          "score": 0.611299991607666
+        },
+        {
+          "id": "https://openalex.org/T10091",
+          "display_name": "Malaria Research and Control",
+          "score": 0.33009999990463257
+        }
+      ]
+    }
+  ]
+}

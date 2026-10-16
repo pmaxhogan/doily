@@ -1,0 +1,124 @@
+{
+  "status": "ok",
+  "message-type": "work",
+  "message": {
+    "DOI": "10.1038/nature12373",
+    "title": ["Nanometre-scale thermometry in a living cell"],
+    "subtitle": [],
+    "container-title": ["Nature"],
+    "short-container-title": ["Nature"],
+    "ISSN": ["0028-0836", "1476-4687"],
+    "issn-type": [
+      {
+        "value": "0028-0836",
+        "type": "print"
+      },
+      {
+        "value": "1476-4687",
+        "type": "electronic"
+      }
+    ],
+    "publisher": "Springer Science and Business Media LLC",
+    "type": "journal-article",
+    "published": {
+      "date-parts": [[2013, 7, 31]]
+    },
+    "published-print": {
+      "date-parts": [[2013, 8]]
+    },
+    "published-online": {
+      "date-parts": [[2013, 7, 31]]
+    },
+    "issued": {
+      "date-parts": [[2013, 7, 31]]
+    },
+    "author": [
+      {
+        "given": "G.",
+        "family": "Kucsko",
+        "affiliation": [],
+        "sequence": "first"
+      },
+      {
+        "given": "P. C.",
+        "family": "Maurer",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "N. Y.",
+        "family": "Yao",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "M.",
+        "family": "Kubo",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "H. J.",
+        "family": "Noh",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "P. K.",
+        "family": "Lo",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "H.",
+        "family": "Park",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "given": "M. D.",
+        "family": "Lukin",
+        "affiliation": [],
+        "sequence": "additional"
+      }
+    ],
+    "license": [
+      {
+        "start": {
+          "date-parts": [[2013, 7, 31]],
+          "date-time": "2013-07-31T00:00:00Z",
+          "timestamp": 1375228800000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "http://www.springer.com/tdm"
+      }
+    ],
+    "link": [
+      {
+        "URL": "http://www.nature.com/articles/nature12373.pdf",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "http://www.nature.com/articles/nature12373",
+        "content-type": "text/html",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "http://www.nature.com/articles/nature12373.pdf",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "is-referenced-by-count": 1847,
+    "subject": [],
+    "volume": "500",
+    "issue": "7460",
+    "page": "54-58",
+    "URL": "https://doi.org/10.1038/nature12373"
+  }
+}
