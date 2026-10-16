@@ -1,0 +1,64 @@
+{
+  "paperId": "a5de30adc5c22bc86e8cfabe7fbd07c052d196a8",
+  "externalIds": {
+    "MAG": "2159974629",
+    "ArXiv": "1304.1068",
+    "PubMedCentral": "4221854",
+    "DOI": "10.1038/nature12373",
+    "CorpusId": 4314121,
+    "PubMed": "23903748"
+  },
+  "title": "Nanometer scale thermometry in a living cell",
+  "venue": "Nature",
+  "year": 2013,
+  "citationCount": 1829,
+  "isOpenAccess": true,
+  "openAccessPdf": {
+    "url": "https://www.nature.com/articles/nature12373.pdf",
+    "status": "BRONZE",
+    "license": null,
+    "disclaimer": "Notice: Paper or abstract available at https://arxiv.org/abs/1304.1068, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+  },
+  "publicationTypes": ["JournalArticle"],
+  "publicationDate": "2013-04-03",
+  "journal": {
+    "name": "Nature",
+    "pages": "54 - 58",
+    "volume": "500"
+  },
+  "authors": [
+    {
+      "authorId": "4301543",
+      "name": "G. Kucsko"
+    },
+    {
+      "authorId": "47762783",
+      "name": "P. Maurer"
+    },
+    {
+      "authorId": "4138853",
+      "name": "N. Yao"
+    },
+    {
+      "authorId": "2068210745",
+      "name": "Michael Kubo"
+    },
+    {
+      "authorId": "2250179130",
+      "name": "H. Noh"
+    },
+    {
+      "authorId": "47472726",
+      "name": "Peggy Lo"
+    },
+    {
+      "authorId": "9236657",
+      "name": "Hongkun Park"
+    },
+    {
+      "authorId": "145572474",
+      "name": "M. Lukin"
+    }
+  ],
+  "abstract": "Sensitive probing of temperature variations on nanometre scales is an outstanding challenge in many areas of modern science and technology. In particular, a thermometer capable of subdegree temperature resolution over a large range of temperatures as well as integration within a living system could provide a powerful new tool in many areas of biological, physical and chemical research. Possibilities range from the temperature-induced control of gene expression and tumour metabolism to the cell-selective treatment of disease and the study of heat dissipation in integrated circuits. By combining local light-induced heat sources with sensitive nanoscale thermometry, it may also be possible to engineer biological processes at the subcellular level. Here we demonstrate a new approach to nanoscale thermometry that uses coherent manipulation of the electronic spin associated with nitrogen\u2013vacancy colour centres in diamond. Our technique makes it possible to detect temperature variations as small as 1.8\u2009mK (a sensitivity of 9\u2009mK\u2009Hz\u22121/2) in an ultrapure bulk diamond sample. Using nitrogen\u2013vacancy centres in diamond nanocrystals (nanodiamonds), we directly measure the local thermal environment on length scales as short as 200\u2009nanometres. Finally, by introducing both nanodiamonds and gold nanoparticles into a single human embryonic fibroblast, we demonstrate temperature-gradient control and mapping at the subcellular level, enabling unique potential applications in life sciences."
+}

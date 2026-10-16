@@ -1,0 +1,248 @@
+{
+  "meta": {
+    "count": 13,
+    "page": 1,
+    "per_page": 3,
+    "cost_usd": 0.001
+  },
+  "results": [
+    {
+      "id": "https://openalex.org/A5066245772",
+      "orcid": "https://orcid.org/0000-0002-8658-1007",
+      "display_name": "Mikhail D. Lukin",
+      "works_count": 890,
+      "cited_by_count": 99142,
+      "summary_stats": {
+        "2yr_mean_citedness": 18.376344086021504,
+        "h_index": 160,
+        "i10_index": 395
+      },
+      "ids": {
+        "openalex": "https://openalex.org/A5066245772",
+        "orcid": "https://orcid.org/0000-0002-8658-1007",
+        "observed_orcids": ["https://orcid.org/0000-0002-8658-1007"]
+      },
+      "last_known_institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "country_code": "US"
+        },
+        {
+          "id": "https://openalex.org/I2801851002",
+          "display_name": "Harvard University Press",
+          "country_code": "US"
+        },
+        {
+          "id": "https://openalex.org/I4210134579",
+          "display_name": "Dana-Farber/Harvard Cancer Center",
+          "country_code": "US"
+        },
+        {
+          "id": "https://openalex.org/I63966007",
+          "display_name": "Massachusetts Institute of Technology",
+          "country_code": "US"
+        }
+      ],
+      "affiliations": [
+        {
+          "institution": {
+            "id": "https://openalex.org/I100066346",
+            "display_name": "University of Stuttgart",
+            "country_code": "DE"
+          },
+          "years": [2007, 2006]
+        },
+        {
+          "institution": {
+            "id": "https://openalex.org/I103187081",
+            "display_name": "Smithsonian Institution",
+            "country_code": "US"
+          },
+          "years": [2002, 2000]
+        },
+        {
+          "institution": {
+            "id": "https://openalex.org/I111088046",
+            "display_name": "Boston University",
+            "country_code": "US"
+          },
+          "years": [2007]
+        }
+      ],
+      "topics": [
+        {
+          "id": "https://openalex.org/T10020",
+          "display_name": "Quantum Information and Cryptography",
+          "count": 382
+        },
+        {
+          "id": "https://openalex.org/T11414",
+          "display_name": "Quantum optics and atomic interactions",
+          "count": 370
+        },
+        {
+          "id": "https://openalex.org/T10478",
+          "display_name": "Diamond and Carbon-based Materials Research",
+          "count": 253
+        },
+        {
+          "id": "https://openalex.org/T10425",
+          "display_name": "Cold Atom Physics and Bose-Einstein Condensates",
+          "count": 226
+        },
+        {
+          "id": "https://openalex.org/T11804",
+          "display_name": "Quantum many-body systems",
+          "count": 168
+        }
+      ]
+    },
+    {
+      "id": "https://openalex.org/A5087701817",
+      "orcid": "https://orcid.org/0000-0002-8658-1007",
+      "display_name": "Mikhail Lukin",
+      "works_count": 66,
+      "cited_by_count": 1866,
+      "summary_stats": {
+        "2yr_mean_citedness": 9.25,
+        "h_index": 7,
+        "i10_index": 7
+      },
+      "ids": {
+        "openalex": "https://openalex.org/A5087701817",
+        "orcid": "https://orcid.org/0000-0002-8658-1007",
+        "observed_orcids": ["https://orcid.org/0000-0002-8658-1007"]
+      },
+      "last_known_institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "country_code": "US"
+        }
+      ],
+      "affiliations": [
+        {
+          "institution": {
+            "id": "https://openalex.org/I136199984",
+            "display_name": "Harvard University",
+            "country_code": "US"
+          },
+          "years": [2026, 2025, 2024]
+        },
+        {
+          "institution": {
+            "id": "https://openalex.org/I17301866",
+            "display_name": "University of Alabama",
+            "country_code": "US"
+          },
+          "years": [1993]
+        }
+      ],
+      "topics": [
+        {
+          "id": "https://openalex.org/T10020",
+          "display_name": "Quantum Information and Cryptography",
+          "count": 21
+        },
+        {
+          "id": "https://openalex.org/T10478",
+          "display_name": "Diamond and Carbon-based Materials Research",
+          "count": 21
+        },
+        {
+          "id": "https://openalex.org/T10425",
+          "display_name": "Cold Atom Physics and Bose-Einstein Condensates",
+          "count": 16
+        },
+        {
+          "id": "https://openalex.org/T11414",
+          "display_name": "Quantum optics and atomic interactions",
+          "count": 16
+        },
+        {
+          "id": "https://openalex.org/T11804",
+          "display_name": "Quantum many-body systems",
+          "count": 14
+        }
+      ]
+    },
+    {
+      "id": "https://openalex.org/A5110007609",
+      "orcid": null,
+      "display_name": "M. D. Lukin",
+      "works_count": 70,
+      "cited_by_count": 12362,
+      "summary_stats": {
+        "2yr_mean_citedness": 0,
+        "h_index": 41,
+        "i10_index": 52
+      },
+      "ids": {
+        "openalex": "https://openalex.org/A5110007609",
+        "orcid": null,
+        "observed_orcids": []
+      },
+      "last_known_institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "country_code": "US"
+        }
+      ],
+      "affiliations": [
+        {
+          "institution": {
+            "id": "https://openalex.org/I103187081",
+            "display_name": "Smithsonian Institution",
+            "country_code": "US"
+          },
+          "years": [2007]
+        },
+        {
+          "institution": {
+            "id": "https://openalex.org/I136199984",
+            "display_name": "Harvard University",
+            "country_code": "US"
+          },
+          "years": [2026, 2025, 2021]
+        },
+        {
+          "institution": {
+            "id": "https://openalex.org/I149899117",
+            "display_name": "Max Planck Society",
+            "country_code": "DE"
+          },
+          "years": [2017, 2014]
+        }
+      ],
+      "topics": [
+        {
+          "id": "https://openalex.org/T10020",
+          "display_name": "Quantum Information and Cryptography",
+          "count": 28
+        },
+        {
+          "id": "https://openalex.org/T10478",
+          "display_name": "Diamond and Carbon-based Materials Research",
+          "count": 25
+        },
+        {
+          "id": "https://openalex.org/T10382",
+          "display_name": "Quantum and electron transport phenomena",
+          "count": 24
+        },
+        {
+          "id": "https://openalex.org/T11414",
+          "display_name": "Quantum optics and atomic interactions",
+          "count": 21
+        },
+        {
+          "id": "https://openalex.org/T10425",
+          "display_name": "Cold Atom Physics and Bose-Einstein Condensates",
+          "count": 14
+        }
+      ]
+    }
+  ]
+}

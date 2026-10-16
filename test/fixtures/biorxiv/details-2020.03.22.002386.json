@@ -1,0 +1,58 @@
+{
+  "messages": [
+    {
+      "status": "ok",
+      "category": "all"
+    }
+  ],
+  "collection": [
+    {
+      "title": "A SARS-CoV-2-Human Protein-Protein Interaction Map Reveals Drug Targets and Potential Drug-Repurposing",
+      "authors": "Gordon, D. E.; Jang, G. M.; Bouhaddou, M.; Xu, J.; Obernier, K.; O'Meara, M. J.; Guo, J. Z.; Swaney, D. L.; Tummino, T. A.; Huttenhain, R.; Kaake, R.; Richards, A. L.; Tutuncuoglu, B.; Foussard, H.; B",
+      "author_corresponding": "Nevan J. Krogan",
+      "author_corresponding_institution": "QBI COVID-19 Research Group (QCRG), San Francisco, CA, 94158, USA; University of California San Francisco, Quantitative Biosciences Institute (QBI), San Francis",
+      "doi": "10.1101/2020.03.22.002386",
+      "date": "2020-03-22",
+      "version": "1",
+      "type": "new results",
+      "license": "cc_by",
+      "category": "systems biology",
+      "jatsxml": "https://www.biorxiv.org/content/early/2020/03/22/2020.03.22.002386.source.xml",
+      "abstract": "An outbreak of the novel coronavirus SARS-CoV-2, the causative agent of COVID-19 respiratory disease, has infected over 290,000 people since the end of 2019, killed over 12,000, and caused worldwide social and economic disruption1,2. There are currently no antiviral drugs with proven efficacy nor are there vaccines for its prevention. Unfortunately, the scientific community has little knowledge of",
+      "published": "10.1038/s41586-020-2286-9",
+      "server": "bioRxiv"
+    },
+    {
+      "title": "A SARS-CoV-2-Human Protein-Protein Interaction Map Reveals Drug Targets and Potential Drug-Repurposing",
+      "authors": "Gordon, D. E.; Jang, G. M.; Bouhaddou, M.; Xu, J.; Obernier, K.; O'Meara, M. J.; Guo, J. Z.; Swaney, D. L.; Tummino, T. A.; Huttenhain, R.; Kaake, R.; Richards, A. L.; Tutuncuoglu, B.; Foussard, H.; B",
+      "author_corresponding": "Nevan J. Krogan",
+      "author_corresponding_institution": "QBI COVID-19 Research Group (QCRG), San Francisco, CA, 94158, USA; University of California San Francisco, Quantitative Biosciences Institute (QBI), San Francis",
+      "doi": "10.1101/2020.03.22.002386",
+      "date": "2020-03-23",
+      "version": "2",
+      "type": "new results",
+      "license": "cc_by",
+      "category": "systems biology",
+      "jatsxml": "https://www.biorxiv.org/content/early/2020/03/23/2020.03.22.002386.source.xml",
+      "abstract": "An outbreak of the novel coronavirus SARS-CoV-2, the causative agent of COVID-19 respiratory disease, has infected over 290,000 people since the end of 2019, killed over 12,000, and caused worldwide social and economic disruption1,2. There are currently no antiviral drugs with proven efficacy nor are there vaccines for its prevention. Unfortunately, the scientific community has little knowledge of",
+      "published": "10.1038/s41586-020-2286-9",
+      "server": "bioRxiv"
+    },
+    {
+      "title": "A SARS-CoV-2-Human Protein-Protein Interaction Map Reveals Drug Targets and Potential Drug-Repurposing",
+      "authors": "Gordon, D. E.; Jang, G. M.; Bouhaddou, M.; Xu, J.; Obernier, K.; O'Meara, M. J.; Guo, J. Z.; Swaney, D. L.; Tummino, T. A.; Huttenhain, R.; Kaake, R. M.; Richards, A. L.; Tutuncuoglu, B.; Foussard, H.",
+      "author_corresponding": "Nevan J. Krogan",
+      "author_corresponding_institution": "QBI COVID-19 Research Group (QCRG), San Francisco, CA, 94158, USA; University of California San Francisco, Quantitative Biosciences Institute (QBI), San Francis",
+      "doi": "10.1101/2020.03.22.002386",
+      "date": "2020-03-27",
+      "version": "3",
+      "type": "new results",
+      "license": "cc_by",
+      "category": "systems biology",
+      "jatsxml": "https://www.biorxiv.org/content/early/2020/03/27/2020.03.22.002386.source.xml",
+      "abstract": "An outbreak of the novel coronavirus SARS-CoV-2, the causative agent of COVID-19 respiratory disease, has infected over 290,000 people since the end of 2019, killed over 12,000, and caused worldwide social and economic disruption1,2. There are currently no antiviral drugs with proven efficacy nor are there vaccines for its prevention. Unfortunately, the scientific community has little knowledge of",
+      "published": "10.1038/s41586-020-2286-9",
+      "server": "bioRxiv"
+    }
+  ]
+}

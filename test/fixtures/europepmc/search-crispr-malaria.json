@@ -1,0 +1,454 @@
+{
+  "version": "6.9",
+  "hitCount": 5140,
+  "nextCursorMark": "AoIIQIHUUSg1NjM5Njk0Mg==",
+  "resultList": {
+    "result": [
+      {
+        "id": "PPR1330588",
+        "source": "PPR",
+        "doi": "10.64898/2026.09.26.26364094",
+        "title": "Integrated CRISPR-based detection of HIV, tuberculosis, malaria, and resistance-associated variants",
+        "authorString": "Jain AS, Si A, Yap J, Schwartz LA, Susilo C, Balamurugan A, Neal A, Le Roch KG, Yang O, Garner O, Kamariza M.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Jain AS",
+              "lastName": "Jain",
+              "firstName": "Ashvi",
+              "initials": "AS"
+            },
+            {
+              "fullName": "Si A",
+              "lastName": "Si",
+              "firstName": "Austin",
+              "initials": "A"
+            },
+            {
+              "fullName": "Yap J",
+              "lastName": "Yap",
+              "firstName": "Joshua",
+              "initials": "J"
+            },
+            {
+              "fullName": "Schwartz LA",
+              "lastName": "Schwartz",
+              "firstName": "Lilith",
+              "initials": "LA"
+            }
+          ]
+        },
+        "pubYear": "2026",
+        "abstractText": "HIV, tuberculosis (TB) and malaria are major infectious diseases that frequently co-circulate in high-burden settings, yet their diagnostic pathways remain largely disease-specific, complicating detection of coinfection and integration of antimicrobial-resistance testing. Here we developed HTM CARMEN, a highly multiplexed CRISPR-Cas13a molecular-testing framework that integrates detection of HIV-1, HIV-2, four  Plasmodium species and  Mycobacterium tuberculosis (Mtb) with detection of isoniazid-resistance-associated  inhA and  katG variants. We find that HTM CARMEN retained target selectivity and single-nucleotide discrimination across  in vitro experiments and clinically relevant sample matrices, including whole blood, serum, sputum and dried blood spots. Across 20 contrived samples for each condition, the HTM panel supported detection of low-abundance targets across multiple matrices and frequently detected greater number of low-input samples as positive than qPCR under the conditions tested. In contrived  P. falciparum /HIV-1 and Mtb/HIV-1 coinfections, both pathogens were simultaneously detected across a range of relative target concentrations. Using confirmed-positive clinical samples, HTM CARMEN achieved positive percent agreement of 95% for malaria (19/20), 95% for HIV-1 (19/20) and 100% for Mtb (30/30), with 100% negative percent agreement for each target in the confirmed-negative samples. Both HIV-1 and Mtb were additionally detected in all nine confirmed-positive HI",
+        "pubTypeList": {
+          "pubType": ["Preprint"]
+        },
+        "isOpenAccess": "N",
+        "inEPMC": "N",
+        "inPMC": "N",
+        "hasPDF": "N",
+        "citedByCount": 0,
+        "firstPublicationDate": "2026-09-29",
+        "bookOrReportDetails": {
+          "publisher": "medRxiv",
+          "yearOfPublication": 2026
+        }
+      },
+      {
+        "id": "42661667",
+        "source": "MED",
+        "pmid": "42661667",
+        "pmcid": "PMC13518104",
+        "doi": "10.7759/cureus.113451",
+        "title": "Identifying Transgenic Approaches to Mitigate Vector Transmission of Malaria by Anopheles gambiae.",
+        "authorString": "Kilian ST, Cerezo SA, Sanchez RL.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Kilian ST",
+              "lastName": "Kilian",
+              "firstName": "Scott T",
+              "initials": "ST",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Applied Biomedical Sciences, University of the Incarnate Word School of Osteopathic Medicine, San Antonio, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Cerezo SA",
+              "lastName": "Cerezo",
+              "firstName": "Samuel A",
+              "initials": "SA",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Entomology, Texas A&M University, College Station, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Sanchez RL",
+              "lastName": "Sanchez",
+              "firstName": "Rebecca L",
+              "initials": "RL",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Applied Biomedical Sciences, University of the Incarnate Word School of Osteopathic Medicine, San Antonio, USA."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "journalInfo": {
+          "issue": "7",
+          "volume": "18",
+          "dateOfPublication": "2026 Jul",
+          "yearOfPublication": 2026,
+          "printPublicationDate": "2026-07-01",
+          "journal": {
+            "title": "Cureus",
+            "medlineAbbreviation": "Cureus",
+            "issn": "2168-8184",
+            "essn": "2168-8184",
+            "isoabbreviation": "Cureus",
+            "nlmid": "101596737"
+          }
+        },
+        "pubYear": "2026",
+        "pageInfo": "e113451",
+        "abstractText": "Malaria, historically and contemporarily, poses a global health threat. As humans have engaged in control efforts with mosquitoes, the selection pressures placed upon mosquitoes have furthered the development of resistance to typical pyrethroids and other insecticides. Common management strategies such as insecticide-treated nets and residual spraying are proving to be more unreliable. As a result, novel control strategies must be developed to address the arms race between humans and the primary malaria vector, <i>Anopheles gambiae</i>. The introduction of transgenic mosquitoes and the use of Wolbachia offer techniques that decrease the use of chemical means of control. These techniques offer specifically targeted approaches to managing vector populations while avoiding further insecticide resistance. In this review, we delve into novel control strategies currently being used for <i>A. gambiae</i> and consider potential barriers for their use. A focused literature search was conducted using PubMed and Google Scholar with combinations of the terms \"Anopheles gambiae\", \"malaria vector\", \"gene drive\", \"Wolbachia\", \"CRISPR\", and \"transgenic mosquitoes\", with emphasis on studies published in the last 10 years.",
+        "pubTypeList": {
+          "pubType": ["review-article", "Review", "Journal Article"]
+        },
+        "keywordList": {
+          "keyword": ["Malaria", "Transgenic", "Anopheles", "Vector Transmission", "Gene Drive"]
+        },
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "citedByCount": 0,
+        "firstPublicationDate": "2026-07-27",
+        "fullTextIdList": {
+          "fullTextId": ["PMC13518104"]
+        },
+        "license": "cc by"
+      },
+      {
+        "id": "42276421",
+        "source": "MED",
+        "pmid": "42276421",
+        "doi": "10.1016/j.mimet.2026.107585",
+        "title": "Extract-free one-pot ambient RPA-CRISPR detection of Plasmodium in whole blood.",
+        "authorString": "Liao J, Su Y, Jiang F.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Liao J",
+              "lastName": "Liao",
+              "firstName": "Jipei",
+              "initials": "J",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Pathology, University of Maryland School of Medicine, Baltimore, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Su Y",
+              "lastName": "Su",
+              "firstName": "Yun",
+              "initials": "Y",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Medicine, Nanjing University of Chinese Medicine, Nanjing, China."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Jiang F",
+              "lastName": "Jiang",
+              "firstName": "Feng",
+              "initials": "F",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Pathology, University of Maryland School of Medicine, Baltimore, USA; BIOTARGET DX LLC, Baltimore, USA. Electronic address: fjiang@som.umaryland.edu."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "journalInfo": {
+          "volume": "247",
+          "dateOfPublication": "2026 Aug",
+          "yearOfPublication": 2026,
+          "printPublicationDate": "2026-08-01",
+          "journal": {
+            "title": "Journal of microbiological methods",
+            "medlineAbbreviation": "J Microbiol Methods",
+            "issn": "0167-7012",
+            "essn": "1872-8359",
+            "isoabbreviation": "J Microbiol Methods",
+            "nlmid": "8306883"
+          }
+        },
+        "pubYear": "2026",
+        "pageInfo": "107585",
+        "abstractText": "<h4>Background</h4>Malaria caused by Plasmodium remains a major global health burden, especially in resource-limited settings where rapid and accurate diagnosis is essential. Most molecular diagnostic methods require DNA extraction, thermal cycling, and specialized laboratory infrastructure, limiting field applicability. We aimed to develop an extraction-free, one-pot CRISPR-based platform for rapid Plasmodium detection directly from whole blood under ambient conditions.<h4>Methods</h4>Crude blood lysates were directly applied to a one-pot recombinase polymerase amplification (RPA)-CRISPR assay coupled with lateral flow detection. Analytical sensitivity and specificity were evaluated using purified DNA and whole-blood lysates. Diagnostic performance was evaluated using 116 malaria-positive specimens and 109 malaria-negative controls for the detection of Plasmodium falciparum and Plasmodium vivax, the two species responsible for most global malaria cases.<h4>Results</h4>The extract-free RPA-CRISPR assay achieved a detection limit of 100 copies/\u03bcL from crude blood lysates, corresponding to approximately 12-20 parasites/\u03bcL. The assay successfully detected both P. falciparum and P. vivax without cross-reactivity. Clinical evaluation showed 93.1% sensitivity and 100% specificity compared with reference qPCR. Sensitivity reached 97.8% for high-density infections, 95.1% for moderate-density infections, and 82.8% for low-density infections. The workflow was completed within 40\u00a0min at",
+        "pubTypeList": {
+          "pubType": ["Journal Article"]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Humans"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Plasmodium",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics"
+                  },
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "IP",
+                    "qualifierName": "isolation & purification"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Plasmodium falciparum",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics"
+                  },
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "IP",
+                    "qualifierName": "isolation & purification"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Plasmodium vivax",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics"
+                  },
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "IP",
+                    "qualifierName": "isolation & purification"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Malaria",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "BL",
+                    "qualifierName": "blood"
+                  },
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "DI",
+                    "qualifierName": "diagnosis"
+                  },
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "PS",
+                    "qualifierName": "parasitology"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "DNA, Protozoan",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics"
+                  },
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "IP",
+                    "qualifierName": "isolation & purification"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Molecular Diagnostic Techniques",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "MT",
+                    "qualifierName": "methods"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Sensitivity and Specificity"
+            }
+          ]
+        },
+        "keywordList": {
+          "keyword": [
+            "Plasmodium",
+            "Ambient temperature",
+            "Point-of-care",
+            "Malaria Diagnostics",
+            "Crispr-cas12a",
+            "One-pot Detection",
+            "Extract-free"
+          ]
+        },
+        "isOpenAccess": "N",
+        "inEPMC": "N",
+        "inPMC": "N",
+        "hasPDF": "N",
+        "citedByCount": 1,
+        "firstPublicationDate": "2026-06-11"
+      },
+      {
+        "id": "PPR1262371",
+        "source": "PPR",
+        "doi": "10.21203/rs.3.rs-10062394/v1",
+        "title": "CRISPR/Cas12a-based method to discriminate Plasmodium ovale wallikeri and Plasmodium ovale curtisi",
+        "authorString": "Ruan S, Zhao X, Yu S, Ji P, Li S, Zhang H, Deng Y, Zhao D, Zhou R.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Ruan S",
+              "lastName": "Ruan",
+              "firstName": "Shucheng",
+              "initials": "S"
+            },
+            {
+              "fullName": "Zhao X",
+              "lastName": "Zhao",
+              "firstName": "Xiaofei",
+              "initials": "X"
+            },
+            {
+              "fullName": "Yu S",
+              "lastName": "Yu",
+              "firstName": "Songcheng",
+              "initials": "S"
+            },
+            {
+              "fullName": "Ji P",
+              "lastName": "Ji",
+              "firstName": "Penghui",
+              "initials": "P"
+            }
+          ]
+        },
+        "pubYear": "2026",
+        "abstractText": "<title>Abstract</title>  <p>  Background Plasmodium ovale  (  <italic>P. ovale</italic>  ) is one of five malaria parasites known to infect humans. Current research confirms the existence of two genetically distinct species,  <italic>P. ovale wallikeri</italic>  (  <italic>Pow</italic>  ) and  <italic>P. ovale curtisi</italic>  (  <italic>Poc</italic>  ), which differ in their pathogenicity and virulence in humans. Accurate discrimination between these species is crucial for appropriate patient management and epidemiological surveillance. Commonly employed methods such as qPCR and serological assays are limited by high cost, long processing times, and inadequate sensitivity or specificity. Method  We designed five candidate crRNAs and selected two highly specific ones to construct separate detection systems: one for  <italic>Pow</italic>  and another for  <italic>Poc</italic>  . PCR-CRISPR/Cas12a detection system was then established and optimized. The limit of detection and specificity of the system were evaluated, and its detection performance was further validated using clinical samples. Results  The  <italic>Pow</italic>  CRISPR/Cas12a system demonstrated the detection limit of 100 copies/\u00b5L, while the  <italic>Poc</italic>  system achieved the detection limit of 30 copies/\u00b5L, with no cross-reactivity observed between the two species, indicating high sensitivity and specificity. We further validated the assay using 137 clinical samples from imported malaria patients, yiel",
+        "pubTypeList": {
+          "pubType": ["Preprint"]
+        },
+        "isOpenAccess": "N",
+        "inEPMC": "N",
+        "inPMC": "N",
+        "hasPDF": "N",
+        "citedByCount": 0,
+        "firstPublicationDate": "2026-06-30",
+        "bookOrReportDetails": {
+          "publisher": "Research Square",
+          "yearOfPublication": 2026
+        }
+      },
+      {
+        "id": "PPR1318195",
+        "source": "PPR",
+        "doi": "10.64898/2026.09.09.750417",
+        "title": "Functional disruption of  <i>vgsc</i>  reveals haplosufficiency with implications for insecticide resistance and genetic control in  <i>Anopheles gambiae</i>",
+        "authorString": "Pescod P, Hall A, Wakley S, Craske M, Marston L, Anthousi A, Siniscalchi C, Shepherd J, Kelly M, Mackey S, Blinkhorn K, Nolan T.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Pescod P",
+              "lastName": "Pescod",
+              "firstName": "Poppy",
+              "initials": "P"
+            },
+            {
+              "fullName": "Hall A",
+              "lastName": "Hall",
+              "firstName": "Ashley",
+              "initials": "A"
+            },
+            {
+              "fullName": "Wakley S",
+              "lastName": "Wakley",
+              "firstName": "Sian",
+              "initials": "S"
+            },
+            {
+              "fullName": "Craske M",
+              "lastName": "Craske",
+              "firstName": "Matt",
+              "initials": "M"
+            }
+          ]
+        },
+        "pubYear": "2026",
+        "abstractText": "Pyrethroid insecticides on bednets have been the mainstay of malaria control since the millennium by killing mosquitoes. The target of these pyrethroids is the voltage-gated sodium channel (VGSC). Resistance mutations at the pyrethroid binding site (L995F/S) have spread widely, but functional tools to dissect  vgsc itself have lagged behind the population-genetic surveillance data. Manipulation of  vgsc via knockout or functional mutation would be a vital step towards understanding its contribution to insecticide resistance, as well as exploring its utility as a genetic control target. Here we generate and characterise two CRISPR-edited  An. gambiae lines: an exonic knockout (  vgscKO ) and an intronic CRISPR-mediated cassette exchange intermediate (  vgscInt ) sited near SNPs linked to L995F. Both insertions are viable and fertile in heterozygosity but homozygous lethal, demonstrating that  vgsc is haplosufficient and therefore the locus represents a viable target for population suppression genetic control strategies. These insertions can also be used as balancers for studying  vgsc mutations without the confounding effects of wild type alleles. We investigate the insecticide resistance phenotype of  vgscKO and demonstrate that knocking out one copy of  vgsc produces reduced susceptibility to deltamethrin and DDT at sub-discriminating doses, with implications for  vgsc -mediated mechanisms of insecticide resistance.  <h4>Author summary</h4>  With malaria cases once more on t",
+        "pubTypeList": {
+          "pubType": ["Preprint"]
+        },
+        "isOpenAccess": "N",
+        "inEPMC": "N",
+        "inPMC": "N",
+        "hasPDF": "N",
+        "citedByCount": 0,
+        "firstPublicationDate": "2026-09-11",
+        "license": "cc by",
+        "bookOrReportDetails": {
+          "publisher": "bioRxiv",
+          "yearOfPublication": 2026
+        }
+      }
+    ]
+  }
+}

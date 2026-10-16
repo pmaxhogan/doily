@@ -1,0 +1,21 @@
+{
+  "header": {
+    "type": "esearch",
+    "version": "0.3"
+  },
+  "esearchresult": {
+    "count": "222",
+    "retmax": "5",
+    "retstart": "0",
+    "querykey": "1",
+    "webenv": "MCID_6ad1beef1129e9ee3d03c55b",
+    "idlist": ["42714387", "42625514", "42504823", "42457405", "42406963"],
+    "translationset": [
+      {
+        "from": "malaria[mh]",
+        "to": "\"malaria\"[MeSH Terms]"
+      }
+    ],
+    "querytranslation": "\"malaria\"[MeSH Terms] AND \"crispr\"[Title/Abstract]"
+  }
+}

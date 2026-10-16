@@ -1,0 +1,196 @@
+{
+  "header": {
+    "type": "esummary",
+    "version": "0.3"
+  },
+  "result": {
+    "42625514": {
+      "uid": "42625514",
+      "pubdate": "2026 Oct 7",
+      "epubdate": "",
+      "source": "Genetics",
+      "authors": [
+        {
+          "name": "Carballar-Lejaraz\u00fa R",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "McNeely B",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Dong Y",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Pham TB",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Tushar T",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Owusu-Frimpong I",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Dimopoulos G",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "James AA",
+          "authtype": "Author",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "James AA",
+      "title": "Impact of naturally occurring target-site polymorphisms on an autonomous Cas9/guide RNA-based gene drive system for population modification of Anopheles gambiae s.l.",
+      "volume": "234",
+      "issue": "2",
+      "pages": "",
+      "issn": "0016-6731",
+      "essn": "1943-2631",
+      "pubtype": ["Journal Article"],
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42625514"
+        },
+        {
+          "idtype": "pmc",
+          "idtypen": 8,
+          "value": "PMC13643801"
+        },
+        {
+          "idtype": "pmcid",
+          "idtypen": 5,
+          "value": "pmc-id: PMC13643801;"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1093/genetics/iyag221"
+        },
+        {
+          "idtype": "pii",
+          "idtypen": 4,
+          "value": "8767561"
+        }
+      ],
+      "fulljournalname": "Genetics",
+      "elocationid": "doi: 10.1093/genetics/iyag221",
+      "sortpubdate": "2026/10/07 00:00"
+    },
+    "42714387": {
+      "uid": "42714387",
+      "pubdate": "2026 Oct 7",
+      "epubdate": "2026 Sep 9",
+      "source": "Antimicrob Agents Chemother",
+      "authors": [
+        {
+          "name": "Mukherjee A",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Assefa AB",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Turlo CV",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Needham LC",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Shoue D",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Qahash T",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Belachew M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Tadesse D",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Kassie E",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Berihun M",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Brhane BG",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Parr JB",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "Ferdig MT",
+          "authtype": "Author",
+          "clusterid": ""
+        },
+        {
+          "name": "MAREE Consortium",
+          "authtype": "CollectiveName",
+          "clusterid": ""
+        }
+      ],
+      "lastauthor": "Ferdig MT",
+      "title": "Functional validation of the Plasmodium falciparum K13 C580Y mutation in recently collected Ethiopian isolates.",
+      "volume": "70",
+      "issue": "10",
+      "pages": "e0049526",
+      "issn": "0066-4804",
+      "essn": "1098-6596",
+      "pubtype": ["Journal Article"],
+      "articleids": [
+        {
+          "idtype": "pubmed",
+          "idtypen": 1,
+          "value": "42714387"
+        },
+        {
+          "idtype": "doi",
+          "idtypen": 3,
+          "value": "10.1128/aac.00495-26"
+        }
+      ],
+      "fulljournalname": "Antimicrobial agents and chemotherapy",
+      "elocationid": "doi: 10.1128/aac.00495-26",
+      "sortpubdate": "2026/10/07 00:00"
+    },
+    "uids": ["42714387", "42625514"]
+  }
+}

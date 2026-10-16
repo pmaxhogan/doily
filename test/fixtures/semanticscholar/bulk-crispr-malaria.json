@@ -1,0 +1,285 @@
+{
+  "total": 551,
+  "token": null,
+  "data": [
+    {
+      "paperId": "000a1c0af10da7ca41a816331ee90337b9eff098",
+      "externalIds": {
+        "PubMedCentral": "13064676",
+        "DOI": "10.1128/mbio.03691-25",
+        "CorpusId": 286584440,
+        "PubMed": "41841738"
+      },
+      "title": "Functional assessment of prevalent kelch13 mutations reveals high-level artemisinin resistance potential in Bangladeshi Plasmodium falciparum",
+      "venue": "mBio",
+      "year": 2026,
+      "citationCount": 2,
+      "openAccessPdf": {
+        "url": "https://doi.org/10.1128/mbio.03691-25",
+        "status": "GOLD",
+        "license": "CCBY"
+      },
+      "authors": [
+        {
+          "authorId": "22541482",
+          "name": "Maisha Khair Nima"
+        },
+        {
+          "authorId": "2053736062",
+          "name": "Nirjhar Bhattacharyya"
+        },
+        {
+          "authorId": "4773033",
+          "name": "Douglas A. Shoue"
+        },
+        {
+          "authorId": "2339466068",
+          "name": "Jungyoon Park"
+        },
+        {
+          "authorId": "22421136",
+          "name": "C. S. Phru"
+        },
+        {
+          "authorId": "1938518560",
+          "name": "Saiful Arefeen Sazed"
+        },
+        {
+          "authorId": "2353250534",
+          "name": "Prasad Padmanabhan"
+        },
+        {
+          "authorId": "2358192237",
+          "name": "Sudhir Kumar"
+        },
+        {
+          "authorId": "2246627228",
+          "name": "Mohammad Shafiul Alam"
+        },
+        {
+          "authorId": "2608768",
+          "name": "M. Ferdig"
+        },
+        {
+          "authorId": "2308729605",
+          "name": "Angana Mukherjee"
+        }
+      ]
+    },
+    {
+      "paperId": "0096a5e709c80e8e3c040be800642df18d370709",
+      "externalIds": {
+        "DOI": "10.1158/1538-7445.am2026-437",
+        "CorpusId": 287133306
+      },
+      "title": "Abstract 437: Targeting RNA demethylase ALKBH5 with mefloquine enhances antitumor immunity and reduces osteosarcoma progression and metastasis.",
+      "venue": "Cancer Research",
+      "year": 2026,
+      "citationCount": 0,
+      "openAccessPdf": {
+        "url": "",
+        "status": null,
+        "license": null
+      },
+      "authors": [
+        {
+          "authorId": "2329414184",
+          "name": "V. Mai"
+        },
+        {
+          "authorId": "1709014544",
+          "name": "Daisy Medina"
+        },
+        {
+          "authorId": "2385320055",
+          "name": "Manjeet K. Rao"
+        }
+      ]
+    },
+    {
+      "paperId": "00d582c703657d66cbd74e50956f29856e20e850",
+      "externalIds": {
+        "PubMedCentral": "13439923",
+        "DOI": "10.1093/g3journal/jkaf246",
+        "CorpusId": 278325949,
+        "PubMed": "41159566"
+      },
+      "title": "The nanosd integral gene drive enables population modification of the malaria vector Anopheles gambiae",
+      "venue": "bioRxiv",
+      "year": 2025,
+      "citationCount": 5,
+      "openAccessPdf": {
+        "url": "https://academic.oup.com/g3journal/advance-article-pdf/doi/10.1093/g3journal/jkaf246/65023133/jkaf246.pdf",
+        "status": "GOLD",
+        "license": "CCBY"
+      },
+      "authors": [
+        {
+          "authorId": "2357588771",
+          "name": "Pei-Shi Yen"
+        },
+        {
+          "authorId": "51256850",
+          "name": "Sebald A. N. Verkuijl"
+        },
+        {
+          "authorId": "1818506",
+          "name": "Paolo Capriotti"
+        },
+        {
+          "authorId": null,
+          "name": "Giuseppe Del Corsano"
+        },
+        {
+          "authorId": "2345918657",
+          "name": "Calvin Yee"
+        },
+        {
+          "authorId": "12903892",
+          "name": "Astrid Hoermann"
+        },
+        {
+          "authorId": "23749904",
+          "name": "M. G. Inghilterra"
+        },
+        {
+          "authorId": "2359133838",
+          "name": "Irati Aramburu-Gonzalez"
+        },
+        {
+          "authorId": "2441777701",
+          "name": "Moeez A Khan"
+        },
+        {
+          "authorId": "3681512",
+          "name": "D. Vlachou"
+        },
+        {
+          "authorId": "2265364768",
+          "name": "G. K. Christophides"
+        },
+        {
+          "authorId": "6277169",
+          "name": "N. Windbichler"
+        }
+      ]
+    },
+    {
+      "paperId": "016d8a5b6cee2ddd39bb3f1d9d54f25b52f83d6a",
+      "externalIds": {
+        "MAG": "3090321192",
+        "PubMedCentral": "7528073",
+        "DOI": "10.1038/s42003-020-01203-w",
+        "CorpusId": 222093880,
+        "PubMed": "32999445"
+      },
+      "title": "Regulatory gene function handoff allows essential gene loss in mosquitoes",
+      "venue": "Communications Biology",
+      "year": 2020,
+      "citationCount": 13,
+      "openAccessPdf": {
+        "url": "https://www.nature.com/articles/s42003-020-01203-w.pdf",
+        "status": "GOLD",
+        "license": "CCBY"
+      },
+      "authors": [
+        {
+          "authorId": "2488684482",
+          "name": "Alys M. Cheatle Jarvela"
+        },
+        {
+          "authorId": "1978595360",
+          "name": "Catherine S Trelstad"
+        },
+        {
+          "authorId": "4785130",
+          "name": "L. Pick"
+        }
+      ]
+    },
+    {
+      "paperId": "0188693e505ea0515997604b55c9c6d55a570d3c",
+      "externalIds": {
+        "PubMedCentral": "11550206",
+        "DOI": "10.1016/j.ijpddr.2024.100568",
+        "CorpusId": 273705654,
+        "PubMed": "39476461"
+      },
+      "title": "Rapid detection of mutations in the suspected piperaquine resistance gene E415G-exo in Plasmodium falciparum exonuclease via AS\u2012PCR and RAA with CRISPR/Cas12a",
+      "venue": "International Journal for Parasitology: Drugs and Drug Resistance",
+      "year": 2024,
+      "citationCount": 8,
+      "openAccessPdf": {
+        "url": "https://doi.org/10.1016/j.ijpddr.2024.100568",
+        "status": "GOLD",
+        "license": "CCBY"
+      },
+      "authors": [
+        {
+          "authorId": "2115718167",
+          "name": "Huiyi Zhu"
+        },
+        {
+          "authorId": "2308000626",
+          "name": "Daiqian Zhu"
+        },
+        {
+          "authorId": "2212072541",
+          "name": "Yu-Ting Li"
+        },
+        {
+          "authorId": "2117015964",
+          "name": "Yun Li"
+        },
+        {
+          "authorId": "2118944908",
+          "name": "Xiaonan Song"
+        },
+        {
+          "authorId": "2307626790",
+          "name": "Jin-Yu Mo"
+        },
+        {
+          "authorId": "2116179490",
+          "name": "Long Liu"
+        },
+        {
+          "authorId": "2125029571",
+          "name": "Zhixin Liu"
+        },
+        {
+          "authorId": "2329493725",
+          "name": "Siqi Wang"
+        },
+        {
+          "authorId": "2024185269",
+          "name": "Yi Yao"
+        },
+        {
+          "authorId": "2328621622",
+          "name": "He Yan"
+        },
+        {
+          "authorId": "47822577",
+          "name": "Kai Wu"
+        },
+        {
+          "authorId": "2296254207",
+          "name": "Wei Wang"
+        },
+        {
+          "authorId": "2297647151",
+          "name": "Jianhai Yin"
+        },
+        {
+          "authorId": "2328591924",
+          "name": "Min Lin"
+        },
+        {
+          "authorId": "2307865485",
+          "name": "Jian Li"
+        }
+      ]
+    }
+  ]
+}

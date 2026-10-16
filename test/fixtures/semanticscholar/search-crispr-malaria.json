@@ -1,0 +1,267 @@
+{
+  "total": 315260,
+  "offset": 0,
+  "next": 5,
+  "data": [
+    {
+      "paperId": "7cc2deb109bb834a45685d0f84b0b5227dbcaf8e",
+      "externalIds": {
+        "PubMedCentral": "11742230",
+        "DOI": "10.1186/s12936-025-05243-7",
+        "CorpusId": 275605813,
+        "PubMed": "39825389"
+      },
+      "title": "Integrating malaria vaccine and CRISPR/Cas9 gene drive: a comprehensive strategy for accelerated malaria eradication",
+      "venue": "Malaria Journal",
+      "year": 2025,
+      "citationCount": 6,
+      "isOpenAccess": true,
+      "openAccessPdf": {
+        "url": "https://doi.org/10.1186/s12936-025-05243-7",
+        "status": "GOLD",
+        "license": "CCBYNCND",
+        "disclaimer": "Notice: Paper or abstract available at https://pmc.ncbi.nlm.nih.gov/articles/PMC11742230, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+      },
+      "publicationDate": "2025-01-17",
+      "journal": {
+        "name": "Malaria Journal",
+        "volume": "24"
+      },
+      "authors": [
+        {
+          "authorId": "2276506173",
+          "name": "Israel Charles Abraham"
+        },
+        {
+          "authorId": "2279220769",
+          "name": "J. Aboje"
+        },
+        {
+          "authorId": "2262956284",
+          "name": "B. Ukoaka"
+        },
+        {
+          "authorId": "2330943406",
+          "name": "kehinde Tom-Ayegunle"
+        },
+        {
+          "authorId": "2144942123",
+          "name": "M. Amjad"
+        },
+        {
+          "authorId": "2330892898",
+          "name": "Anas A. Abdulkader"
+        },
+        {
+          "authorId": "2261848845",
+          "name": "C. Agbo"
+        },
+        {
+          "authorId": "2189403132",
+          "name": "O. A. Akinruli"
+        },
+        {
+          "authorId": "2340677731",
+          "name": "Taiwo Rebecca Akisanmi"
+        },
+        {
+          "authorId": "2340675784",
+          "name": "E. Oyetola"
+        },
+        {
+          "authorId": "2214085997",
+          "name": "G. Olatunji"
+        },
+        {
+          "authorId": "2238800018",
+          "name": "E. Kokori"
+        },
+        {
+          "authorId": "2188161510",
+          "name": "Nicholas Aderinto"
+        }
+      ],
+      "abstract": "Malaria remains a significant public health challenge, particularly in low- and middle-income countries, despite ongoing efforts to eradicate the disease. Recent advancements, including the rollout of malaria vaccines, such as RTS,S/AS01 and R21/Matrix-M\u2122, offer new avenues for prevention. However, the rise of resistance to anti-malarial medications necessitates innovative strategies. This review explores the potential integration of CRISPR/Cas9 gene drive technology with malaria vaccination efforts to enhance vector control and reduce transmission. By employing gene drive mechanisms for population suppression and replacement of malaria-transmitting Anopheles mosquitoes, combined with the immunogenic properties of vaccines, a synergistic approach can be established. This paper discussed the need for integrated strategies to address the biological complexities of malaria and socio-economic factors influencing its prevalence. Challenges such as regulatory hurdles, community acceptance, ecological impacts, and sustainable funding are examined, alongside strategies for implementation within existing malaria control programmes. This integrated approach could significantly contribute to achieving the World Health Organization's targets for malaria reduction by 2030, ultimately enhancing public health outcomes and supporting broader socio-economic development."
+    },
+    {
+      "paperId": "96426d6a892646b75970f8ac3f53c9374a64a7e1",
+      "externalIds": {
+        "PubMedCentral": "12226854",
+        "DOI": "10.1186/s13071-025-06905-w",
+        "CorpusId": 279897673,
+        "PubMed": "40611351"
+      },
+      "title": "CRISPR technologies for the control and study of malaria-transmitting anopheline mosquitoes",
+      "venue": "Parasites & Vectors",
+      "year": 2025,
+      "citationCount": 4,
+      "isOpenAccess": true,
+      "openAccessPdf": {
+        "url": "https://parasitesandvectors.biomedcentral.com/counter/pdf/10.1186/s13071-025-06905-w",
+        "status": "GOLD",
+        "license": "CCBY",
+        "disclaimer": "Notice: Paper or abstract available at https://pmc.ncbi.nlm.nih.gov/articles/PMC12226854, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+      },
+      "publicationDate": "2025-07-03",
+      "journal": {
+        "name": "Parasites & Vectors",
+        "volume": "18"
+      },
+      "authors": [
+        {
+          "authorId": "2284744910",
+          "name": "Andrea L. Smidler"
+        },
+        {
+          "authorId": "2290157398",
+          "name": "Omar S. Akbari"
+        }
+      ],
+      "abstract": "Malaria is one of the deadliest diseases on the planet, killing approximately 600,000 people annually, and is transmitted by the bite of an anopheline mosquito. Anophelines, and the diseases they transmit, have changed the course of history and the fate of nations, and their successful control promises to end the transmission of malaria. With the advent of clustered regularly interspaced short palindromic repeats (CRISPR)/CRISPR-associated protein 9 (Cas9) technologies, the study and control of these deadly pests have been revolutionized. As the release of genetically modified anophelines is being considered, here we outline the advances in CRISPR/Cas9 technologies and how they have revolutionized the study of anopheline basic biology and the development of innovative vector control strategies. We outline the major findings of CRISPR-based basic biological research into traits relevant for vector control including, but not limited to, olfaction, chemosensation, neurobiology, and reproduction. Further, we summarize the advancements in CRISPR-based innovative vector control strategies, such as the precision-guided sterile insect technique (pgSIT), inherited female elimination by genetically encoded nucleases to interrupt alleles (IFEGENIA), X-shredder, Y-linked editors, and gene drives. All in all, this review summarizes the basic biological and vector control research undertaken using CRISPR since its advent approximately a decade ago."
+    },
+    {
+      "paperId": "36735729ecaee17c2e0046a0726905c09812e084",
+      "externalIds": {
+        "PubMedCentral": "13015740",
+        "DOI": "10.1016/j.isci.2026.115221",
+        "CorpusId": 277042825,
+        "PubMed": "41890961"
+      },
+      "title": "A simulation-based deep learning framework for spatially explicit malaria modeling of CRISPR suppression gene drive mosquitoes",
+      "venue": "bioRxiv",
+      "year": 2025,
+      "citationCount": 1,
+      "isOpenAccess": true,
+      "openAccessPdf": {
+        "url": "https://doi.org/10.1016/j.isci.2026.115221",
+        "status": "GOLD",
+        "license": "CCBYNC",
+        "disclaimer": "Notice: Paper or abstract available at https://pmc.ncbi.nlm.nih.gov/articles/PMC13015740, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+      },
+      "publicationDate": "2025-03-13",
+      "journal": {
+        "name": "iScience",
+        "volume": "29"
+      },
+      "authors": [
+        {
+          "authorId": "2136826400",
+          "name": "Yuan Hu Allegretti"
+        },
+        {
+          "authorId": "2316244939",
+          "name": "Weitang Sun"
+        },
+        {
+          "authorId": "46354511",
+          "name": "Jackson Champer"
+        }
+      ],
+      "abstract": "Engineered CRISPR gene drives are a promising new strategy for fighting malaria and other vector-borne diseases, made possible by genome engineering with the CRISPR-Cas9 system. One useful approach to predict the outcome of a gene drive mosquito release is individual-based modeling, which can be spatially explicit and allows flexible parameters for drive efficiency, mosquito ecology, and malaria transmission. However, the computational demand of this type of model significantly increases when including a larger number of parameters, especially due to the chasing phenomenon, which can delay or prevent successful population elimination. Thus, we built a simulation-based deep-learning model to comprehensively understand the effects of different parameters on Anopheles gambiae mosquito suppression and malaria prevalence among the human population. The results suggest that reducing the embryo resistance cut rate, reducing the functional resistance forming rate and increasing the drive conversion rate plays the major role in mosquito suppression and related phenomena. We also observed that the parameter space for eliminating malaria was substantially larger than that for mosquito suppression, suggesting that even a considerably imperfect drive may still successfully accomplish its objective despite chasing or resistance allele formation. This study shows that suppression gene drives may be highly effective at locally eliminating malaria, even in challenging conditions."
+    },
+    {
+      "paperId": "063dde4f9cb2b29f0df22891f04f13dd95bdba0a",
+      "externalIds": {
+        "PubMedCentral": "11754126",
+        "DOI": "10.1093/nar/gkaf005",
+        "CorpusId": 269363152,
+        "PubMed": "39844455"
+      },
+      "title": "A scalable CRISPR-Cas9 gene editing system facilitates CRISPR screens in the malaria parasite Plasmodium berghei",
+      "venue": "bioRxiv",
+      "year": 2024,
+      "citationCount": 8,
+      "isOpenAccess": true,
+      "openAccessPdf": {
+        "url": "https://academic.oup.com/nar/article-pdf/53/2/gkaf005/61573154/gkaf005.pdf",
+        "status": "GOLD",
+        "license": "CCBY",
+        "disclaimer": "Notice: Paper or abstract available at https://pmc.ncbi.nlm.nih.gov/articles/PMC11754126, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+      },
+      "publicationDate": "2024-04-21",
+      "journal": {
+        "name": "Nucleic Acids Research",
+        "volume": "53"
+      },
+      "authors": [
+        {
+          "authorId": "9541120",
+          "name": "Thorey K. Jonsdottir"
+        },
+        {
+          "authorId": "2298277241",
+          "name": "M. Paoletta"
+        },
+        {
+          "authorId": "2298281321",
+          "name": "Takahiro Ishizaki"
+        },
+        {
+          "authorId": "2298278202",
+          "name": "Sophia Hernandez"
+        },
+        {
+          "authorId": "2298281047",
+          "name": "M. Ivanova"
+        },
+        {
+          "authorId": null,
+          "name": "Alicia Herrera Curbelo"
+        },
+        {
+          "authorId": "2298275979",
+          "name": "P. A. Saiki"
+        },
+        {
+          "authorId": "2204229605",
+          "name": "Martin Selinger"
+        },
+        {
+          "authorId": "2164335200",
+          "name": "Debojyoti Das"
+        },
+        {
+          "authorId": "50623435",
+          "name": "J. Henriksson"
+        },
+        {
+          "authorId": "2298278052",
+          "name": "E. Bushell"
+        }
+      ],
+      "abstract": "Many Plasmodium genes remain uncharacterised due to low genetic tractability. Previous large scale knockout screens have only been able to target about half of the genome in the more genetically tractable rodent malaria parasite Plasmodium berghei. To overcome this limitation, we have developed a scalable CRISPR system called PbHiT, which uses a single cloning step to generate targeting vectors with 100 bp homology arms physically linked to a guide RNA (gRNA) that effectively integrate into the target locus. We show that PbHiT coupled with gRNA sequencing robustly recapitulates known knockout mutant phenotypes in pooled transfections. Furthermore, we provide vector designs and sequences to target the entire P. berghei genome and scale-up vector production using a pooled ligation approach. This work presents for the first time a tool for high-throughput CRISPR screens in Plasmodium for studying the parasite\u2019s biology at scale."
+    },
+    {
+      "paperId": "8972316ef1ee674d7aee2ca1423bdecadd1a6b77",
+      "externalIds": {
+        "PubMedCentral": "11186152",
+        "DOI": "10.1186/s12936-024-04996-x",
+        "CorpusId": 270591927,
+        "PubMed": "38898518"
+      },
+      "title": "Assessing CRISPR/Cas9 potential in SDG3 attainment: malaria elimination\u2014regulatory and community engagement landscape",
+      "venue": "Malaria Journal",
+      "year": 2024,
+      "citationCount": 1,
+      "isOpenAccess": true,
+      "openAccessPdf": {
+        "url": "https://malariajournal.biomedcentral.com/counter/pdf/10.1186/s12936-024-04996-x",
+        "status": "GOLD",
+        "license": "CCBY",
+        "disclaimer": "Notice: Paper or abstract available at https://pmc.ncbi.nlm.nih.gov/articles/PMC11186152, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+      },
+      "publicationDate": "2024-06-19",
+      "journal": {
+        "name": "Malaria Journal",
+        "volume": "23"
+      },
+      "authors": [
+        {
+          "authorId": "2307266842",
+          "name": "Aleksandra Snuzik"
+        }
+      ],
+      "abstract": "Elimination of malaria has become a United Nations member states target: Target 3.3 of the sustainable development goal no. 3 (SDG3). Despite the measures taken, the attainment of this goal is jeopardized by an alarming trend of increasing malaria case incidence. Globally, there were an estimated 241 million malaria cases in 2020 in 85 malaria-endemic countries, increasing from 227 million in 2019. Malaria case incidence was 59, which means effectively no changes in the numbers occurred, compared with the baseline 2015. Jennifer Doudna\u2014co-inventor of CRISPR/Cas9 technology\u2014claims that CRISPR holds the potential to lessen or even eradicate problems lying in the centre of SDGs. On the same note, CRISPR/Cas9-mediated mosquito-targeting gene drives (MGD) are perceived as a potential means to turn this trend back and put momentum into the malaria elimination effort. This paper assessed two of the critical elements of the World Health Organization Genetically modified mosquitoes (WHO GMM) Critical Pathway framework: the community and stakeholders\u2019 engagement (inability to employ widely used frameworks, segmentation of the public, \u2018bystander\u2019 status, and guidelines operationalization) and the regulatory landscape ( lex generali , \u2018goldilocks dilemma\u2019, and mode of regulation) concerning mosquito-oriented gene drives (MGD) advances. Based on the assessment findings, the author believes that CRISPR/Cas-9-mediated MGD will not contribute to the attainment of SDG3 (Target 3.3), despite the undisputable technology\u2019s potential. This research pertains to the state of knowledge, legal frameworks, and legislature, as of November 2022."
+    }
+  ]
+}

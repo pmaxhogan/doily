@@ -1,0 +1,182 @@
+{
+  "version": "6.9",
+  "hitCount": 1,
+  "resultList": {
+    "result": [
+      {
+        "id": "23903748",
+        "source": "MED",
+        "pmid": "23903748",
+        "pmcid": "PMC4221854",
+        "doi": "10.1038/nature12373",
+        "title": "Nanometre-scale thermometry in a living cell.",
+        "authorString": "Kucsko G, Maurer PC, Yao NY, Kubo M, Noh HJ, Lo PK, Park H, Lukin MD.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Kucsko G",
+              "lastName": "Kucsko",
+              "firstName": "G",
+              "initials": "G",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-4189-3154"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Physics, Harvard University, Cambridge, Massachusetts 02138, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Maurer PC",
+              "lastName": "Maurer",
+              "firstName": "P C",
+              "initials": "PC",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-9033-5135"
+              }
+            },
+            {
+              "fullName": "Yao NY",
+              "lastName": "Yao",
+              "firstName": "N Y",
+              "initials": "NY"
+            },
+            {
+              "fullName": "Kubo M",
+              "lastName": "Kubo",
+              "firstName": "M",
+              "initials": "M"
+            },
+            {
+              "fullName": "Noh HJ",
+              "lastName": "Noh",
+              "firstName": "H J",
+              "initials": "HJ"
+            },
+            {
+              "fullName": "Lo PK",
+              "lastName": "Lo",
+              "firstName": "P K",
+              "initials": "PK",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-5255-1718"
+              }
+            },
+            {
+              "fullName": "Park H",
+              "lastName": "Park",
+              "firstName": "H",
+              "initials": "H",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-9576-8829"
+              }
+            },
+            {
+              "fullName": "Lukin MD",
+              "lastName": "Lukin",
+              "firstName": "M D",
+              "initials": "MD"
+            }
+          ]
+        },
+        "journalInfo": {
+          "issue": "7460",
+          "volume": "500",
+          "dateOfPublication": "2013 Aug",
+          "yearOfPublication": 2013,
+          "printPublicationDate": "2013-08-01",
+          "journal": {
+            "title": "Nature",
+            "medlineAbbreviation": "Nature",
+            "issn": "0028-0836",
+            "essn": "1476-4687",
+            "isoabbreviation": "Nature",
+            "nlmid": "0410462"
+          }
+        },
+        "pubYear": "2013",
+        "pageInfo": "54-58",
+        "abstractText": "Sensitive probing of temperature variations on nanometre scales is an outstanding challenge in many areas of modern science and technology. In particular, a thermometer capable of subdegree temperature resolution over a large range of temperatures as well as integration within a living system could provide a powerful new tool in many areas of biological, physical and chemical research. Possibilities range from the temperature-induced control of gene expression and tumour metabolism to the cell-selective treatment of disease and the study of heat dissipation in integrated circuits. By combining local light-induced heat sources with sensitive nanoscale thermometry, it may also be possible to engineer biological processes at the subcellular level. Here we demonstrate a new approach to nanoscale thermometry that uses coherent manipulation of the electronic spin associated with nitrogen-vacancy colour centres in diamond. Our technique makes it possible to detect temperature variations as small as 1.8\u2009mK (a sensitivity of 9\u2009mK\u2009Hz(-1/2)) in an ultrapure bulk diamond sample. Using nitrogen-vacancy centres in diamond nanocrystals (nanodiamonds), we directly measure the local thermal environment on length scales as short as 200\u2009nanometres. Finally, by introducing both nanodiamonds and gold nanoparticles into a single human embryonic fibroblast, we demonstrate temperature-gradient control and mapping at the subcellular level, enabling unique potential applications in life sciences.",
+        "pubTypeList": {
+          "pubType": [
+            "Research Support, Non-U.S. Gov't",
+            "research-article",
+            "Research Support, U.S. Gov't, Non-P.H.S.",
+            "Journal Article",
+            "Research Support, N.I.H., Extramural"
+          ]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Fibroblasts",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "majorTopic_YN": "Y",
+                    "abbreviation": "CY",
+                    "qualifierName": "cytology"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Humans"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Gold"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Nitrogen"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Thermometers"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Temperature"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Cell Survival"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Nanotechnology",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "majorTopic_YN": "N",
+                    "abbreviation": "IS",
+                    "qualifierName": "instrumentation"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "isOpenAccess": "N",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "citedByCount": 701,
+        "firstPublicationDate": "2013-08-01",
+        "fullTextIdList": {
+          "fullTextId": ["PMC4221854"]
+        }
+      }
+    ]
+  }
+}
