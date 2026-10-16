@@ -13,6 +13,7 @@
     "node": ">=26"
   },
   "scripts": {
+    "prepare": "wrangler types",
     "dev": "wrangler dev --port 8787",
     "types": "wrangler types --check || wrangler types",
     "pretypecheck": "npm run types",
