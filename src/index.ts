@@ -14,7 +14,9 @@
  *                                                       anything else is a 401
  *                                                       with WWW-Authenticate
  *   everything else                                     `defaultHandler` below:
- *                                                       /healthz, /authorize
+ *                                                       /healthz, /authorize,
+ *                                                       /download/<doi> (its own
+ *                                                       HMAC-signed query string)
  *
  * The static bearer is tried before the provider so a wrong or missing one is
  * not an error of its own: it falls through, and the provider either accepts
@@ -34,6 +36,7 @@ import { OAuthProvider } from "@cloudflare/workers-oauth-provider";
 import { hasStaticBearer } from "./auth/bearer.ts";
 import { AUTHORIZE_PATH, MCP_API_ROUTE, oauthCoreFor, resourceFor } from "./auth/oauth-config.ts";
 import { handleAuthorize } from "./consent/authorize.ts";
+import { serveDownload } from "./fulltext/download.ts";
 import { healthz } from "./healthz.ts";
 import { mcpApiHandler, serveMcp } from "./mcp/handler.ts";
 
@@ -52,6 +55,9 @@ const defaultHandler = {
     }
     if (url.pathname === AUTHORIZE_PATH) {
       return handleAuthorize(request, env as OAuthEnv);
+    }
+    if (url.pathname.startsWith("/download/")) {
+      return serveDownload(request, env);
     }
     return new Response("not found", { status: 404 });
   },

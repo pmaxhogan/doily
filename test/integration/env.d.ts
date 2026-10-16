@@ -9,5 +9,6 @@ declare namespace Cloudflare {
   interface Env {
     TEST_MIGRATIONS: import("cloudflare:test").D1Migration[];
     DOILY_BEARER: string;
+    REQUEST_TOKEN_SECRET: string;
   }
 }
