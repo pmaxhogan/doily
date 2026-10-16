@@ -1,5 +1,6 @@
+import { isPdf as hasPdfMagic } from "../scihub/detect.ts";
 import { pdfKey, textKey, unverifiedPdfKey } from "./doi.ts";
-import { latin1 } from "./hooks.ts";
+import { bytesContainDoi } from "./hooks.ts";
 
 import type { SciNetClient } from "./client.ts";
 import type { TextOf } from "./hooks.ts";
@@ -83,9 +84,9 @@ export const WAIT_POLL_MS = 2000;
 const STATE_KEY = "state";
 const LIVE: readonly RequestStatusName[] = ["pending", "ready", "needs_owner"];
 
-/** `%PDF` magic at the start of the file. */
+/** `%PDF-` magic in the first 1024 bytes, the same rule Sci-Hub results use. */
 export function isPdf(bytes: Uint8Array): boolean {
-  return bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46;
+  return hasPdfMagic(bytes);
 }
 
 function words(s: string): string {
@@ -216,7 +217,8 @@ export class RequestMachine {
   async alarm(): Promise<void> {
     const state = await this.load();
     if (state === undefined) return;
-    const needsVerify = state.status === "ready" && state.verified !== true;
+    // A joined request is someone else's: verifying it is not ours to do.
+    const needsVerify = state.status === "ready" && state.verified !== true && !state.joined;
     if (state.status !== "pending" && !needsVerify) return;
 
     if (this.expired(state)) {
@@ -237,7 +239,7 @@ export class RequestMachine {
           return;
         }
         // collect() mutates state; widen the narrowed type back.
-        if ((state.status as RequestStatusName) !== "ready") return;
+        if ((state.status as RequestStatusName) !== "ready" || state.joined) return;
       }
       const ok = await client.verifyUpload(state.request_id ?? "");
       state.verified = ok;
@@ -289,7 +291,7 @@ export class RequestMachine {
     }
     // The extracted text is the primary evidence; the raw bytes are a fallback
     // for the DOI only (uncompressed text or XMP metadata).
-    const sane = textMatches(text, state.doi, state.title) || textMatches(latin1(bytes), state.doi);
+    const sane = textMatches(text, state.doi, state.title) || bytesContainDoi(bytes, state.doi);
     if (!sane) {
       await this.deps.bucket.put(unverifiedPdfKey(state.doi), bytes, pdf);
       state.pdf_key = unverifiedPdfKey(state.doi);

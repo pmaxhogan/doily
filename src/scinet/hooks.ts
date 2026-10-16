@@ -19,19 +19,57 @@ export interface ScinetHooks {
   isObtainable: IsObtainable;
 }
 
-/**
- * The raw bytes as latin1. Not text extraction: the machine uses it only as a
- * second place to look for the DOI during the sanity check, because
- * uncompressed PDFs and the XMP metadata many publishers embed uncompressed
- * expose the DOI this way.
- */
-export function latin1(bytes: Uint8Array): string {
-  let out = "";
-  const chunk = 0x8000;
-  for (let i = 0; i < bytes.length; i += chunk) {
-    out += String.fromCharCode(...bytes.subarray(i, i + chunk));
+/** Bytes scanned at each end of the file by `bytesContainDoi`. */
+export const DOI_SCAN_WINDOW = 2 * 1024 * 1024;
+
+function lowerAscii(b: number): number {
+  return b >= 0x41 && b <= 0x5a ? b | 0x20 : b;
+}
+
+/** Bytes that JavaScript's `\s` matches in latin1 text. */
+function isSpaceByte(b: number): boolean {
+  return b === 0x20 || (b >= 0x09 && b <= 0x0d) || b === 0xa0;
+}
+
+function scanFor(hay: Uint8Array, needle: Uint8Array): boolean {
+  const first = needle[0];
+  for (let i = 0; i < hay.length; i++) {
+    if (lowerAscii(hay[i] as number) !== first) continue;
+    let j = 1;
+    let k = i + 1;
+    while (j < needle.length && k < hay.length) {
+      const b = hay[k] as number;
+      if (isSpaceByte(b)) {
+        // A DOI wrapped across lines still counts, as with the text check.
+        k++;
+        continue;
+      }
+      if (lowerAscii(b) !== needle[j]) break;
+      j++;
+      k++;
+    }
+    if (j === needle.length) return true;
   }
-  return out;
+  return false;
+}
+
+/**
+ * Whether the raw bytes contain the DOI (ASCII case-insensitive, whitespace
+ * inside the match ignored). Not text extraction: the machine uses it only as
+ * a second place to look for the DOI during the sanity check, because
+ * uncompressed PDFs and the XMP metadata many publishers embed uncompressed
+ * expose the DOI this way. Only the first and last DOI_SCAN_WINDOW bytes are
+ * scanned (XMP and the first page live there), and no string is built, so a
+ * 50 MB PDF costs no extra memory.
+ */
+export function bytesContainDoi(bytes: Uint8Array, doi: string): boolean {
+  const needle = new TextEncoder().encode(doi.trim().toLowerCase());
+  if (needle.length === 0) return false;
+  if (bytes.length <= DOI_SCAN_WINDOW * 2) return scanFor(bytes, needle);
+  return (
+    scanFor(bytes.subarray(0, DOI_SCAN_WINDOW), needle) ||
+    scanFor(bytes.subarray(bytes.length - DOI_SCAN_WINDOW), needle)
+  );
 }
 
 /**
