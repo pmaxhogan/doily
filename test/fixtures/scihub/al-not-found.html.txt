@@ -1,0 +1,37 @@
+<html>
+    <head>
+	 <title>Sci-Hub - search proxy to download article</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="width=device-width, heihht=device-height, initial-scale=1.0">
+	<meta name="keywords" content="sci-hub,scihub">
+	<meta name="description" content="The first pirate website in the world to open mass and public access to tens of millions research papers">
+	<meta property="og:image" content="//img.sci-hub.shop/scihub/logo_en.png"/>
+        <link rel="alternate" hreflang="ru" href="//sci-hub.tf/lang/ru" />
+        <link rel="alternate" hreflang="en" href="//sci-hub.tf/lang/en" />
+
+    </head>
+<body>
+    <div id ="about">
+        <div id = "title"><h1><a href = "//sci-hub.al">Sci-hub</a></h1></div>
+        <div id = "first"><h1>
+<p>You can request this article through the <a href="https://www.pidantuan.com" rel="nofollow" target="_blank">Scientific mutual aid community</a>, and the success rate is usually more than <span style="color: red;">90%</span>. You can learn how to obtain this article through this <a href="https://www.3098.me/science-hub-mutual-aid-community-registration-and-usage-tutorial/" rel="nofollow" target="_blank">video tutorial</a>.Or you can search the article information again through <a href="https://www.defineabc.com" rel="nofollow" target="_blank">Google Scholar</a>.</p>
+<p id="request">more recommendations:</p>
+<p id="request"><a href="https://www.mfc972.com/" rel="nofollow" target="_blank">ChatGPT free online use navigation</a></p>
+<p id="request"><a href="https://www.helicard.com/" rel="nofollow" target="_blank">Scientific research tool navigation</a></p>
+		</h1>
+
+		<h1><a href = "//sci-hub.al/Find-DOI.html" rel="nofollow" target="_blank">How to quickly find the DOI number of an article</a></h1>
+		<p>If you still cannot find thesis through DOI, we will include relevant articles as soon as possible,please try searching the corresponding DOI again after a while.</p>
+		<div id = "message">9432; you can close this page and check later if the article has been downloaded</div>
+                        <div id = "noproxy">no matching proxies found</div>
+                        <div id = "found">proxy found, please wait</div></div>
+
+    </div>
+    <a id ="back" href = "/">&larr; return to main</a>
+</body>
+
+<div id="mainshadow"><div class="main"><font size="5" class="redps" color="red"></font><img class="mainshadowImg"><div class="mk-side-form"><h4 class="pw-tip"><font color="black" class="pw-tip1"></font><p></p ><font color="black"  class="pw-tip2"></font></h4></div></div></div>
+<link rel="stylesheet" href="https://img.sci-hub.shop/tanchuang/sci-hub_shop.css">
+
+</html>
+

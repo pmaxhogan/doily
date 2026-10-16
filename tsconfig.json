@@ -21,5 +21,7 @@
   },
   // worker-configuration.d.ts is generated (and gitignored) by `wrangler types`
   // at the head of typecheck and lint; it is not under src/ so it is listed.
-  "include": ["src/**/*.ts", "test/**/*.ts", "scripts/**/*.ts", "worker-configuration.d.ts"]
+  // Tests are checked by tsconfig.test.json, which adds the Node types that
+  // test files need (node:fs fixtures) without leaking them into the Worker.
+  "include": ["src/**/*.ts", "scripts/**/*.ts", "worker-configuration.d.ts"]
 }

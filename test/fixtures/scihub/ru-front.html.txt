@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+        <head>
+            <title>Sci-Hub</title>
+            <meta charset = "UTF-8">
+            <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+        </head>
+
+    <body>
+<div class = "mirrors">
+
+    <a class = "mirror  " href = "//sci-hub.su">su</a>
+<a class = "mirror  " href = "//sci-hub.st">st</a>
+<a class = "mirror  " href = "//sci-hub.red">red</a>
+<a class = "mirror  " href = "//sci-hub.box">box</a>
+<a class = "mirror selected " href = "//sci-hub.ru">ru</a>
+
+    <a class = "mirror all" href = "/mirrors"></a>
+
+</div>
+    </body>
+</html>

@@ -1,0 +1,3 @@
+<!DOCTYPE html>
+<!-- SYNTHETIC: an article page with no PDF markup and no not-found marker. -->
+<html><head><title>Sci-Hub</title></head><body><div id="citation">Some citation</div></body></html>
