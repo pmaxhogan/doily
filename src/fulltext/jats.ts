@@ -217,7 +217,8 @@ class Renderer {
   numberedLabel(el: XmlElement, kind: string, counter: number): string {
     const labelEl = firstChild(el, "label");
     const label = labelEl ? collapse(textContent(labelEl)) : "";
-    const num = /\d+[A-Za-z]?/.exec(label)?.[0];
+    // "Fig. 1" -> "1", "Figure S1" -> "S1", "Table 2a" -> "2a".
+    const num = /[A-Z]?\d+[A-Za-z]?/.exec(label)?.[0];
     if (num) return `${kind} ${num}.`;
     if (label) return /[.:]$/.test(label) ? label : `${label}.`;
     return `${kind} ${counter}.`;

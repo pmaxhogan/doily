@@ -174,6 +174,13 @@ describe("jatsToMarkdown on synthetic JATS", () => {
     expect(r.markdown).toContain("Before\n\n**Figure 1.** A cap.\n\nafter");
   });
 
+  it("keeps supplementary figure prefixes in labels", () => {
+    const r = jatsToMarkdown(
+      wrapArticle(`<fig><label>Figure S1</label><caption><p>Supp.</p></caption></fig>`),
+    );
+    expect(r.markdown).toContain("**Figure S1.** Supp.");
+  });
+
   it("truncates long acknowledgements and renders mixed back matter", () => {
     const long = "word ".repeat(200);
     const r = jatsToMarkdown(
