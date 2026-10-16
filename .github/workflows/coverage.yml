@@ -1,0 +1,98 @@
+# stack-template: coverage/compare-job@1 8fae14cab399
+name: coverage
+
+# Coverage ratchet for repos where GitHub's native "Restrict code coverage" ruleset
+# rule is not available (private repos on GitHub Free; stack standard
+# coverage.ratchet, D-RAT-1). Runs the coverage suite on the PR head AND on the base
+# commit, compares total line coverage from coverage/coverage-summary.json (vitest's
+# json-summary reporter), and FAILS when head < base - 0.5 percentage points.
+#
+# No stored baseline: the base is recomputed per PR, so there is no commit-back, no
+# artifact that expires and no cache to bootstrap. The price is a second test run.
+#
+# This gates Dependabot PRs on purpose (D-RAT-2). A dependency bump that moves
+# coverage is worth a look, so a tripped bot PR is held for a human instead of
+# auto-merging. Mark the `coverage` check Required in the ruleset / branch protection
+# or a PR can merge before it finishes.
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  # Percentage points of total line coverage a PR may lose before it fails.
+  MAX_DROP: "0.5"
+
+jobs:
+  coverage:
+    name: coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: head
+
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: head/.node-version
+          cache: npm
+          cache-dependency-path: head/package-lock.json
+
+      - name: Coverage on the PR head
+        working-directory: head
+        run: |
+          npm ci
+          npx vitest run --coverage --coverage.reporter=json-summary
+
+      # The base may predate this workflow or the coverage setup. If it cannot produce
+      # a summary the gate is informational for this PR rather than a false failure.
+      - name: Coverage on the base commit
+        id: base
+        working-directory: base
+        continue-on-error: true
+        run: |
+          npm ci
+          npx vitest run --coverage --coverage.reporter=json-summary
+
+      - name: Compare total line coverage
+        run: |
+          node - <<'JS'
+          const fs = require("fs");
+          const read = (p) => {
+            try {
+              return JSON.parse(fs.readFileSync(p, "utf8")).total.lines.pct;
+            } catch {
+              return null;
+            }
+          };
+          const head = read("head/coverage/coverage-summary.json");
+          const base = read("base/coverage/coverage-summary.json");
+          const maxDrop = parseFloat(process.env.MAX_DROP);
+          if (head === null) {
+            console.log("::error::no coverage summary on the PR head (is the json-summary reporter enabled?)");
+            process.exit(1);
+          }
+          if (base === null) {
+            console.log(`::warning::no coverage summary on the base commit, gate is informational (head ${head}%)`);
+            process.exit(0);
+          }
+          const delta = head - base;
+          const line = `lines: base ${base.toFixed(2)}% -> head ${head.toFixed(2)}% (${delta >= 0 ? "+" : ""}${delta.toFixed(2)} pp, allowed drop ${maxDrop})`;
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `## Coverage\n\n${line}\n`);
+          console.log(line);
+          if (delta < -maxDrop) {
+            console.log(`::error::coverage dropped more than ${maxDrop} pp: ${line}`);
+            process.exit(1);
+          }
+          JS

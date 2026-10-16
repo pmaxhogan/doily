@@ -65,6 +65,6 @@ interview is `.claude/doily-spec.md`; read it before changing tool behavior.
 - mode: deps.dependabot-mechanism=native
 - mode: repo.no-protection=required-checks-ruleset-only
 - mode: stack.type=node-ts
-- mode: test.coverage-ratchet=ruleset
+- mode: test.coverage-ratchet=compare-job
 
 <!-- stack:end -->
