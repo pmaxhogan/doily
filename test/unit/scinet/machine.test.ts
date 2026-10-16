@@ -422,6 +422,23 @@ describe("RequestMachine.waitFor", () => {
   it("returns null for an unknown request", async () => {
     expect(await machineRig().machine.waitFor(1000)).toBeNull();
   });
+
+  it("re-arms a lost poll alarm when a pending request is read", async () => {
+    const r = machineRig();
+    await r.machine.start(PDF_DOI, 2);
+    expect(r.storage.alarm).not.toBeNull();
+    // The alarm vanished (seen live once); a status read must put it back.
+    r.storage.alarm = null;
+    const before = r.storage.alarmsSet;
+    const state = await r.machine.status();
+    expect(state?.status).toBe("pending");
+    expect(state?.last_error).toMatch(/re-armed/);
+    expect(r.storage.alarm).not.toBeNull();
+    expect(r.storage.alarmsSet).toBe(before + 1);
+    // An armed alarm is left alone.
+    await r.machine.status();
+    expect(r.storage.alarmsSet).toBe(before + 1);
+  });
 });
 
 describe("sanity helpers", () => {

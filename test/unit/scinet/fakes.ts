@@ -133,6 +133,9 @@ export class FakeStorage implements MachineStorage {
   async deleteAlarm(): Promise<void> {
     this.alarm = null;
   }
+  async getAlarm(): Promise<number | null> {
+    return this.alarm;
+  }
 }
 
 export const PDF_DOI = "10.1234/example.5678";

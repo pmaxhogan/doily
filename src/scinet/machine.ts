@@ -76,6 +76,8 @@ export interface MachineStorage {
   put<T>(key: string, value: T): Promise<void>;
   setAlarm(scheduledTime: number): Promise<void>;
   deleteAlarm(): Promise<void>;
+  /** The scheduled alarm time, or null when none is armed. */
+  getAlarm(): Promise<number | null>;
 }
 
 export type ScinetClientLike = Pick<
@@ -236,6 +238,13 @@ export class RequestMachine {
       state.status = "expired";
       await this.save(state);
       await this.deps.storage.deleteAlarm();
+    } else if (state.status === "pending" && (await this.deps.storage.getAlarm()) === null) {
+      // Seen live on 2026-10-16: a restarted request sat pending with no
+      // alarm armed while its solution waited on Sci-Net. Any read of a
+      // pending request re-arms the poll, so a lost alarm costs one read.
+      state.last_error = "poll alarm was missing; re-armed";
+      await this.save(state);
+      await this.schedule();
     }
     return state;
   }
@@ -268,6 +277,7 @@ export class RequestMachine {
     }
 
     state.attempts += 1;
+    console.log(`scinet alarm ${state.doi} attempt ${state.attempts} status ${state.status}`);
     try {
       const client = this.deps.client();
       if (state.status === "pending") {

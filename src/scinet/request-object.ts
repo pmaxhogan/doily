@@ -28,6 +28,7 @@ export class SciNetRequest extends DurableObject<Env> {
         put: (key, value) => storage.put(key, value),
         setAlarm: (at) => storage.setAlarm(at),
         deleteAlarm: () => storage.deleteAlarm(),
+        getAlarm: () => storage.getAlarm(),
       },
       client: () => clientFromEnv(env, globalThis.fetch.bind(globalThis)),
       bucket: env.PDFS,
