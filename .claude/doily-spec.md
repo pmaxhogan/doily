@@ -153,8 +153,10 @@ Workers AI `env.AI.toMarkdown()` as fallback for failures or scanned PDFs.
 secret put`; the run pushes the exact commands).
 - SciNetRequest DO per DOI: alarm every 5 minutes, on fulfilment download
   the PDF to R2, extract text, sanity check (`%PDF` and the DOI or title
-  found in the text), then auto-verify on Sci-Net (releases the bounty);
-  if the sanity check fails leave it unverified and mark `needs_owner`.
+  found in the text), then mark the request ready. Capture note (2026-10-16):
+  Sci-Net shows no verify control on solved requests, so there is nothing to
+  confirm; `verifyUpload` is a no-op. If the sanity check fails, mark
+  `needs_owner`.
   Expire after 72 hours.
 - During the build run at most ONE real request is posted, for verification.
 
