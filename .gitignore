@@ -9,3 +9,4 @@ worker-configuration.d.ts
 .local/
 *.log
 .DS_Store
+.claude/worktrees/
