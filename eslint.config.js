@@ -14,7 +14,14 @@ import tseslint from "typescript-eslint";
  */
 export default tseslint.config(
   {
-    ignores: ["**/dist/**", "**/coverage/**", "**/node_modules/**", "worker-configuration.d.ts"],
+    // .claude/** holds agent worktrees (full repo copies); linting them breaks tsconfig lookup.
+    ignores: [
+      "**/dist/**",
+      "**/coverage/**",
+      "**/node_modules/**",
+      "worker-configuration.d.ts",
+      ".claude/**",
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
