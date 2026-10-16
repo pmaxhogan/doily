@@ -167,6 +167,24 @@ describe("SciNetClient session reuse and re-login", () => {
     expect(await c.findExistingRequest(DOI)).toBeUndefined();
   });
 
+  it("adopts a session another actor refreshed instead of logging in again", async () => {
+    const kv = loggedIn("sid=stale");
+    const { c, seen } = client(
+      [
+        () => html(fixture("captured-request-open.html")),
+        () => redirect("/"),
+        () => html(fixture("captured-request-open.html")),
+      ],
+      kv,
+    );
+    await c.getRequestStatus(DOI);
+    // The Durable Object alarm logged in meanwhile and stored its cookie.
+    kv.data.set(SESSION_KEY, "sid=fresh");
+    expect(await c.getRequestStatus(DOI)).toEqual({ status: "open", reward: 2, taken: true });
+    expect(seen.map((s) => s.cookie)).toEqual(["sid=stale", "sid=stale", "sid=fresh"]);
+    expect(seen.some((s) => s.method === "POST")).toBe(false);
+  });
+
   it("gives up when the session is rejected right after re-login", async () => {
     const { c } = client(
       [() => redirect("/"), ...LOGIN_OK, () => redirect("/")],

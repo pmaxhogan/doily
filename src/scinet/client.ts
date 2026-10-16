@@ -284,7 +284,7 @@ export class SciNetClient {
       }
     }
     if (r.loggedOut) {
-      await this.login();
+      if (!(await this.adoptNewerSession())) await this.login();
       const existing = await this.findExistingRequest(id);
       if (existing !== undefined) return { id: existing, url: this.requestUrl(existing) };
       r = await this.send("POST", SITE.request.path, body);
@@ -341,7 +341,7 @@ export class SciNetClient {
       this.assertOk(probe, "Sci-Net request page failed after accepting");
       return { ok: SITE.requestPage.parse(probe.body).status === "solved" };
     }
-    await this.login();
+    if (!(await this.adoptNewerSession())) await this.login();
     const page = await this.getRequestStatus(id);
     if (page.status === "solved") return { ok: true };
     if (page.status !== "solved_unaccepted") return { ok: false };
@@ -419,10 +419,25 @@ export class SciNetClient {
     return new URL(SITE.requestPage.path(id), SITE.base).toString();
   }
 
+  /**
+   * Another actor (the Durable Object alarm, or a tool call in another
+   * isolate) may have logged in since this instance read its cookie, and on
+   * a single-session site that invalidates ours. Adopt the newer stored
+   * cookie before paying for a fresh login that would invalidate theirs in
+   * turn; the two would otherwise keep knocking each other out.
+   */
+  private async adoptNewerSession(): Promise<boolean> {
+    const stored = await this.opts.session.get();
+    if (stored === null || stored === "" || stored === this.jar) return false;
+    this.jar = stored;
+    return true;
+  }
+
   /** Idempotent request with one re-login on a logged-out response. */
   private async authed(method: "GET" | "POST", path: string, body?: Body): Promise<Sent> {
     await this.ensureSession();
     let r = await this.send(method, path, body);
+    if (r.loggedOut && (await this.adoptNewerSession())) r = await this.send(method, path, body);
     if (r.loggedOut) {
       await this.login();
       r = await this.send(method, path, body);
