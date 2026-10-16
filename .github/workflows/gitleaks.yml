@@ -1,0 +1,25 @@
+name: gitleaks
+
+# Secret scanning on every push and PR. The repo is public; a leaked Worker
+# secret, Sci-Net password or API key in a fixture would be live the moment it
+# landed. Full history is fetched so a secret removed in a later commit is
+# still caught.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -109,6 +109,14 @@ describe("request_paper", () => {
     expect(r.db.rows.size).toBe(0);
   });
 
+  it("refuses to post while the site flow is unverified unless the owner opts in", async () => {
+    const r = toolRig({ SCINET_ALLOW_UNVERIFIED: "0" });
+    const err = (await requestPaper.handler(r.deps, { id: PDF_DOI }).catch((e) => e)) as ToolError;
+    expect(err.toJSON()).toMatchObject({ source: "scinet" });
+    expect(String(err.message)).toContain("disabled until the site flow is verified");
+    expect(r.db.rows.size).toBe(0);
+  });
+
   it("refuses when the paper is obtainable", async () => {
     const r = toolRig();
     setScinetHooks({ isObtainable: async () => ({ source: "unpaywall" }) });

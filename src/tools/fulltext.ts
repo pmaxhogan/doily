@@ -9,6 +9,7 @@ import {
   type NoPdf,
 } from "../fulltext/chain.ts";
 import { DEFAULT_PAGE_CHARS, pageText } from "../fulltext/page.ts";
+import { makeRequestToken } from "../scinet/token.ts";
 
 import type { ToolDef, ToolDeps } from "./types.ts";
 
@@ -40,11 +41,19 @@ export interface UnavailableBody {
  * extend: async and given `deps` so it can mint a request token later.
  */
 export async function unavailableBody(
-  _deps: ToolDeps,
+  deps: ToolDeps,
   doi: string,
   attempts: Attempt[],
 ): Promise<UnavailableBody> {
-  return { status: "unavailable", doi, attempts };
+  const body: UnavailableBody = { status: "unavailable", doi, attempts };
+  // Spec 3.5: hand out a stateless token the agent can pass to request_paper
+  // if it decides the paper is worth a Sci-Net bounty. Nothing is posted here.
+  if (deps.env.REQUEST_TOKEN_SECRET) {
+    body["request_token"] = await makeRequestToken(deps.env.REQUEST_TOKEN_SECRET, doi);
+    body["next_step"] =
+      "If this paper is worth a Sci-Net bounty (2 tokens), call request_paper with the request_token, then wait_for_request.";
+  }
+  return body;
 }
 
 export interface GetFullTextArgs {

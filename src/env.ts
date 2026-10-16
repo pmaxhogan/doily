@@ -42,6 +42,8 @@ export interface Env {
   SCINET_PASS?: string;
   SCINET_BOUNTY?: string;
   SCINET_DAILY_CAP?: string;
+  /** "1" lets request_paper post before the site flow is captured (SITE_VERIFIED). */
+  SCINET_ALLOW_UNVERIFIED?: string;
 
   /** HMAC key for request tokens handed out by get_full_text. */
   REQUEST_TOKEN_SECRET?: string;

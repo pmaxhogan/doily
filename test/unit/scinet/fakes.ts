@@ -261,6 +261,9 @@ export function toolRig(envOverrides: Partial<Env> = {}): ToolRig {
     SCINET_USER: "user",
     SCINET_PASS: "pass",
     REQUEST_TOKEN_SECRET: "test-secret",
+    // The tool refuses to post until the site flow is captured; tests exercise
+    // the posting path, so they opt in the way an owner would.
+    SCINET_ALLOW_UNVERIFIED: "1",
     ...envOverrides,
   } as unknown as Env;
   const deps: ToolDeps = {

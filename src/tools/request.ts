@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { normalizeDoi } from "../scinet/doi.ts";
 import { scinetHooks } from "../scinet/hooks.ts";
+import { SITE_VERIFIED } from "../scinet/site.ts";
 import { configuredBounty, release, reserve, usage } from "../scinet/spend.ts";
 import { verifyRequestToken } from "../scinet/token.ts";
 import { ToolError } from "./types.ts";
@@ -137,6 +138,17 @@ export const requestPaper: ToolDef<RequestPaperArgs> = {
     if (!deps.env.SCINET_USER || !deps.env.SCINET_PASS) {
       throw new ToolError("Sci-Net is not configured (SCINET_USER / SCINET_PASS unset)", {
         source: "scinet",
+      });
+    }
+
+    // Every Sci-Net page except login is a guess until the logged-in flow has
+    // been captured (docs/scinet-capture.md). Posting on a guessed form could
+    // spend tokens on nothing, so it stays off until SITE_VERIFIED flips or the
+    // owner opts in explicitly.
+    if (!SITE_VERIFIED && deps.env.SCINET_ALLOW_UNVERIFIED !== "1") {
+      throw new ToolError("Sci-Net posting is disabled until the site flow is verified", {
+        source: "scinet",
+        hint: "capture the logged-in flow and set SITE_VERIFIED, or set SCINET_ALLOW_UNVERIFIED=1",
       });
     }
 

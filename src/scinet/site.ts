@@ -11,6 +11,13 @@
  * under Node in unit tests as well as in workerd.
  */
 
+/**
+ * Flip to true once the logged-in flow has been captured and every
+ * TODO(capture) below reflects the real site. While false, request_paper
+ * refuses to post unless the owner sets SCINET_ALLOW_UNVERIFIED=1.
+ */
+export const SITE_VERIFIED = false;
+
 export type RemoteStatus = "open" | "solved" | "unknown";
 
 export interface ParsedRequestPage {

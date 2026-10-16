@@ -21,6 +21,7 @@ export const FIXED_TEST_SECRETS: Record<string, string> = {
   SCINET_PASS: "test-scinet-pass",
   SCINET_BOUNTY: "2",
   SCINET_DAILY_CAP: "5",
+  SCINET_ALLOW_UNVERIFIED: "0",
 };
 
 /**

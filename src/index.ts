@@ -39,12 +39,42 @@ import { handleAuthorize } from "./consent/authorize.ts";
 import { serveDownload } from "./fulltext/download.ts";
 import { healthz } from "./healthz.ts";
 import { mcpApiHandler, serveMcp } from "./mcp/handler.ts";
+import { resolveScihub } from "./scihub/resolve.ts";
+// Joins the workstreams: Sci-Hub as the last chain hop, Sci-Net hooks.
+import "./wiring.ts";
 
 import type { OAuthEnv } from "./consent/authorize.ts";
 import type { Env } from "./env.ts";
 
 // Re-exported because wrangler resolves Durable Object classes from `main`.
 export { SciNetRequest } from "./scinet/request-object.ts";
+
+const PROBE_SCIHUB_PATH = "/probe/scihub/";
+
+/**
+ * Operator probe: does the deployed Worker's egress reach the Sci-Hub mirrors?
+ * Static bearer only, and only the attempts log comes back (never PDF bytes),
+ * so it answers "are we challenged from this network" and nothing else.
+ */
+async function probeScihub(request: Request, env: Env, rawDoi: string): Promise<Response> {
+  if (!(await hasStaticBearer(request, env.DOILY_BEARER))) {
+    return new Response("unauthorized", { status: 401 });
+  }
+  const doi = decodeURIComponent(rawDoi).trim().toLowerCase();
+  if (!/^10\.\d{4,9}\/\S+$/.test(doi)) return new Response("bad doi", { status: 400 });
+  const deps = {
+    env,
+    fetch: (i: RequestInfo | URL, init?: RequestInit) => fetch(i, init),
+    now: () => new Date(),
+  };
+  const result = await resolveScihub(deps, doi);
+  const body = {
+    ok: result.ok,
+    ...(result.ok ? { mirror: result.mirror, via: result.via, bytes: result.pdf.byteLength } : {}),
+    attempts: result.attempts,
+  };
+  return Response.json(body, { headers: { "cache-control": "no-store" } });
+}
 
 /** Everything that is not the provider's or the MCP endpoint's. */
 const defaultHandler = {
@@ -58,6 +88,9 @@ const defaultHandler = {
     }
     if (url.pathname.startsWith("/download/")) {
       return serveDownload(request, env);
+    }
+    if (url.pathname.startsWith(PROBE_SCIHUB_PATH)) {
+      return probeScihub(request, env, url.pathname.slice(PROBE_SCIHUB_PATH.length));
     }
     return new Response("not found", { status: 404 });
   },
