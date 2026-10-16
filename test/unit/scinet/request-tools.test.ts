@@ -154,16 +154,28 @@ describe("request_paper", () => {
     expect([...r.db.rows.values()]).toEqual([{ requests: 0, tokens: 0 }]);
   });
 
-  it("a post that lands on the owner's already-solved request gives the slot back", async () => {
+  it("a DOI already in the owner's library is joined and gives the slot back", async () => {
     const r = toolRig();
-    // Sci-Net answers 200 for a DOI this account already requested.
-    r.client.postRemote = { status: "solved_unaccepted", fileName: "Example.pdf", reward: 2 };
+    // Sci-Net never says "already posted" for this account's own request;
+    // the library page is where it shows.
+    r.client.library = [{ doi: PDF_DOI, status: "solved" }];
     expect(await requestPaper.handler(r.deps, { id: PDF_DOI })).toMatchObject({
       status: "pending",
       joined_existing: true,
     });
-    expect(r.client.calls.post).toBe(1);
+    expect(r.client.calls.post).toBe(0);
     expect([...r.db.rows.values()]).toEqual([{ requests: 0, tokens: 0 }]);
+  });
+
+  it("a fresh post taken by a solver within seconds still counts as a spend", async () => {
+    const r = toolRig();
+    r.client.postRemote = { status: "open", reward: 2, taken: true };
+    expect(await requestPaper.handler(r.deps, { id: PDF_DOI })).toMatchObject({
+      status: "pending",
+      joined_existing: false,
+    });
+    expect(r.client.calls.post).toBe(1);
+    expect([...r.db.rows.values()]).toEqual([{ requests: 1, tokens: 2 }]);
   });
 
   it("a failed post gives the slot back and reports the upstream status", async () => {
