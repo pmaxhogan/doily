@@ -371,7 +371,7 @@ describe("obtainFullText", () => {
       attempts: [],
       cached: true,
     });
-    expect(f.calls.filter((c) => !c.url.includes("idconv"))).toHaveLength(0);
+    expect(f.calls).toHaveLength(0);
   });
 
   it("re-renders cached JATS when references are asked for", async () => {
@@ -395,7 +395,7 @@ describe("obtainFullText", () => {
     const r = await obtainFullText(deps, DOI, FAST);
     expect(r).toMatchObject({ status: "ok", source: "s2_oa", format: "pdf", cached: true });
     expect(r2.store.has(`text/${DOI}.md`)).toBe(true);
-    expect(f.calls.filter((c) => !c.url.includes("idconv"))).toHaveLength(0);
+    expect(f.calls).toHaveLength(0);
   });
 
   it("runs extraHops after the built-in hops, in order", async () => {
@@ -530,7 +530,7 @@ describe("obtainPdf", () => {
       attempts: [],
       cached: true,
     });
-    expect(f.calls.filter((c) => !c.url.includes("idconv"))).toHaveLength(0);
+    expect(f.calls).toHaveLength(0);
   });
 
   it("caches a JATS hit as text, keeps looking, and reports text_available", async () => {
@@ -552,5 +552,16 @@ describe("obtainPdf", () => {
       status: "no_pdf",
       text_available: false,
     });
+  });
+});
+
+describe("hit handling", () => {
+  it("records an empty hit as error, not bad_pdf", async () => {
+    const { deps } = setup();
+    const r = await obtainFullText(deps, DOI, {
+      ...FAST,
+      hops: [{ source: "empty", run: async () => ({ outcome: "hit", format: "jats" }) }],
+    });
+    expect(r.attempts).toMatchObject([{ source: "empty", outcome: "error" }]);
   });
 });

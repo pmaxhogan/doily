@@ -21,7 +21,7 @@
  * unavailable. Hop details never carry URLs or secrets.
  */
 
-import { resolveIds, type ResolvedIds } from "../ids.ts";
+import { parseId, resolveIds, type ResolvedIds } from "../ids.ts";
 import { getPreprintDetails, isPreprintDoi } from "../providers/biorxiv.ts";
 import { searchCoreByDoi } from "../providers/core.ts";
 import { fetchEuropePmcFullTextXml } from "../providers/europepmc.ts";
@@ -367,21 +367,19 @@ async function extract(deps: ToolDeps, bytes: Uint8Array): Promise<string> {
   return text;
 }
 
-/**
- * Text (markdown) for a paper: the R2 cache, then every hop in order until
- * one yields text. Throws ToolError only when the id cannot be resolved to a
- * DOI; every other failure is in `attempts`.
- */
-export async function obtainFullText(
-  deps: ToolDeps,
-  id: string,
-  opts: ChainOptions = {},
-): Promise<FullTextResult> {
-  const { ctx, hops, timeoutMs } = await resolve(deps, id, opts);
-  const { doi } = ctx;
-  const bucket = deps.env.PDFS;
-  const refs = opts.includeReferences === true;
+/** The DOI when the input is a DOI (or a URL around one), else undefined. */
+function directDoi(id: string): string | undefined {
+  const parsed = parseId(id);
+  return parsed.kind === "doi" ? parsed.value.toLowerCase() : undefined;
+}
 
+/** Cached text, or text extracted from a cached PDF; null on a miss. */
+async function fromTextCache(
+  deps: ToolDeps,
+  doi: string,
+  refs: boolean,
+): Promise<FullTextOk | null> {
+  const bucket = deps.env.PDFS;
   const cached = await getCachedText(bucket, doi);
   if (cached) {
     const format: HopFormat = cached.format === "jats" ? "jats" : "pdf";
@@ -399,24 +397,49 @@ export async function obtainFullText(
 
   // A PDF cached by get_pdf (which skips extraction) still saves a fetch.
   const cachedPdf = await getCachedPdf(bucket, doi);
-  if (cachedPdf) {
-    try {
-      const text = await extract(deps, cachedPdf.bytes);
-      const source = cachedPdf.source ?? "cache";
-      await putText(bucket, doi, text, { source, format: "pdf" }, deps.now());
-      const ok: FullTextOk = {
-        status: "ok",
-        doi,
-        source,
-        format: "pdf",
-        text,
-        attempts: [],
-        cached: true,
-      };
-      return refs ? { ...ok, references_unavailable: true } : ok;
-    } catch {
-      // Unreadable cached PDF: run the chain for a better copy.
-    }
+  if (!cachedPdf) return null;
+  try {
+    const text = await extract(deps, cachedPdf.bytes);
+    const source = cachedPdf.source ?? "cache";
+    await putText(bucket, doi, text, { source, format: "pdf" }, deps.now());
+    const ok: FullTextOk = {
+      status: "ok",
+      doi,
+      source,
+      format: "pdf",
+      text,
+      attempts: [],
+      cached: true,
+    };
+    return refs ? { ...ok, references_unavailable: true } : ok;
+  } catch {
+    // Unreadable cached PDF: run the chain for a better copy.
+    return null;
+  }
+}
+
+/**
+ * Text (markdown) for a paper: the R2 cache, then every hop in order until
+ * one yields text. Throws ToolError only when the id cannot be resolved to a
+ * DOI; every other failure is in `attempts`.
+ */
+export async function obtainFullText(
+  deps: ToolDeps,
+  id: string,
+  opts: ChainOptions = {},
+): Promise<FullTextResult> {
+  const refs = opts.includeReferences === true;
+  // A bare DOI needs no resolution to hit the cache; skip the idconv call.
+  const direct = directDoi(id);
+  if (direct) {
+    const hit = await fromTextCache(deps, direct, refs);
+    if (hit) return hit;
+  }
+  const { ctx, hops, timeoutMs } = await resolve(deps, id, opts);
+  const { doi } = ctx;
+  if (doi !== direct) {
+    const hit = await fromTextCache(deps, doi, refs);
+    if (hit) return hit;
   }
 
   const attempts: Attempt[] = [];
@@ -432,7 +455,9 @@ export async function obtainFullText(
       attempts.push(attempt(hop.source, "hit", elapsed(deps, start)));
       return { ...ok, attempts };
     } catch (err) {
-      attempts.push(attempt(hop.source, "bad_pdf", elapsed(deps, start), errorText(err)));
+      // Extraction failures are bad PDFs; anything else (R2) is an error.
+      const outcome = result.pdf !== undefined && result.text === undefined ? "bad_pdf" : "error";
+      attempts.push(attempt(hop.source, outcome, elapsed(deps, start), errorText(err)));
     }
   }
   return { status: "unavailable", doi, attempts };
@@ -504,12 +529,10 @@ export async function obtainPdf(
   id: string,
   opts: ChainOptions = {},
 ): Promise<PdfResult> {
-  const { ctx, hops, timeoutMs } = await resolve(deps, id, opts);
-  const { doi } = ctx;
   const bucket = deps.env.PDFS;
-
-  const head = await headCachedPdf(bucket, doi);
-  if (head) {
+  const fromCache = async (doi: string): Promise<PdfOk | null> => {
+    const head = await headCachedPdf(bucket, doi);
+    if (!head) return null;
     return {
       status: "ok",
       doi,
@@ -518,6 +541,17 @@ export async function obtainPdf(
       attempts: [],
       cached: true,
     };
+  };
+  const direct = directDoi(id);
+  if (direct) {
+    const hit = await fromCache(direct);
+    if (hit) return hit;
+  }
+  const { ctx, hops, timeoutMs } = await resolve(deps, id, opts);
+  const { doi } = ctx;
+  if (doi !== direct) {
+    const hit = await fromCache(doi);
+    if (hit) return hit;
   }
 
   let textAvailable = (await getCachedText(bucket, doi)) !== null;
